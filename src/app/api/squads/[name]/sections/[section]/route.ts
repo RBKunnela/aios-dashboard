@@ -1,28 +1,13 @@
-import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
 import path from 'path';
-
-function getProjectRoot(): string {
-  if (process.env.AIOS_PROJECT_ROOT) {
-    return process.env.AIOS_PROJECT_ROOT;
-  }
-  return path.resolve(process.cwd(), '..', '..');
-}
-
-function formatName(filename: string): string {
-  return filename
-    .replace(/\.(md|yaml|yml)$/, '')
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
-
-const VALID_SECTIONS = ['agents', 'tasks', 'workflows', 'checklists', 'templates', 'data'];
-const CONTENT_EXTENSIONS = ['.md', '.yaml', '.yml'];
-
-function isContentFile(filename: string): boolean {
-  return CONTENT_EXTENSIONS.some((ext) => filename.endsWith(ext));
-}
+import { NextResponse } from 'next/server';
+import {
+  encodeSquadItemSlug,
+  formatName,
+  getProjectRoot,
+  isValidSquadSection,
+  listSectionFilesRecursive,
+  resolveSquadSectionDir,
+} from '@/lib/squad-api-utils';
 
 export async function GET(
   _request: Request,
@@ -31,31 +16,25 @@ export async function GET(
   try {
     const { name, section } = await params;
 
-    if (!VALID_SECTIONS.includes(section)) {
+    if (!isValidSquadSection(section)) {
       return NextResponse.json(
-        { error: `Invalid section '${section}'. Valid: ${VALID_SECTIONS.join(', ')}` },
+        { error: `Invalid section '${section}'` },
         { status: 400 }
       );
     }
 
     const projectRoot = getProjectRoot();
-    const sectionDir = path.join(projectRoot, 'squads', name, section);
-
-    let filenames: string[];
-    try {
-      filenames = await fs.readdir(sectionDir);
-    } catch {
-      return NextResponse.json({ items: [] });
+    const sectionDir = resolveSquadSectionDir(projectRoot, name, section);
+    if (!sectionDir) {
+      return NextResponse.json({ error: 'Invalid squad or section path' }, { status: 400 });
     }
 
-    const items = filenames
-      .filter(isContentFile)
-      .map((filename) => ({
-        slug: filename.replace(/\.(md|yaml|yml)$/, ''),
-        name: formatName(filename),
-        relativePath: filename,
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const relativePaths = await listSectionFilesRecursive(sectionDir, section);
+    const items = relativePaths.map((relativePath) => ({
+      slug: encodeSquadItemSlug(relativePath),
+      name: formatName(path.basename(relativePath)),
+      relativePath,
+    }));
 
     return NextResponse.json({ items });
   } catch (error) {

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "highlight.js/styles/github-dark-dimmed.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -354,6 +355,25 @@
   --color-status-info: var(--status-info);
   --color-status-idle: var(--status-idle);
 
+  /* Phase colors */
+  --color-phase-planning: var(--phase-planning);
+  --color-phase-coding: var(--phase-coding);
+  --color-phase-testing: var(--phase-testing);
+  --color-phase-reviewing: var(--phase-reviewing);
+  --color-phase-deploying: var(--phase-deploying);
+  --color-phase-review: var(--phase-review);
+  --color-phase-pr: var(--phase-pr);
+
+  /* Agent colors */
+  --color-agent-dev: var(--agent-dev);
+  --color-agent-qa: var(--agent-qa);
+  --color-agent-architect: var(--agent-architect);
+  --color-agent-pm: var(--agent-pm);
+  --color-agent-po: var(--agent-po);
+  --color-agent-analyst: var(--agent-analyst);
+  --color-agent-devops: var(--agent-devops);
+  --color-agent-sm: var(--agent-sm);
+
   /* Background scale */
   --color-bg-base: var(--bg-base);
   --color-bg-elevated: var(--bg-elevated);
@@ -382,6 +402,21 @@
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY SCALE - Compact Dashboard
+     Custom sizes below Tailwind defaults (xs=12, sm=14, base=16)
+     ───────────────────────────────────────────────────────────────────────── */
+  --font-size-micro: 0.5rem;          /* 8px  - rare micro text */
+  --font-size-micro--line-height: 0.75rem;
+  --font-size-caption: 0.5625rem;     /* 9px  - timestamps, kbd shortcuts */
+  --font-size-caption--line-height: 0.875rem;
+  --font-size-detail: 0.625rem;       /* 10px - primary compact body */
+  --font-size-detail--line-height: 1rem;
+  --font-size-label: 0.6875rem;       /* 11px - secondary text, labels */
+  --font-size-label--line-height: 1rem;
+  --font-size-reading: 0.8125rem;     /* 13px - descriptions, content */
+  --font-size-reading--line-height: 1.25rem;
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);

@@ -2,20 +2,7 @@ import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
-
-function getProjectRoot(): string {
-  if (process.env.AIOS_PROJECT_ROOT) {
-    return process.env.AIOS_PROJECT_ROOT;
-  }
-  return path.resolve(process.cwd(), '..', '..');
-}
-
-function formatName(name: string): string {
-  return name
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
+import { getProjectRoot, formatName } from '@/lib/squad-api-utils';
 
 // Extract YAML block from markdown agent file
 function extractYamlFromMarkdown(content: string): Record<string, unknown> | null {
@@ -250,16 +237,13 @@ export async function GET(
       }
     }
 
-    // Also read squad config to find tasks assigned to this agent
+    // Read squad.yaml (canonical source - no config.yaml fallback)
     let squadConfig: Record<string, unknown> | null = null;
-    for (const filename of ['squad.yaml', 'config.yaml']) {
-      try {
-        const content = await fs.readFile(path.join(squadDir, filename), 'utf-8');
-        squadConfig = yaml.load(content) as Record<string, unknown>;
-        break;
-      } catch {
-        continue;
-      }
+    try {
+      const content = await fs.readFile(path.join(squadDir, 'squad.yaml'), 'utf-8');
+      squadConfig = yaml.load(content) as Record<string, unknown>;
+    } catch {
+      // squad.yaml not found or invalid - continue without it
     }
 
     // Find tasks associated with this agent from squad config

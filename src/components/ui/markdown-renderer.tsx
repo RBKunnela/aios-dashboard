@@ -17,7 +17,7 @@ const components: Components = {
     </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-2 mt-4 leading-snug uppercase tracking-wider">
+    <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-2 mt-4 leading-snug">
       {children}
     </h2>
   ),

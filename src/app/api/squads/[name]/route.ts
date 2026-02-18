@@ -9,56 +9,29 @@ import {
   resolveSquadScore,
 } from '@/lib/squad-metadata';
 import { resolveSquadDomain } from '@/lib/domain-taxonomy';
+import {
+  getProjectRoot,
+  formatName,
+  countFilesRecursive,
+} from '@/lib/squad-api-utils';
 
-function getProjectRoot(): string {
-  if (process.env.AIOS_PROJECT_ROOT) {
-    return process.env.AIOS_PROJECT_ROOT;
-  }
-  return path.resolve(process.cwd(), '..', '..');
-}
-
-function formatName(name: string): string {
-  return name
-    .split('-')
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
-}
-
+// Recursive counting functions aligned with squad-api-utils
 async function countFiles(dir: string, ext: string): Promise<number> {
-  try {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    let count = 0;
-    for (const entry of entries) {
-      if (entry.isFile() && entry.name.endsWith(ext)) count++;
-    }
-    return count;
-  } catch {
-    return 0;
-  }
+  return countFilesRecursive(dir, (_relativePath, fileName) =>
+    !fileName.startsWith('.') && fileName.endsWith(ext)
+  );
 }
 
 async function countFilesMultiExt(dir: string, exts: string[]): Promise<number> {
-  try {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    let count = 0;
-    for (const entry of entries) {
-      if (entry.isFile() && exts.some((ext) => entry.name.endsWith(ext))) {
-        count++;
-      }
-    }
-    return count;
-  } catch {
-    return 0;
-  }
+  return countFilesRecursive(dir, (_relativePath, fileName) =>
+    !fileName.startsWith('.') && exts.some((ext) => fileName.endsWith(ext))
+  );
 }
 
 async function countFilesInDir(dir: string): Promise<number> {
-  try {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    return entries.filter((e) => e.isFile()).length;
-  } catch {
-    return 0;
-  }
+  return countFilesRecursive(dir, (_relativePath, fileName) =>
+    !fileName.startsWith('.')
+  );
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -340,7 +313,8 @@ export async function GET(
     }
 
     const taskCount = await countFiles(path.join(squadDir, 'tasks'), '.md');
-    const workflowCount = await countFiles(path.join(squadDir, 'workflows'), '.yaml');
+    // Workflows can be .md, .yaml, or .yml
+    const workflowCount = await countFilesMultiExt(path.join(squadDir, 'workflows'), ['.md', '.yaml', '.yml']);
     const checklistCount = await countFiles(path.join(squadDir, 'checklists'), '.md');
     const templateCount = await countFilesMultiExt(path.join(squadDir, 'templates'), ['.md', '.yaml', '.yml']);
     const dataCount = await countFilesInDir(path.join(squadDir, 'data'));

@@ -245,16 +245,18 @@ export interface AgentConfig {
   name: string;
   icon: IconName;
   color: string;
+  bg: string;
+  border: string;
 }
 
 export const AGENT_CONFIG: Record<AgentId, AgentConfig> = {
-  dev: { name: 'Dev', icon: 'code', color: 'var(--agent-dev)' },
-  qa: { name: 'QA', icon: 'test-tube', color: 'var(--agent-qa)' },
-  architect: { name: 'Architect', icon: 'building', color: 'var(--agent-architect)' },
-  pm: { name: 'PM', icon: 'bar-chart', color: 'var(--agent-pm)' },
-  po: { name: 'PO', icon: 'target', color: 'var(--agent-po)' },
-  analyst: { name: 'Analyst', icon: 'line-chart', color: 'var(--agent-analyst)' },
-  devops: { name: 'DevOps', icon: 'wrench', color: 'var(--agent-devops)' },
+  dev: { name: 'Dev', icon: 'code', color: 'var(--agent-dev)', bg: 'var(--agent-dev-bg)', border: 'var(--agent-dev-border)' },
+  qa: { name: 'QA', icon: 'test-tube', color: 'var(--agent-qa)', bg: 'var(--agent-qa-bg)', border: 'var(--agent-qa-border)' },
+  architect: { name: 'Architect', icon: 'building', color: 'var(--agent-architect)', bg: 'var(--agent-architect-bg)', border: 'var(--agent-architect-border)' },
+  pm: { name: 'PM', icon: 'bar-chart', color: 'var(--agent-pm)', bg: 'var(--agent-pm-bg)', border: 'var(--agent-pm-border)' },
+  po: { name: 'PO', icon: 'target', color: 'var(--agent-po)', bg: 'var(--agent-po-bg)', border: 'var(--agent-po-border)' },
+  analyst: { name: 'Analyst', icon: 'line-chart', color: 'var(--agent-analyst)', bg: 'var(--agent-analyst-bg)', border: 'var(--agent-analyst-border)' },
+  devops: { name: 'DevOps', icon: 'wrench', color: 'var(--agent-devops)', bg: 'var(--agent-devops-bg)', border: 'var(--agent-devops-border)' },
 };
 
 // ============ Sidebar Config ============
@@ -277,17 +279,17 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export const STATUS_COLORS: Record<StoryStatus, string> = {
   backlog: 'text-muted-foreground',
-  in_progress: 'text-blue-500',
-  ai_review: 'text-purple-500',
-  human_review: 'text-yellow-500',
-  pr_created: 'text-cyan-500',
-  done: 'text-green-500',
-  error: 'text-red-500',
+  in_progress: 'text-status-info',
+  ai_review: 'text-phase-review',
+  human_review: 'text-status-warning',
+  pr_created: 'text-phase-pr',
+  done: 'text-status-success',
+  error: 'text-status-error',
 };
 
 export const AGENT_STATUS_COLORS: Record<AgentStatus, string> = {
-  idle: 'bg-muted-foreground',
-  working: 'bg-green-500',
-  waiting: 'bg-yellow-500',
-  error: 'bg-red-500',
+  idle: 'bg-status-idle',
+  working: 'bg-status-success',
+  waiting: 'bg-status-warning',
+  error: 'bg-status-error',
 };

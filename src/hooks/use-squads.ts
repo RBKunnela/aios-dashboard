@@ -3,7 +3,11 @@ import { useEffect } from 'react';
 import { useSquadStore } from '@/stores/squad-store';
 import type { Squad, SquadConnection, SquadTier } from '@/types';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url).then((res) => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  });
 
 interface SquadsResponse {
   squads: Squad[];
@@ -137,15 +141,8 @@ export interface ItemContent {
   isYaml: boolean;
 }
 
-interface ItemContentResponse {
-  title: string;
-  content: string;
-  filePath: string;
-  isYaml: boolean;
-}
-
 export function useSquadItemContent(squadName: string | null, section: string | null, slug: string | null) {
-  const { data, error, isLoading } = useSWR<ItemContentResponse>(
+  const { data, error, isLoading } = useSWR<ItemContent>(
     squadName && section && slug ? `/api/squads/${squadName}/sections/${section}/${slug}` : null,
     fetcher,
     { revalidateOnFocus: false }

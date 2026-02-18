@@ -2,12 +2,12 @@
 // NUNCA adicionar domains ad-hoc; novos squads devem caber nas 6 categorias.
 
 export const DOMAIN_TAXONOMY = {
-  strategy:   { label: 'Strategy',            color: 'var(--agent-pm)' },
-  marketing:  { label: 'Marketing & Content', color: 'var(--agent-po)' },
-  technical:  { label: 'Technical',           color: 'var(--agent-dev)' },
-  operations: { label: 'Operations',          color: 'var(--agent-analyst)' },
-  brand:      { label: 'Brand & Design',      color: 'var(--agent-devops)' },
-  meta:       { label: 'Meta & Frameworks',   color: 'var(--agent-architect)' },
+  strategy:   { label: 'Strategy',            color: 'var(--agent-pm)',        bg: 'var(--agent-pm-bg)',        border: 'var(--agent-pm-border)' },
+  marketing:  { label: 'Marketing & Content', color: 'var(--agent-po)',        bg: 'var(--agent-po-bg)',        border: 'var(--agent-po-border)' },
+  technical:  { label: 'Technical',           color: 'var(--agent-dev)',       bg: 'var(--agent-dev-bg)',       border: 'var(--agent-dev-border)' },
+  operations: { label: 'Operations',          color: 'var(--agent-analyst)',   bg: 'var(--agent-analyst-bg)',   border: 'var(--agent-analyst-border)' },
+  brand:      { label: 'Brand & Design',      color: 'var(--agent-devops)',    bg: 'var(--agent-devops-bg)',    border: 'var(--agent-devops-border)' },
+  meta:       { label: 'Meta & Frameworks',   color: 'var(--agent-architect)', bg: 'var(--agent-architect-bg)', border: 'var(--agent-architect-border)' },
 } as const;
 
 export type DomainKey = keyof typeof DOMAIN_TAXONOMY;
@@ -60,6 +60,16 @@ export function resolveSquadDomain(squadName: string, rawDomain: string): Domain
 export function getDomainColor(domain: string): string {
   const entry = DOMAIN_TAXONOMY[domain as DomainKey];
   return entry ? entry.color : 'var(--text-muted)';
+}
+
+export function getDomainBg(domain: string): string {
+  const entry = DOMAIN_TAXONOMY[domain as DomainKey];
+  return entry ? entry.bg : 'transparent';
+}
+
+export function getDomainBorder(domain: string): string {
+  const entry = DOMAIN_TAXONOMY[domain as DomainKey];
+  return entry ? entry.border : 'var(--border)';
 }
 
 export function getDomainLabel(domain: string): string {
