@@ -102,7 +102,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
           {/* Tool badge */}
           {toolName && (
             <span
-              className="px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wider rounded"
+              className="px-1.5 py-0.5 text-caption font-medium uppercase tracking-wider rounded"
               style={{
                 backgroundColor: event.is_error ? 'rgba(239,68,68,0.1)' : 'var(--bg-elevated)',
                 color: event.is_error ? 'var(--status-error)' : 'var(--text-secondary)',
@@ -114,13 +114,13 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
           )}
 
           {/* Event type */}
-          <span className="text-[10px] uppercase tracking-wider" style={{ color: style.color }}>
+          <span className="text-detail uppercase tracking-wider" style={{ color: style.color }}>
             {event.type.replace(/([A-Z])/g, ' $1').trim()}
           </span>
 
           {/* Duration */}
           {event.duration_ms && (
-            <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
+            <span className="text-caption" style={{ color: 'var(--text-muted)' }}>
               {formatDuration(event.duration_ms)}
             </span>
           )}
@@ -129,7 +129,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
         {/* Summary */}
         {summary && (
           <div
-            className="text-[11px] truncate mt-0.5 font-mono"
+            className="text-label truncate mt-0.5 font-mono"
             style={{ color: 'var(--text-tertiary)' }}
           >
             {summary}
@@ -139,7 +139,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
         {/* Error */}
         {event.is_error && event.tool_result && (
           <div
-            className="text-[10px] mt-1 truncate"
+            className="text-detail mt-1 truncate"
             style={{ color: 'var(--status-error)' }}
           >
             {event.tool_result.slice(0, 100)}
@@ -148,7 +148,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
       </div>
 
       {/* Timestamp */}
-      <div className="text-[9px] shrink-0" style={{ color: 'var(--text-muted)' }}>
+      <div className="text-caption shrink-0" style={{ color: 'var(--text-muted)' }}>
         {formatTimestamp(event.timestamp)}
       </div>
     </div>
@@ -175,10 +175,10 @@ export const ActivityFeed = memo(function ActivityFeed({
           <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>
             Monitor Disconnected
           </h3>
-          <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-label" style={{ color: 'var(--text-muted)' }}>
             Start the monitor server to see real-time activity.
           </p>
-          <code className="mt-3 px-3 py-1.5 text-[10px] font-mono rounded" style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-secondary)' }}>
+          <code className="mt-3 px-3 py-1.5 text-detail font-mono rounded" style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-secondary)' }}>
             cd apps/monitor-server && bun run dev
           </code>
         </div>
@@ -194,7 +194,7 @@ export const ActivityFeed = memo(function ActivityFeed({
           <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>
             Waiting for Activity
           </h3>
-          <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-label" style={{ color: 'var(--text-muted)' }}>
             Events will appear here as you use Claude Code.
           </p>
         </div>
@@ -215,7 +215,7 @@ export const ActivityFeed = memo(function ActivityFeed({
         className="px-3 py-2 border-t flex items-center justify-between"
         style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
       >
-        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
           {displayEvents.length} events
         </span>
         <div className="flex items-center gap-1">
@@ -223,7 +223,7 @@ export const ActivityFeed = memo(function ActivityFeed({
             className="h-1.5 w-1.5 rounded-full animate-pulse"
             style={{ backgroundColor: 'var(--status-success)' }}
           />
-          <span className="text-[10px]" style={{ color: 'var(--status-success)' }}>
+          <span className="text-detail" style={{ color: 'var(--status-success)' }}>
             Live
           </span>
         </div>

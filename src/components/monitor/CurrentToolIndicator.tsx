@@ -48,7 +48,7 @@ export const CurrentToolIndicator = memo(function CurrentToolIndicator({
           className="h-2 w-2 rounded-full"
           style={{ backgroundColor: 'var(--status-idle)' }}
         />
-        <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-label" style={{ color: 'var(--text-muted)' }}>
           Idle
         </span>
       </div>
@@ -101,12 +101,12 @@ export const CurrentToolIndicator = memo(function CurrentToolIndicator({
       {/* Tool info */}
       <div className="flex items-center gap-2 min-w-0">
         <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--accent-gold)' }} />
-        <span className="text-[11px] font-medium" style={{ color: 'var(--accent-gold)' }}>
+        <span className="text-label font-medium" style={{ color: 'var(--accent-gold)' }}>
           {toolName}
         </span>
         {summary && (
           <span
-            className="text-[10px] truncate font-mono"
+            className="text-detail truncate font-mono"
             style={{ color: 'var(--text-secondary)' }}
           >
             {summary}

@@ -57,7 +57,7 @@ function TerminalCard({ terminal, onClose }: TerminalCardProps) {
       <div className="flex-1 p-4 font-mono text-xs overflow-auto">
         {/* Claude ASCII Art */}
         <div className="flex items-start gap-4 mb-4">
-          <pre className="text-[#58a6ff] text-[10px] leading-tight">{CLAUDE_ASCII}</pre>
+          <pre className="text-[#58a6ff] text-detail leading-tight">{CLAUDE_ASCII}</pre>
           <div className="text-[#8b949e]">
             <div>
               <span className="text-[#f0883e]">Claude Code</span>
@@ -204,7 +204,7 @@ export function TerminalOutput() {
           {settings.useMockData ? 'Showing mock terminals' : 'Connected to AIOS'}
         </span>
         <span className="text-xs text-muted-foreground">
-          Press <kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px]">?</kbd> for shortcuts
+          Press <kbd className="px-1.5 py-0.5 bg-muted rounded text-detail">?</kbd> for shortcuts
         </span>
       </div>
     </div>

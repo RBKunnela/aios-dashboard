@@ -31,7 +31,7 @@ export const MonitorStatus = memo(function MonitorStatus({
           style={{ color: 'var(--text-muted)' }}
         />
         {showLabel && (
-          <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
             Connecting...
           </span>
         )}
@@ -44,7 +44,7 @@ export const MonitorStatus = memo(function MonitorStatus({
       <div className={cn('flex items-center gap-1.5', className)}>
         <WifiOffIcon className="h-3 w-3" style={{ color: 'var(--status-error)' }} />
         {showLabel && (
-          <span className="text-[10px]" style={{ color: 'var(--status-error)' }}>
+          <span className="text-detail" style={{ color: 'var(--status-error)' }}>
             Error
           </span>
         )}
@@ -57,7 +57,7 @@ export const MonitorStatus = memo(function MonitorStatus({
       <div className={cn('flex items-center gap-1.5', className)}>
         <WifiOffIcon className="h-3 w-3" style={{ color: 'var(--text-muted)' }} />
         {showLabel && (
-          <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
             Offline
           </span>
         )}
@@ -75,13 +75,13 @@ export const MonitorStatus = memo(function MonitorStatus({
         />
       </div>
       {showLabel && (
-        <span className="text-[10px]" style={{ color: 'var(--status-success)' }}>
+        <span className="text-detail" style={{ color: 'var(--status-success)' }}>
           Live
         </span>
       )}
       {events.length > 0 && (
         <span
-          className="text-[9px] px-1 rounded"
+          className="text-caption px-1 rounded"
           style={{
             backgroundColor: 'var(--bg-hover)',
             color: 'var(--text-muted)',

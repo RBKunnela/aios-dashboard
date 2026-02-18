@@ -17,7 +17,7 @@ export function StatusBar({ className }: StatusBarProps) {
   return (
     <footer
       className={cn(
-        'flex h-7 items-center justify-between border-t px-4 text-[11px]',
+        'flex h-7 items-center justify-between border-t px-4 text-label',
         className
       )}
       style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
@@ -90,7 +90,7 @@ function ActiveAgentBadge({ agentId }: ActiveAgentBadgeProps) {
   return (
     <div
       className="flex items-center gap-1.5 rounded-full px-2 py-0.5"
-      style={{ backgroundColor: `${config.color}20` }}
+      style={{ backgroundColor: config.bg }}
     >
       {(() => {
         const IconComponent = iconMap[config.icon];
@@ -155,7 +155,7 @@ function BobStatusIndicator() {
   const color = label === 'active' ? '#22c55e' : '#6b7280';
 
   return (
-    <div className="flex items-center gap-1.5 text-[11px]">
+    <div className="flex items-center gap-1.5 text-label">
       <Bot className="h-3 w-3" style={{ color }} />
       <span style={{ color: 'var(--text-muted)' }}>
         Bob: <span style={{ color }}>{label}</span>
@@ -176,7 +176,7 @@ function NotificationBadge({ count }: NotificationBadgeProps) {
     >
       <Bell className="h-4 w-4" />
       {count > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-detail font-medium text-primary-foreground">
           {count > 99 ? '99+' : count}
         </span>
       )}

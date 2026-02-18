@@ -56,24 +56,24 @@ export const TerminalCard = memo(function TerminalCard({
               boxShadow: statusStyle.glow ? `0 0 8px ${statusStyle.glow}` : undefined,
             }}
           />
-          <span className="font-normal text-[11px]" style={{ color: 'var(--text-secondary)' }}>{terminal.name}</span>
+          <span className="font-normal text-label" style={{ color: 'var(--text-secondary)' }}>{terminal.name}</span>
           <span
-            className="px-1.5 py-0.5 text-[9px] uppercase tracking-wider border"
+            className="px-1.5 py-0.5 text-caption uppercase tracking-wider border"
             style={{
               color: agentConfig?.color,
-              borderColor: `${agentConfig?.color}30`,
-              backgroundColor: `${agentConfig?.color}10`
+              borderColor: agentConfig?.border,
+              backgroundColor: agentConfig?.bg,
             }}
           >
             {terminal.agentId}
           </span>
           {isBobSpawned && (
             <span
-              className="px-1.5 py-0.5 text-[9px] tracking-wider border"
+              className="px-1.5 py-0.5 text-caption tracking-wider border"
               style={{
                 color: 'var(--agent-pm)',
-                borderColor: 'var(--agent-pm)' + '30',
-                backgroundColor: 'var(--agent-pm)' + '10',
+                borderColor: 'var(--agent-pm-border)',
+                backgroundColor: 'var(--agent-pm-bg)',
               }}
             >
               Bob
@@ -94,20 +94,20 @@ export const TerminalCard = memo(function TerminalCard({
       <div className="p-3 space-y-1 flex-1" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-tertiary)' }}>
         {/* Claude Info Header */}
         <div className="space-y-0.5 pb-2 border-b mb-2" style={{ borderColor: 'var(--border-subtle)' }}>
-          <div className="flex gap-2 text-[10px]">
+          <div className="flex gap-2 text-detail">
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span className="font-normal" style={{ color: 'var(--text-primary)' }}>Claude Code</span>
             <span style={{ color: 'var(--accent-gold)' }}>v2.0</span>
           </div>
-          <div className="flex gap-2 text-[10px]">
+          <div className="flex gap-2 text-detail">
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--text-muted)' }}>{terminal.model} • {terminal.apiType}</span>
           </div>
-          <div className="flex gap-2 text-[10px]">
+          <div className="flex gap-2 text-detail">
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
@@ -117,17 +117,17 @@ export const TerminalCard = memo(function TerminalCard({
 
         {/* Current Command / Prompt */}
         {terminal.currentCommand ? (
-          <div className="text-[11px]" style={{ color: 'var(--status-success)' }}>
+          <div className="text-label" style={{ color: 'var(--status-success)' }}>
             <span className="mr-2" style={{ color: 'var(--text-muted)' }}>{'>'}</span>
             {terminal.currentCommand}
           </div>
         ) : (
-          <div className="italic text-[10px]" style={{ color: 'var(--border)' }}>Awaiting input...</div>
+          <div className="italic text-detail" style={{ color: 'var(--border)' }}>Awaiting input...</div>
         )}
 
         {/* Story Info */}
         {terminal.storyId && (
-          <div className="text-[10px] mt-3 pt-2 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+          <div className="text-detail mt-3 pt-2 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
             <span className="uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Story:</span>
             <span className="ml-2" style={{ color: 'var(--text-secondary)' }}>{terminal.storyId}</span>
           </div>
@@ -147,15 +147,15 @@ export const TerminalCard = memo(function TerminalCard({
               boxShadow: statusStyle.glow ? `0 0 8px ${statusStyle.glow}` : undefined,
             }}
           />
-          <span className="text-[10px] uppercase tracking-wider" style={{ color: statusStyle.color }}>
+          <span className="text-detail uppercase tracking-wider" style={{ color: statusStyle.color }}>
             {terminal.status}
           </span>
         </div>
         <div
-          className="h-5 w-5 flex items-center justify-center text-[8px] font-medium border"
+          className="h-5 w-5 flex items-center justify-center text-micro font-medium border"
           style={{
-            backgroundColor: `${agentConfig?.color}15`,
-            borderColor: `${agentConfig?.color}30`,
+            backgroundColor: agentConfig?.bg,
+            borderColor: agentConfig?.border,
             color: agentConfig?.color,
           }}
         >

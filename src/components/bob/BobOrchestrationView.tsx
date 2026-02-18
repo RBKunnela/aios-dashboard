@@ -86,12 +86,12 @@ export const BobOrchestrationView = memo(function BobOrchestrationView() {
       <div className="h-full overflow-y-auto p-4 space-y-4" style={{ opacity: 0.6 }}>
         <div className="flex items-center gap-2 mb-2">
           <span
-            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium"
+            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-detail font-medium"
             style={{ backgroundColor: '#6b728020', color: '#6b7280' }}
           >
             inactive
           </span>
-          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-xs text-text-muted">
             Ultimo update há mais de 5 minutos
           </span>
         </div>
@@ -122,11 +122,11 @@ function BobInactivePlaceholder() {
   return (
     <div className="flex h-full items-center justify-center">
       <div className="text-center max-w-sm">
-        <Bot className="h-12 w-12 mx-auto mb-4" style={{ color: 'var(--text-muted)', opacity: 0.4 }} />
-        <p className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>
+        <Bot className="h-12 w-12 mx-auto mb-4 text-text-muted" style={{ opacity: 0.4 }} />
+        <p className="text-sm font-medium mb-1 text-text-secondary">
           Bob não está ativo
         </p>
-        <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-xs text-text-muted">
           Inicie Bob no CLI para ver o progresso aqui.
         </p>
       </div>
@@ -142,7 +142,7 @@ function ErrorList({ errors }: { errors: BobError[] }) {
     >
       <div className="flex items-center gap-2 mb-3">
         <AlertCircle className="h-4 w-4" style={{ color: 'var(--status-error)' }} />
-        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+        <span className="text-sm font-medium text-text-primary">
           Errors ({errors.length})
         </span>
       </div>
@@ -159,12 +159,12 @@ function ErrorList({ errors }: { errors: BobError[] }) {
               style={{ color: error.recoverable ? '#eab308' : '#ef4444' }}
             />
             <div>
-              <span className="font-medium" style={{ color: 'var(--text-secondary)' }}>
+              <span className="font-medium text-text-secondary">
                 [{error.phase}]
               </span>{' '}
-              <span style={{ color: 'var(--text-secondary)' }}>{error.message}</span>
+              <span className="text-text-secondary">{error.message}</span>
               {error.recoverable && (
-                <span className="ml-1 text-[10px]" style={{ color: 'var(--text-muted)' }}>
+                <span className="ml-1 text-detail text-text-muted">
                   (recoverable)
                 </span>
               )}

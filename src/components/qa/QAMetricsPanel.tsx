@@ -195,7 +195,7 @@ function MiniBarChart({ data }: { data: Array<{ date: string; passed: number; fa
                 />
               )}
             </div>
-            <span className="text-[10px] text-muted-foreground">{day.date}</span>
+            <span className="text-detail text-muted-foreground">{day.date}</span>
           </div>
         );
       })}

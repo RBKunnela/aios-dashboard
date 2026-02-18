@@ -71,15 +71,15 @@ function SurfaceDecisionBanner({ decision }: SurfaceDecisionBannerProps) {
         <p className="text-xs font-medium mb-1" style={{ color: '#eab308' }}>
           Bob precisa da sua atenção no CLI
         </p>
-        <p className="text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-xs mb-1 text-text-secondary">
           <span className="font-medium">Critério:</span> {decision.criteria}
         </p>
-        <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-xs text-text-secondary">
           <span className="font-medium">Ação:</span> {decision.action}
         </p>
       </div>
 
-      <div className="flex items-center gap-1 text-[10px] flex-shrink-0" style={{ color: 'var(--text-muted)' }}>
+      <div className="flex items-center gap-1 text-detail flex-shrink-0 text-text-muted">
         <Terminal className="h-3 w-3" />
         <span>CLI</span>
       </div>

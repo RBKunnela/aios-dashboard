@@ -69,8 +69,7 @@ export function KanbanColumn({
           {/* Collapse Toggle */}
           <button
             onClick={onToggleCollapse}
-            className="p-0.5 transition-colors"
-            style={{ color: 'var(--text-muted)' }}
+            className="p-0.5 transition-colors text-text-muted"
           >
             {isCollapsed ? (
               <ChevronRight className="h-3.5 w-3.5" />
@@ -86,12 +85,12 @@ export function KanbanColumn({
               <IconComponent className="h-3.5 w-3.5" style={{ color: colorStyle.text }} />
             ) : null;
           })()}
-          <span className="font-light text-sm" style={{ color: 'var(--text-secondary)' }}>{column.label}</span>
+          <span className="font-light text-sm text-text-secondary">{column.label}</span>
 
           {/* Count Badge */}
           <span
-            className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 text-[10px] font-medium"
-            style={{ backgroundColor: 'var(--border-subtle)', color: 'var(--text-tertiary)' }}
+            className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 text-detail font-medium text-text-tertiary"
+            style={{ backgroundColor: 'var(--border-subtle)' }}
           >
             {stories.length}
           </span>
@@ -101,8 +100,7 @@ export function KanbanColumn({
         {onAddStory && (
           <button
             onClick={onAddStory}
-            className="p-1 transition-colors hover:opacity-80"
-            style={{ color: 'var(--text-muted)' }}
+            className="p-1 transition-colors hover:opacity-80 text-text-muted"
             title={`Add new story to ${column.label}`}
           >
             <Plus className="h-3.5 w-3.5" />
@@ -157,7 +155,7 @@ function EmptyColumnState({ status }: { status: StoryStatus }) {
   return (
     <div className="flex flex-col items-center justify-center py-8">
       {IconComponent && <IconComponent className="h-6 w-6 mb-2" style={{ color: 'var(--border)' }} />}
-      <span className="text-[11px] font-light" style={{ color: 'var(--text-muted)' }}>{text}</span>
+      <span className="text-label font-light text-text-muted">{text}</span>
     </div>
   );
 }

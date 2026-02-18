@@ -41,7 +41,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
             <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
               Live Monitor
             </h2>
-            <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+            <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
               Real-time Claude Code activity
             </span>
           </div>
@@ -84,7 +84,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
             borderColor: 'var(--border-subtle)',
           }}
         >
-          <div className="flex items-center gap-4 text-[10px]" style={{ color: 'var(--text-muted)' }}>
+          <div className="flex items-center gap-4 text-detail" style={{ color: 'var(--text-muted)' }}>
             <span>
               <strong style={{ color: 'var(--text-secondary)' }}>{stats.total}</strong> total
             </span>
@@ -95,7 +95,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
               <strong style={{ color: 'var(--status-error)' }}>{stats.errors}</strong> errors
             </span>
           </div>
-          <span className="text-[9px]" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-caption" style={{ color: 'var(--text-muted)' }}>
             {stats.sessions_active} active sessions
           </span>
         </div>

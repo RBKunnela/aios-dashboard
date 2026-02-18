@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { iconMap, AlertTriangle } from '@/lib/icons';
 import { StatusDot, type StatusType as DotStatusType } from '@/components/ui/status-dot';
 import { ProgressBar } from '@/components/ui/progress-bar';
-import type { Agent } from '@/types';
+import { AGENT_CONFIG, type Agent } from '@/types';
 
 // Phase labels with colors using CSS variables
 const PHASE_CONFIG: Record<string, { label: string; color: string }> = {
@@ -91,10 +91,10 @@ export const AgentCard = memo(function AgentCard({
 
         {/* Status badge */}
         <span
-          className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border"
+          className="text-caption uppercase tracking-wider font-medium px-2 py-0.5 border"
           style={{
-            backgroundColor: isActive ? `${agent.color}15` : 'var(--border)',
-            borderColor: isActive ? `${agent.color}30` : 'var(--border)',
+            backgroundColor: isActive ? AGENT_CONFIG[agent.id]?.bg : 'var(--border)',
+            borderColor: isActive ? AGENT_CONFIG[agent.id]?.border : 'var(--border)',
             color: isActive ? agent.color : 'var(--text-muted)',
           }}
         >
@@ -108,17 +108,17 @@ export const AgentCard = memo(function AgentCard({
           {/* Current Story */}
           {agent.currentStoryId && (
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Story</span>
-              <span className="text-[11px] font-mono text-[var(--text-secondary)]">{agent.currentStoryId}</span>
+              <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">Story</span>
+              <span className="text-label font-mono text-[var(--text-secondary)]">{agent.currentStoryId}</span>
             </div>
           )}
 
           {/* Phase */}
           {phaseConfig && (
             <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Phase</span>
+              <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">Phase</span>
               <span
-                className="text-[11px] font-medium"
+                className="text-label font-medium"
                 style={{ color: phaseConfig.color }}
               >
                 {phaseConfig.label}
@@ -129,7 +129,7 @@ export const AgentCard = memo(function AgentCard({
           {/* Progress bar */}
           {typeof agent.progress === 'number' && (
             <div className="pt-2 border-t border-[var(--border-subtle)]">
-              <div className="flex items-center justify-between text-[10px] mb-2">
+              <div className="flex items-center justify-between text-detail mb-2">
                 <span className="uppercase tracking-wider text-[var(--text-muted)]">Progress</span>
                 <span className="font-mono text-[var(--text-secondary)]">{agent.progress}%</span>
               </div>
@@ -146,7 +146,7 @@ export const AgentCard = memo(function AgentCard({
             <div
               className={cn(
                 'flex items-center gap-1.5 pt-2 border-t border-[var(--border-subtle)]',
-                'text-[10px]',
+                'text-detail',
                 stale ? 'text-[var(--status-warning)]' : 'text-[var(--text-muted)]'
               )}
             >
@@ -160,7 +160,7 @@ export const AgentCard = memo(function AgentCard({
 
       {/* Idle state */}
       {!isActive && (
-        <div className="text-[11px] text-[var(--text-muted)] font-light">
+        <div className="text-label text-[var(--text-muted)] font-light">
           {agent.name} is standing by
         </div>
       )}

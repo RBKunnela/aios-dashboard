@@ -40,7 +40,7 @@ export function AgentMonitor() {
           <div className="h-8 w-px bg-[var(--border-subtle)]" />
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-light text-[var(--text-primary)]">{activeAgents.length}</span>
-            <span className="text-[11px] text-[var(--text-muted)]">/ {activeAgents.length + idleAgents.length} active</span>
+            <span className="text-label text-[var(--text-muted)]">/ {activeAgents.length + idleAgents.length} active</span>
           </div>
         </div>
 
@@ -50,7 +50,7 @@ export function AgentMonitor() {
             onClick={toggleAutoRefresh}
             aria-label={autoRefresh ? 'Pause auto-refresh' : 'Enable auto-refresh'}
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-medium',
+              'flex items-center gap-1.5 px-3 py-1.5 text-label font-medium',
               'border transition-luxury',
               autoRefresh
                 ? 'bg-[var(--status-success-bg)] border-[var(--status-success-border)] text-[var(--status-success)]'
@@ -76,7 +76,7 @@ export function AgentMonitor() {
             disabled={isLoading}
             aria-label="Refresh agent data"
             className={cn(
-              'flex items-center gap-1.5 px-3 py-1.5 text-[11px]',
+              'flex items-center gap-1.5 px-3 py-1.5 text-label',
               'border border-[var(--border)] bg-[var(--border)]',
               'text-[var(--text-secondary)] hover:text-[var(--text-primary)]',
               'hover:bg-[var(--border-medium)] transition-luxury',
@@ -108,7 +108,7 @@ export function AgentMonitor() {
           <div className="flex flex-col items-center justify-center py-16">
             <Moon className="h-8 w-8 text-[var(--text-disabled)] mb-4" />
             <p className="text-[var(--text-tertiary)] font-light mb-1">All agents standing by</p>
-            <p className="text-[11px] text-[var(--text-muted)]">
+            <p className="text-label text-[var(--text-muted)]">
               Activate via CLI: <code className="text-[var(--accent-gold)]">@agent-name</code>
             </p>
           </div>
@@ -125,7 +125,7 @@ export function AgentMonitor() {
                   className={cn(
                     'flex items-center gap-2 px-3 py-2',
                     'bg-[var(--border)] border border-[var(--border)]',
-                    'text-[11px] text-[var(--text-muted)]',
+                    'text-label text-[var(--text-muted)]',
                     'transition-luxury hover:bg-[var(--border-medium)] hover:text-[var(--text-tertiary)]'
                   )}
                 >
@@ -143,7 +143,7 @@ export function AgentMonitor() {
       </div>
 
       {/* Footer with polling info */}
-      <div className="px-4 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)] text-[10px] text-[var(--text-muted)] flex items-center justify-center gap-2">
+      <div className="px-4 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)] text-detail text-[var(--text-muted)] flex items-center justify-center gap-2">
         {autoRefresh ? (
           <>
             <StatusDot status="success" size="sm" glow />

@@ -49,12 +49,12 @@ export function SettingsPanel() {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div>
-          <span className="text-[10px] uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Configuration</span>
+          <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Configuration</span>
           <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>Settings</h2>
         </div>
         <button
           onClick={resetToDefaults}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] border transition-luxury hover:opacity-80"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80"
           style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}
         >
           <RotateCcw className="h-3 w-3" />
@@ -67,14 +67,14 @@ export function SettingsPanel() {
         {/* Appearance Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Appearance</span>
+            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Appearance</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
           <div className="space-y-4">
             {/* Theme */}
             <div>
-              <label className="text-[11px] uppercase tracking-wider mb-3 block" style={{ color: 'var(--text-muted)' }}>Theme</label>
+              <label className="text-label uppercase tracking-wider mb-3 block" style={{ color: 'var(--text-muted)' }}>Theme</label>
               <div className="flex gap-2">
                 {THEME_OPTIONS.map((option) => {
                   const Icon = option.icon;
@@ -91,7 +91,7 @@ export function SettingsPanel() {
                       }}
                     >
                       <Icon className="h-4 w-4" />
-                      <span className="text-[11px]">{option.label}</span>
+                      <span className="text-label">{option.label}</span>
                     </button>
                   );
                 })}
@@ -103,7 +103,7 @@ export function SettingsPanel() {
         {/* Data Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Data</span>
+            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Data</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
@@ -114,8 +114,8 @@ export function SettingsPanel() {
               style={{ backgroundColor: 'var(--status-warning-bg)', borderColor: 'var(--status-warning-border)' }}
             >
               <div>
-                <label className="text-[11px] font-medium" style={{ color: 'var(--status-warning)' }}>Demo Mode</label>
-                <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                <label className="text-label font-medium" style={{ color: 'var(--status-warning)' }}>Demo Mode</label>
+                <p className="text-detail mt-0.5" style={{ color: 'var(--text-muted)' }}>
                   Use mock data for visualization
                 </p>
               </div>
@@ -135,7 +135,7 @@ export function SettingsPanel() {
 
             {/* Stories Path */}
             <div>
-              <label className="text-[11px] uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
+              <label className="text-label uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
                 Stories Directory
               </label>
               <input
@@ -144,7 +144,7 @@ export function SettingsPanel() {
                 onChange={(e) => setStoriesPath(e.target.value)}
                 disabled={settings.useMockData}
                 className={cn(
-                  'w-full px-3 py-2 border text-[11px] focus:outline-none transition-colors',
+                  'w-full px-3 py-2 border text-label focus:outline-none transition-colors',
                   settings.useMockData && 'opacity-40 cursor-not-allowed'
                 )}
                 style={{
@@ -154,7 +154,7 @@ export function SettingsPanel() {
                 }}
                 placeholder="docs/stories"
               />
-              <p className="text-[10px] mt-1.5" style={{ color: 'var(--border)' }}>
+              <p className="text-detail mt-1.5" style={{ color: 'var(--border)' }}>
                 Relative path from project root
               </p>
             </div>
@@ -165,8 +165,8 @@ export function SettingsPanel() {
               style={{ backgroundColor: 'var(--bg-hover)', borderColor: 'var(--border-subtle)' }}
             >
               <div>
-                <label className="text-[11px] font-medium" style={{ color: 'var(--text-secondary)' }}>Auto Refresh</label>
-                <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                <label className="text-label font-medium" style={{ color: 'var(--text-secondary)' }}>Auto Refresh</label>
+                <p className="text-detail mt-0.5" style={{ color: 'var(--text-muted)' }}>
                   Automatically refresh data
                 </p>
               </div>
@@ -187,13 +187,13 @@ export function SettingsPanel() {
             {/* Refresh Interval */}
             {settings.autoRefresh && (
               <div>
-                <label className="text-[11px] uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
+                <label className="text-label uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
                   Refresh Interval
                 </label>
                 <select
                   value={settings.refreshInterval}
                   onChange={(e) => setRefreshInterval(Number(e.target.value))}
-                  className="w-full px-3 py-2 border text-[11px] focus:outline-none transition-colors cursor-pointer"
+                  className="w-full px-3 py-2 border text-label focus:outline-none transition-colors cursor-pointer"
                   style={{
                     borderColor: 'var(--border)',
                     backgroundColor: 'var(--bg-surface)',
@@ -214,7 +214,7 @@ export function SettingsPanel() {
         {/* Agents Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Agent Colors</span>
+            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Agent Colors</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
@@ -231,7 +231,7 @@ export function SettingsPanel() {
                     const IconComponent = iconMap[config.icon];
                     return IconComponent ? <IconComponent className="h-4 w-4" style={{ color: config.color }} /> : null;
                   })()}
-                  <span className="flex-1 text-[11px] font-light" style={{ color: 'var(--text-tertiary)' }}>@{agentId}</span>
+                  <span className="flex-1 text-label font-light" style={{ color: 'var(--text-tertiary)' }}>@{agentId}</span>
                   <input
                     type="color"
                     value={settings.agentColors[agentId] || '#888888'}
@@ -250,7 +250,7 @@ export function SettingsPanel() {
         className="px-4 py-2 border-t"
         style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
       >
-        <p className="text-[10px] text-center" style={{ color: 'var(--border)' }}>
+        <p className="text-detail text-center" style={{ color: 'var(--border)' }}>
           Settings are automatically saved to localStorage
         </p>
       </div>

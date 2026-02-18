@@ -109,7 +109,7 @@ function SidebarNavItem({ item, isActive, isCollapsed, onClick, badge }: Sidebar
         {/* Badge (e.g., Bob active/inactive) */}
         {!isCollapsed && badge && (
           <span
-            className="rounded-full px-1.5 py-0.5 text-[9px] font-medium"
+            className="rounded-full px-1.5 py-0.5 text-caption font-medium"
             style={{
               backgroundColor: badge === 'active' ? '#22c55e20' : '#6b728020',
               color: badge === 'active' ? '#22c55e' : '#6b7280',
@@ -128,7 +128,7 @@ function SidebarNavItem({ item, isActive, isCollapsed, onClick, badge }: Sidebar
         {/* Keyboard shortcut hint */}
         {!isCollapsed && item.shortcut && (
           <span
-            className="ml-auto text-[9px] px-1.5 py-0.5 font-mono tracking-wide border"
+            className="ml-auto text-caption px-1.5 py-0.5 font-mono tracking-wide border"
             style={{
               borderColor: isActive ? 'var(--border-gold)' : 'var(--border-subtle)',
               backgroundColor: 'rgba(0,0,0,0.3)',

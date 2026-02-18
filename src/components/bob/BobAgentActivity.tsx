@@ -56,7 +56,7 @@ function AgentActivityCard({ terminal, isCurrent }: AgentCardProps) {
           {/* Status badge */}
           <span
             className={cn(
-              'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-medium',
+              'inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-detail font-medium',
               isCurrent && 'animate-pulse'
             )}
             style={{
@@ -72,11 +72,11 @@ function AgentActivityCard({ terminal, isCurrent }: AgentCardProps) {
         </div>
       </div>
 
-      <p className="text-xs truncate mb-1" style={{ color: 'var(--text-secondary)' }}>
+      <p className="text-xs truncate mb-1 text-text-secondary">
         {terminal.task}
       </p>
 
-      <div className="flex items-center justify-between text-[10px]" style={{ color: 'var(--text-muted)' }}>
+      <div className="flex items-center justify-between text-detail text-text-muted">
         <span>PID: {terminal.pid}</span>
         <span>{terminal.elapsed}</span>
       </div>
@@ -98,12 +98,12 @@ export const BobAgentActivity = memo(function BobAgentActivity() {
         style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
       >
         <div className="flex items-center gap-2 mb-3">
-          <Users className="h-4 w-4" style={{ color: 'var(--text-muted)' }} />
-          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+          <Users className="h-4 w-4 text-text-muted" />
+          <span className="text-sm font-medium text-text-primary">
             Agent Activity
           </span>
         </div>
-        <p className="text-xs text-center py-4" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-xs text-center py-4 text-text-muted">
           Nenhum agente ativo no momento
         </p>
       </div>
@@ -119,11 +119,11 @@ export const BobAgentActivity = memo(function BobAgentActivity() {
       style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <Users className="h-4 w-4" style={{ color: 'var(--text-primary)' }} />
-        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+        <Users className="h-4 w-4 text-text-primary" />
+        <span className="text-sm font-medium text-text-primary">
           Agent Activity
         </span>
-        <span className="text-xs ml-auto" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-xs ml-auto text-text-muted">
           {displayItems.length} active
         </span>
       </div>

@@ -36,10 +36,10 @@ export function TerminalGrid({ className }: TerminalGridProps) {
       <div className="h-full flex flex-col items-center justify-center p-8 text-center" style={{ backgroundColor: 'var(--bg-base)' }}>
         <TerminalIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
         <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>No Active Terminals</h3>
-        <p className="text-[11px] mb-4" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-label mb-4" style={{ color: 'var(--text-muted)' }}>
           Enable Demo Mode in Settings to see sample terminals.
         </p>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] border transition-luxury hover:opacity-80" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}>
+        <button className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}>
           <PlusIcon className="h-3 w-3" />
           New Terminal
         </button>
@@ -53,13 +53,13 @@ export function TerminalGrid({ className }: TerminalGridProps) {
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Terminals</span>
+            <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Terminals</span>
             <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>Agent Sessions</h2>
           </div>
           <div className="h-8 w-px" style={{ backgroundColor: 'var(--border-subtle)' }} />
           <div className="flex items-baseline gap-1">
             <span className="text-2xl font-light" style={{ color: 'var(--text-primary)' }}>{activeCount}</span>
-            <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>/ {totalCount} active</span>
+            <span className="text-label" style={{ color: 'var(--text-muted)' }}>/ {totalCount} active</span>
           </div>
         </div>
 
@@ -90,10 +90,10 @@ export function TerminalGrid({ className }: TerminalGridProps) {
             </button>
           </div>
 
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] border transition-luxury hover:opacity-80" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}>
+          <button className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}>
             <PlusIcon className="h-3 w-3" />
             New Terminal
-            <kbd className="ml-2 text-[9px] px-1 border" style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>⌘T</kbd>
+            <kbd className="ml-2 text-caption px-1 border" style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}>⌘T</kbd>
           </button>
         </div>
       </div>
@@ -119,10 +119,10 @@ export function TerminalGrid({ className }: TerminalGridProps) {
 
       {/* Footer */}
       <div className="flex items-center justify-between px-4 py-2 border-t" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}>
-        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
           {settings.useMockData ? 'Demo Mode' : 'Connected to AIOS'}
         </span>
-        <div className="flex items-center gap-3 text-[10px]" style={{ color: 'var(--text-muted)' }}>
+        <div className="flex items-center gap-3 text-detail" style={{ color: 'var(--text-muted)' }}>
           <span className="uppercase tracking-wider">
             Capacity: {totalCount}/{maxTerminals}
           </span>
