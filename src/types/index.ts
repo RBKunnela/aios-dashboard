@@ -179,6 +179,7 @@ export interface Squad {
   displayName: string;
   description: string;
   version: string;
+  score: number;
   domain: string;
   status: SquadStatus;
   path: string;

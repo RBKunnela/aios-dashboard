@@ -3,6 +3,8 @@
 import { cn } from '@/lib/utils';
 import { ArrowLeft } from '@/lib/icons';
 import { SectionLabel } from '@/components/ui/section-label';
+import { formatSquadScore, formatSquadVersion } from '@/lib/squad-metadata';
+import { getDomainColor, getDomainLabel } from '@/lib/domain-taxonomy';
 import { SquadTierTree } from './SquadTierTree';
 import { useSquadDetail } from '@/hooks/use-squads';
 import type { Squad } from '@/types';
@@ -13,19 +15,11 @@ interface SquadDetailProps {
   onAgentClick?: (agentId: string) => void;
 }
 
-const DOMAIN_COLORS: Record<string, string> = {
-  business_strategy: 'var(--agent-pm)',
-  business_ops: 'var(--agent-analyst)',
-  content_marketing: 'var(--agent-po)',
-  technical: 'var(--agent-dev)',
-  meta_frameworks: 'var(--agent-architect)',
-  brand: 'var(--agent-devops)',
-  franchise: 'var(--status-warning)',
-  movimento: 'var(--agent-qa)',
-  'design-system': 'var(--agent-dev)',
-  'marketing-ideologico': 'var(--agent-qa)',
-  other: 'var(--text-muted)',
-};
+function getScoreColor(score: number): string {
+  if (score < 5.0) return 'var(--status-error)';
+  if (score < 7.0) return 'var(--status-warning)';
+  return 'var(--status-success)';
+}
 
 export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProps) {
   const { squad, isLoading, isError } = useSquadDetail(squadName);
@@ -57,7 +51,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
     );
   }
 
-  const domainColor = DOMAIN_COLORS[squad.domain] || DOMAIN_COLORS.other;
+  const domainColor = getDomainColor(squad.domain);
   const extSquad = squad as Squad & { objectives?: string[]; keyCapabilities?: string[] };
 
   return (
@@ -76,11 +70,15 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
           <h2 className="text-lg font-light text-[var(--text-primary)]">
             {squad.displayName}
           </h2>
-          {squad.version !== 'unknown' && (
-            <span className="text-[10px] font-mono text-[var(--text-muted)]">
-              v{squad.version}
-            </span>
-          )}
+          <span
+            className="text-[10px] font-mono"
+            style={{ color: getScoreColor(squad.score) }}
+          >
+            {formatSquadScore(squad.score)}
+          </span>
+          <span className="text-[10px] font-mono text-[var(--text-muted)]">
+            {formatSquadVersion(squad.version)}
+          </span>
           <span
             className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border"
             style={{
@@ -89,7 +87,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
               color: domainColor,
             }}
           >
-            {squad.domain}
+            {getDomainLabel(squad.domain)}
           </span>
         </div>
 
@@ -105,6 +103,17 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
           <Stat label="Agents" value={squad.agentCount} />
           <Stat label="Tasks" value={squad.taskCount} />
           <Stat label="Workflows" value={squad.workflowCount} />
+          <div className="flex items-baseline gap-1.5">
+            <span
+              className="text-base font-mono"
+              style={{ color: getScoreColor(squad.score) }}
+            >
+              {formatSquadScore(squad.score)}
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+              Score
+            </span>
+          </div>
         </div>
 
         {/* Objectives */}

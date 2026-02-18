@@ -3,6 +3,11 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import type { Squad, SquadAgent, SquadTier, SquadConnection, SquadStatus } from '@/types';
+import {
+  hasExplicitSquadVersion,
+  resolveSquadVersion,
+  resolveSquadScore,
+} from '@/lib/squad-metadata';
 
 function getProjectRoot(): string {
   if (process.env.AIOS_PROJECT_ROOT) {
@@ -28,6 +33,83 @@ async function countFiles(dir: string, ext: string): Promise<number> {
     return count;
   } catch {
     return 0;
+  }
+}
+
+async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function asRecord(value: unknown): Record<string, unknown> | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+  return value as Record<string, unknown>;
+}
+
+function extractConfigScoreCandidates(
+  config: Record<string, unknown> | null
+): unknown[] {
+  if (!config) {
+    return [];
+  }
+
+  const metadata = asRecord(config.metadata);
+  const quality = asRecord(config.quality);
+  const qualityGates = asRecord(config.quality_gates);
+
+  return [
+    metadata?.score,
+    metadata?.current_score,
+    metadata?.nota,
+    config.score,
+    config.current_score,
+    config.nota,
+    quality?.score,
+    quality?.current_score,
+    quality?.overall_score,
+    quality?.nota,
+    qualityGates?.score,
+  ];
+}
+
+interface RegistrySquadEntry {
+  version?: string;
+  score?: number | string;
+  current_score?: number | string;
+  quality_score?: number | string;
+  grade?: number | string;
+  nota?: number | string;
+  has_readme?: boolean;
+}
+
+interface RegistryFileData {
+  squads?: Record<string, RegistrySquadEntry>;
+}
+
+async function readRegistrySquad(
+  projectRoot: string,
+  squadName: string
+): Promise<RegistrySquadEntry | null> {
+  const registryPath = path.join(
+    projectRoot,
+    'squads',
+    'squad-creator',
+    'data',
+    'squad-registry.yaml'
+  );
+
+  try {
+    const content = await fs.readFile(registryPath, 'utf-8');
+    const parsed = yaml.load(content) as RegistryFileData;
+    return parsed.squads?.[squadName] ?? null;
+  } catch {
+    return null;
   }
 }
 
@@ -235,6 +317,8 @@ export async function GET(
     const taskCount = await countFiles(path.join(squadDir, 'tasks'), '.md');
     const workflowCount = await countFiles(path.join(squadDir, 'workflows'), '.yaml');
     const checklistCount = await countFiles(path.join(squadDir, 'checklists'), '.md');
+    const hasReadme = await fileExists(path.join(squadDir, 'README.md'));
+    const registryEntry = await readRegistrySquad(projectRoot, name);
 
     // Parse tiers
     const tiers: SquadTier[] = config
@@ -274,6 +358,32 @@ export async function GET(
     // Read objectives and key_capabilities if available
     const objectives = config?.objectives as string[] | undefined;
     const keyCapabilities = config?.key_capabilities as string[] | undefined;
+    const configVersion =
+      (meta?.version as string) ||
+      (config?.version as string) ||
+      null;
+    const version = resolveSquadVersion(registryEntry?.version, configVersion);
+    const hasVersion =
+      hasExplicitSquadVersion(registryEntry?.version) ||
+      hasExplicitSquadVersion(configVersion);
+    const score = resolveSquadScore(
+      [
+        registryEntry?.score,
+        registryEntry?.current_score,
+        registryEntry?.quality_score,
+        registryEntry?.grade,
+        registryEntry?.nota,
+        ...extractConfigScoreCandidates(config),
+      ],
+      {
+        agents: agentNames.length,
+        tasks: taskCount,
+        workflows: workflowCount,
+        checklists: checklistCount,
+        hasReadme: registryEntry?.has_readme ?? hasReadme,
+        hasVersion,
+      }
+    );
 
     const squad: Squad & {
       objectives?: string[];
@@ -282,7 +392,8 @@ export async function GET(
       name,
       displayName: (meta?.display_name as string) || formatName(name),
       description: description.trim(),
-      version: (meta?.version as string) || (config?.version as string) || 'unknown',
+      version,
+      score,
       domain: (meta?.domain as string) || (config?.domain as string) || 'other',
       status,
       path: `squads/${name}/`,

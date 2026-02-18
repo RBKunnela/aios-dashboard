@@ -3,6 +3,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 import type { Squad, SquadConnection, SquadStatus } from '@/types';
+import {
+  hasExplicitSquadVersion,
+  resolveSquadVersion,
+  resolveSquadScore,
+} from '@/lib/squad-metadata';
+import { resolveSquadDomain } from '@/lib/domain-taxonomy';
 
 function getProjectRoot(): string {
   if (process.env.AIOS_PROJECT_ROOT) {
@@ -33,6 +39,15 @@ async function countFiles(dir: string, ext: string): Promise<number> {
   }
 }
 
+async function fileExists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function readSquadConfig(
   squadPath: string
 ): Promise<Record<string, unknown> | null> {
@@ -49,6 +64,39 @@ async function readSquadConfig(
     }
   }
   return null;
+}
+
+function asRecord(value: unknown): Record<string, unknown> | undefined {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return undefined;
+  }
+  return value as Record<string, unknown>;
+}
+
+function extractConfigScoreCandidates(
+  config: Record<string, unknown> | null
+): unknown[] {
+  if (!config) {
+    return [];
+  }
+
+  const metadata = asRecord(config.metadata);
+  const quality = asRecord(config.quality);
+  const qualityGates = asRecord(config.quality_gates);
+
+  return [
+    metadata?.score,
+    metadata?.current_score,
+    metadata?.nota,
+    config.score,
+    config.current_score,
+    config.nota,
+    quality?.score,
+    quality?.current_score,
+    quality?.overall_score,
+    quality?.nota,
+    qualityGates?.score,
+  ];
 }
 
 function extractDependencies(
@@ -116,6 +164,11 @@ function extractDependencies(
 interface RegistrySquad {
   path: string;
   version: string;
+  score?: number | string;
+  current_score?: number | string;
+  quality_score?: number | string;
+  grade?: number | string;
+  nota?: number | string;
   description: string;
   counts: {
     agents: number;
@@ -129,6 +182,7 @@ interface RegistrySquad {
   domain: string;
   keywords: string[];
   has_readme: boolean;
+  has_changelog?: boolean;
 }
 
 interface RegistryData {
@@ -188,6 +242,32 @@ export async function GET() {
         }
 
         const meta = config?.metadata as Record<string, unknown> | undefined;
+        const configVersion =
+          (meta?.version as string) ||
+          (config?.version as string) ||
+          null;
+        const normalizedVersion = resolveSquadVersion(data.version, configVersion);
+        const hasVersion =
+          hasExplicitSquadVersion(data.version) ||
+          hasExplicitSquadVersion(configVersion);
+        const score = resolveSquadScore(
+          [
+            data.score,
+            data.current_score,
+            data.quality_score,
+            data.grade,
+            data.nota,
+            ...extractConfigScoreCandidates(config),
+          ],
+          {
+            agents: data.counts?.agents || 0,
+            tasks: data.counts?.tasks || 0,
+            workflows: data.counts?.workflows || 0,
+            checklists: data.counts?.checklists || 0,
+            hasReadme: Boolean(data.has_readme),
+            hasVersion,
+          }
+        );
 
         squads.push({
           name,
@@ -195,8 +275,9 @@ export async function GET() {
             (meta?.display_name as string) ||
             formatName(name),
           description: data.description || '',
-          version: data.version || 'unknown',
-          domain: data.domain || 'other',
+          version: normalizedVersion,
+          score,
+          domain: resolveSquadDomain(name, data.domain || 'other'),
           status,
           path: data.path,
           agentCount: data.counts?.agents || 0,
@@ -252,6 +333,23 @@ export async function GET() {
           allConnections.push(...deps);
 
           const meta = config?.metadata as Record<string, unknown> | undefined;
+          const rawVersion =
+            (meta?.version as string) ||
+            (config?.version as string) ||
+            null;
+          const normalizedVersion = resolveSquadVersion(rawVersion);
+          const hasReadme = await fileExists(path.join(squadDir, 'README.md'));
+          const score = resolveSquadScore(
+            extractConfigScoreCandidates(config),
+            {
+              agents: agentNames.length,
+              tasks: taskCount,
+              workflows: workflowCount,
+              checklists: checklistCount,
+              hasReadme,
+              hasVersion: hasExplicitSquadVersion(rawVersion),
+            }
+          );
 
           squads.push({
             name: entry.name,
@@ -262,8 +360,12 @@ export async function GET() {
               (config?.description as string) ||
               (meta?.description as string) ||
               '',
-            version: (meta?.version as string) || (config?.version as string) || 'unknown',
-            domain: (meta?.domain as string) || (config?.domain as string) || 'other',
+            version: normalizedVersion,
+            score,
+            domain: resolveSquadDomain(
+              entry.name,
+              (meta?.domain as string) || (config?.domain as string) || 'other'
+            ),
             status: 'active',
             path: `squads/${entry.name}/`,
             agentCount: agentNames.length,

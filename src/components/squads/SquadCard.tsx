@@ -2,24 +2,14 @@
 
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
+import { getDomainColor } from '@/lib/domain-taxonomy';
+import { formatSquadScore, formatSquadVersion } from '@/lib/squad-metadata';
 import type { Squad } from '@/types';
 
-const DOMAIN_COLORS: Record<string, string> = {
-  business_strategy: 'var(--agent-pm)',
-  business_ops: 'var(--agent-analyst)',
-  content_marketing: 'var(--agent-po)',
-  technical: 'var(--agent-dev)',
-  meta_frameworks: 'var(--agent-architect)',
-  brand: 'var(--agent-devops)',
-  franchise: 'var(--status-warning)',
-  movimento: 'var(--agent-qa)',
-  'design-system': 'var(--agent-dev)',
-  'marketing-ideologico': 'var(--agent-qa)',
-  other: 'var(--text-muted)',
-};
-
-function getDomainColor(domain: string): string {
-  return DOMAIN_COLORS[domain] || DOMAIN_COLORS.other;
+function getScoreColor(score: number): string {
+  if (score < 5.0) return 'var(--status-error)';
+  if (score < 7.0) return 'var(--status-warning)';
+  return 'var(--status-success)';
 }
 
 interface SquadCardProps {
@@ -68,7 +58,7 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
           </p>
         )}
 
-        {/* Footer: counts + version */}
+        {/* Footer: counts + score + version */}
         <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
           <span><span className="font-mono text-[var(--text-tertiary)]">{squad.agentCount}</span> agentes</span>
           <span><span className="font-mono text-[var(--text-tertiary)]">{squad.taskCount}</span> tarefas</span>
@@ -78,8 +68,13 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
           {squad.workflowCount > 0 && (
             <span><span className="font-mono text-[var(--text-tertiary)]">{squad.workflowCount}</span> workflows</span>
           )}
-          <span className="ml-auto font-mono text-[var(--text-disabled)]">
-            {squad.version !== 'unknown' ? `v${squad.version}` : 'v0.0.0'}
+          <span className="ml-auto flex items-center gap-2 font-mono">
+            <span style={{ color: getScoreColor(squad.score) }}>
+              {formatSquadScore(squad.score)}
+            </span>
+            <span className="text-[var(--text-disabled)]">
+              {formatSquadVersion(squad.version)}
+            </span>
           </span>
         </div>
       </div>
