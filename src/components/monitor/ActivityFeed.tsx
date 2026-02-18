@@ -138,8 +138,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
         {/* Error */}
         {event.is_error && event.tool_result && (
           <div
-            className="text-detail mt-1 truncate"
-            style={{ color: 'var(--status-error)' }}
+            className="text-detail mt-1 truncate text-status-error"
           >
             {event.tool_result.slice(0, 100)}
           </div>
@@ -189,7 +188,7 @@ export const ActivityFeed = memo(function ActivityFeed({
     return (
       <div className={cn('flex flex-col h-full', className)} style={{ backgroundColor: 'var(--bg-base)' }}>
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <ActivityIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
+          <ActivityIcon className="h-8 w-8 mb-4 text-border" />
           <h3 className="text-sm font-light mb-1 text-text-tertiary">
             Waiting for Activity
           </h3>
@@ -222,7 +221,7 @@ export const ActivityFeed = memo(function ActivityFeed({
             className="h-1.5 w-1.5 rounded-full animate-pulse"
             style={{ backgroundColor: 'var(--status-success)' }}
           />
-          <span className="text-detail" style={{ color: 'var(--status-success)' }}>
+          <span className="text-detail text-status-success">
             Live
           </span>
         </div>

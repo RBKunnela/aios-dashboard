@@ -95,34 +95,34 @@ export const TerminalCard = memo(function TerminalCard({
         {/* Claude Info Header */}
         <div className="space-y-0.5 pb-2 border-b mb-2" style={{ borderColor: 'var(--border-subtle)' }}>
           <div className="flex gap-2 text-detail">
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
             <span className="font-normal text-text-primary">Claude Code</span>
-            <span style={{ color: 'var(--accent-gold)' }}>v2.0</span>
+            <span className="text-gold">v2.0</span>
           </div>
           <div className="flex gap-2 text-detail">
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
             <span className="text-text-muted">{terminal.model} • {terminal.apiType}</span>
           </div>
           <div className="flex gap-2 text-detail">
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--border)' }}>*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
+            <span className="text-border">*</span>
             <span className="text-text-muted">{terminal.workingDirectory}</span>
           </div>
         </div>
 
         {/* Current Command / Prompt */}
         {terminal.currentCommand ? (
-          <div className="text-label" style={{ color: 'var(--status-success)' }}>
+          <div className="text-label text-status-success">
             <span className="mr-2 text-text-muted">{'>'}</span>
             {terminal.currentCommand}
           </div>
         ) : (
-          <div className="italic text-detail" style={{ color: 'var(--border)' }}>Awaiting input...</div>
+          <div className="italic text-detail text-border">Awaiting input...</div>
         )}
 
         {/* Story Info */}

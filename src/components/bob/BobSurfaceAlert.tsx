@@ -63,12 +63,11 @@ function SurfaceDecisionBanner({ decision }: SurfaceDecisionBannerProps) {
       aria-label="Bob surface decision pending"
     >
       <AlertTriangle
-        className="h-4 w-4 mt-0.5 flex-shrink-0"
-        style={{ color: '#eab308' }}
+        className="h-4 w-4 mt-0.5 flex-shrink-0 text-status-warning"
       />
 
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium mb-1" style={{ color: '#eab308' }}>
+        <p className="text-xs font-medium mb-1 text-status-warning">
           Bob precisa da sua atenção no CLI
         </p>
         <p className="text-xs mb-1 text-text-secondary">

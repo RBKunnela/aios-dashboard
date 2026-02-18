@@ -103,6 +103,7 @@
   --accent-gold: #C9B298;
   --accent-gold-light: #E4D8CA;
   --accent-gold-dim: rgba(201, 178, 152, 0.25);
+  --accent-purple: rgb(147, 51, 234);
   --accent-gold-bg: rgba(201, 178, 152, 0.08);
   --accent-gold-bg-hover: rgba(201, 178, 152, 0.12);
   --border-gold: rgba(201, 178, 152, 0.25);
@@ -347,6 +348,7 @@
   --color-gold: var(--accent-gold);
   --color-gold-light: var(--accent-gold-light);
   --color-gold-dim: var(--accent-gold-dim);
+  --color-purple: var(--accent-purple);
 
   /* Status colors */
   --color-status-success: var(--status-success);

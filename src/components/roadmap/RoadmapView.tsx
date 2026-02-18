@@ -50,7 +50,7 @@ export function RoadmapView({ className }: RoadmapViewProps) {
   if (!settings.useMockData || items.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center" style={{ backgroundColor: 'var(--bg-base)' }}>
-        <MapIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
+        <MapIcon className="h-8 w-8 mb-4 text-border" />
         <h3 className="text-sm font-light mb-1 text-text-tertiary">No Roadmap Items</h3>
         <p className="text-label mb-4 text-text-muted">
           Enable Demo Mode in Settings to see sample roadmap.

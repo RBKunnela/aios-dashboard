@@ -50,7 +50,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Bot className="h-4 w-4" style={{ color: 'var(--agent-pm)' }} />
+          <Bot className="h-4 w-4 text-agent-pm" />
           <span className="text-sm font-medium text-text-primary">
             Bob Orchestration
           </span>

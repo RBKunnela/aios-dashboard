@@ -34,7 +34,7 @@ export function TerminalGrid({ className }: TerminalGridProps) {
   if (!settings.useMockData || terminals.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center" style={{ backgroundColor: 'var(--bg-base)' }}>
-        <TerminalIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
+        <TerminalIcon className="h-8 w-8 mb-4 text-border" />
         <h3 className="text-sm font-light mb-1 text-text-tertiary">No Active Terminals</h3>
         <p className="text-label mb-4 text-text-muted">
           Enable Demo Mode in Settings to see sample terminals.

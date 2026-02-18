@@ -41,9 +41,9 @@ export const MonitorStatus = memo(function MonitorStatus({
   if (error) {
     return (
       <div className={cn('flex items-center gap-1.5', className)}>
-        <WifiOffIcon className="h-3 w-3" style={{ color: 'var(--status-error)' }} />
+        <WifiOffIcon className="h-3 w-3 text-status-error" />
         {showLabel && (
-          <span className="text-detail" style={{ color: 'var(--status-error)' }}>
+          <span className="text-detail text-status-error">
             Error
           </span>
         )}
@@ -67,14 +67,14 @@ export const MonitorStatus = memo(function MonitorStatus({
   return (
     <div className={cn('flex items-center gap-1.5', className)}>
       <div className="relative">
-        <WifiIcon className="h-3 w-3" style={{ color: 'var(--status-success)' }} />
+        <WifiIcon className="h-3 w-3 text-status-success" />
         <span
           className="absolute -top-0.5 -right-0.5 h-1.5 w-1.5 rounded-full animate-pulse"
           style={{ backgroundColor: 'var(--status-success)' }}
         />
       </div>
       {showLabel && (
-        <span className="text-detail" style={{ color: 'var(--status-success)' }}>
+        <span className="text-detail text-status-success">
           Live
         </span>
       )}

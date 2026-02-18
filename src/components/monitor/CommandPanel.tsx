@@ -93,15 +93,13 @@ export const CommandPanel = memo(function CommandPanel({ className }: CommandPan
       {activeAgent && (
         <div className="flex items-center gap-2">
           <div
-            className="flex items-center justify-center h-6 w-6 rounded"
-            style={{ backgroundColor: 'rgba(147, 51, 234, 0.1)' }}
+            className="flex items-center justify-center h-6 w-6 rounded bg-purple/10"
           >
-            <UserIcon className="h-3.5 w-3.5" style={{ color: 'rgb(147, 51, 234)' }} />
+            <UserIcon className="h-3.5 w-3.5 text-purple" />
           </div>
           <div>
             <span
-              className="text-label font-medium"
-              style={{ color: 'rgb(147, 51, 234)' }}
+              className="text-label font-medium text-purple"
             >
               @{activeAgent.id}
             </span>

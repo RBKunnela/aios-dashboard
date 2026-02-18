@@ -153,7 +153,7 @@ export function StoryDetailModal({
                   key={index}
                   className="flex items-start gap-2 text-reading text-text-secondary"
                 >
-                  <span className="mt-0.5" style={{ color: 'var(--border)' }}>•</span>
+                  <span className="mt-0.5 text-border">•</span>
                   <span className="leading-relaxed">{criterion}</span>
                 </li>
               ))}

@@ -49,7 +49,7 @@ export function SettingsPanel() {
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div>
-          <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Configuration</span>
+          <span className="text-detail uppercase tracking-[0.2em] block mb-1 text-gold">Configuration</span>
           <h2 className="text-sm font-light text-text-primary">Settings</h2>
         </div>
         <button
@@ -67,7 +67,7 @@ export function SettingsPanel() {
         {/* Appearance Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Appearance</span>
+            <span className="text-detail uppercase tracking-[0.2em] text-gold">Appearance</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
@@ -103,7 +103,7 @@ export function SettingsPanel() {
         {/* Data Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Data</span>
+            <span className="text-detail uppercase tracking-[0.2em] text-gold">Data</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
@@ -114,7 +114,7 @@ export function SettingsPanel() {
               style={{ backgroundColor: 'var(--status-warning-bg)', borderColor: 'var(--status-warning-border)' }}
             >
               <div>
-                <label className="text-label font-medium" style={{ color: 'var(--status-warning)' }}>Demo Mode</label>
+                <label className="text-label font-medium text-status-warning">Demo Mode</label>
                 <p className="text-detail mt-0.5 text-text-muted">
                   Use mock data for visualization
                 </p>
@@ -153,7 +153,7 @@ export function SettingsPanel() {
                 }}
                 placeholder="docs/stories"
               />
-              <p className="text-detail mt-1.5" style={{ color: 'var(--border)' }}>
+              <p className="text-detail mt-1.5 text-border">
                 Relative path from project root
               </p>
             </div>
@@ -212,7 +212,7 @@ export function SettingsPanel() {
         {/* Agents Section */}
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>Agent Colors</span>
+            <span className="text-detail uppercase tracking-[0.2em] text-gold">Agent Colors</span>
             <div className="flex-1 h-px gold-line" />
           </div>
 
@@ -248,7 +248,7 @@ export function SettingsPanel() {
         className="px-4 py-2 border-t"
         style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
       >
-        <p className="text-detail text-center" style={{ color: 'var(--border)' }}>
+        <p className="text-detail text-center text-border">
           Settings are automatically saved to localStorage
         </p>
       </div>

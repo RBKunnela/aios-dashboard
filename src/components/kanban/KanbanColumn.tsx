@@ -154,7 +154,7 @@ function EmptyColumnState({ status }: { status: StoryStatus }) {
 
   return (
     <div className="flex flex-col items-center justify-center py-8">
-      {IconComponent && <IconComponent className="h-6 w-6 mb-2" style={{ color: 'var(--border)' }} />}
+      {IconComponent && <IconComponent className="h-6 w-6 mb-2 text-border" />}
       <span className="text-label font-light text-text-muted">{text}</span>
     </div>
   );

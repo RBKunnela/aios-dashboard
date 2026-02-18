@@ -86,8 +86,7 @@ export const BobOrchestrationView = memo(function BobOrchestrationView() {
       <div className="h-full overflow-y-auto p-4 space-y-4" style={{ opacity: 0.6 }}>
         <div className="flex items-center gap-2 mb-2">
           <span
-            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-detail font-medium"
-            style={{ backgroundColor: '#6b728020', color: '#6b7280' }}
+            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-detail font-medium bg-text-muted/10 text-text-muted"
           >
             inactive
           </span>
@@ -141,7 +140,7 @@ function ErrorList({ errors }: { errors: BobError[] }) {
       style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <AlertCircle className="h-4 w-4" style={{ color: 'var(--status-error)' }} />
+        <AlertCircle className="h-4 w-4 text-status-error" />
         <span className="text-sm font-medium text-text-primary">
           Errors ({errors.length})
         </span>
@@ -151,12 +150,16 @@ function ErrorList({ errors }: { errors: BobError[] }) {
         {errors.map((error, idx) => (
           <div
             key={`${error.phase}-${idx}`}
-            className="flex items-start gap-2 text-xs rounded-md p-2"
-            style={{ backgroundColor: error.recoverable ? '#eab30810' : '#ef444410' }}
+            className={cn(
+              "flex items-start gap-2 text-xs rounded-md p-2",
+              error.recoverable ? "bg-status-warning/10" : "bg-status-error/10"
+            )}
           >
             <XCircle
-              className="h-3.5 w-3.5 mt-0.5 flex-shrink-0"
-              style={{ color: error.recoverable ? '#eab308' : '#ef4444' }}
+              className={cn(
+                "h-3.5 w-3.5 mt-0.5 flex-shrink-0",
+                error.recoverable ? "text-status-warning" : "text-status-error"
+              )}
             />
             <div>
               <span className="font-medium text-text-secondary">

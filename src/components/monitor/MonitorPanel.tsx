@@ -36,7 +36,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
         style={{ borderColor: 'var(--border-subtle)' }}
       >
         <div className="flex items-center gap-3">
-          <ActivityIcon className="h-4 w-4" style={{ color: 'var(--accent-gold)' }} />
+          <ActivityIcon className="h-4 w-4 text-gold" />
           <div>
             <h2 className="text-sm font-light text-text-primary">
               Live Monitor
@@ -88,10 +88,10 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
               <strong className="text-text-secondary">{stats.total}</strong> total
             </span>
             <span>
-              <strong style={{ color: 'var(--status-success)' }}>{stats.success_rate}%</strong> success
+              <strong className="text-status-success">{stats.success_rate}%</strong> success
             </span>
             <span>
-              <strong style={{ color: 'var(--status-error)' }}>{stats.errors}</strong> errors
+              <strong className="text-status-error">{stats.errors}</strong> errors
             </span>
           </div>
           <span className="text-caption text-text-muted">
