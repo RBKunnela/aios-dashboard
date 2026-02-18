@@ -7,3 +7,5 @@ export { SquadTierTree } from './SquadTierTree';
 export { SquadAgentChip } from './SquadAgentChip';
 export { SquadAgentDetail } from './SquadAgentDetail';
 export { SquadTaskCard } from './SquadTaskCard';
+export { SquadSectionGrid } from './SquadSectionGrid';
+export { SquadItemViewer } from './SquadItemViewer';

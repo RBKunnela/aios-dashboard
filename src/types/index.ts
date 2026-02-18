@@ -187,6 +187,8 @@ export interface Squad {
   taskCount: number;
   workflowCount: number;
   checklistCount: number;
+  templateCount: number;
+  dataCount: number;
   agentNames: string[];
   tiers?: SquadTier[];
   dependencies: SquadConnection[];

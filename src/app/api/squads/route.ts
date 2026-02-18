@@ -39,6 +39,30 @@ async function countFiles(dir: string, ext: string): Promise<number> {
   }
 }
 
+async function countFilesMultiExt(dir: string, exts: string[]): Promise<number> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    let count = 0;
+    for (const entry of entries) {
+      if (entry.isFile() && exts.some((ext) => entry.name.endsWith(ext))) {
+        count++;
+      }
+    }
+    return count;
+  } catch {
+    return 0;
+  }
+}
+
+async function countFilesInDir(dir: string): Promise<number> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    return entries.filter((e) => e.isFile()).length;
+  } catch {
+    return 0;
+  }
+}
+
 async function fileExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
@@ -51,19 +75,13 @@ async function fileExists(filePath: string): Promise<boolean> {
 async function readSquadConfig(
   squadPath: string
 ): Promise<Record<string, unknown> | null> {
-  // Try squad.yaml first (v2), then config.yaml (legacy)
-  for (const filename of ['squad.yaml', 'config.yaml']) {
-    try {
-      const content = await fs.readFile(
-        path.join(squadPath, filename),
-        'utf-8'
-      );
-      return yaml.load(content) as Record<string, unknown>;
-    } catch {
-      continue;
-    }
+  const manifestPath = path.join(squadPath, 'squad.yaml');
+  try {
+    const content = await fs.readFile(manifestPath, 'utf-8');
+    return yaml.load(content) as Record<string, unknown>;
+  } catch {
+    return null;
   }
-  return null;
 }
 
 function asRecord(value: unknown): Record<string, unknown> | undefined {
@@ -284,6 +302,8 @@ export async function GET() {
           taskCount: data.counts?.tasks || 0,
           workflowCount: data.counts?.workflows || 0,
           checklistCount: data.counts?.checklists || 0,
+          templateCount: data.counts?.templates || 0,
+          dataCount: data.counts?.data_files || 0,
           agentNames: data.agent_names || [],
           dependencies: deps,
           keywords: data.keywords || [],
@@ -303,6 +323,10 @@ export async function GET() {
             continue;
 
           const squadDir = path.join(squadsDir, entry.name);
+          const hasSquadManifest = await fileExists(path.join(squadDir, 'squad.yaml'));
+          if (!hasSquadManifest) {
+            continue;
+          }
           const config = await readSquadConfig(squadDir);
           const agentsDir = path.join(squadDir, 'agents');
 
@@ -327,6 +351,13 @@ export async function GET() {
           const checklistCount = await countFiles(
             path.join(squadDir, 'checklists'),
             '.md'
+          );
+          const templateCount = await countFilesMultiExt(
+            path.join(squadDir, 'templates'),
+            ['.md', '.yaml', '.yml']
+          );
+          const dataCount = await countFilesInDir(
+            path.join(squadDir, 'data')
           );
 
           const deps = config ? extractDependencies(entry.name, config) : [];
@@ -372,6 +403,8 @@ export async function GET() {
             taskCount,
             workflowCount,
             checklistCount,
+            templateCount,
+            dataCount,
             agentNames,
             dependencies: deps,
             keywords: [],
@@ -404,10 +437,13 @@ export async function GET() {
       squads,
       domainIndex,
       connections: validConnections,
-      summary: registry?.summary || {
-        total_agents: squads.reduce((s, q) => s + q.agentCount, 0),
-        total_tasks: squads.reduce((s, q) => s + q.taskCount, 0),
-        total_workflows: squads.reduce((s, q) => s + q.workflowCount, 0),
+      summary: {
+        total_agents: registry?.summary?.total_agents ?? squads.reduce((s, q) => s + q.agentCount, 0),
+        total_tasks: registry?.summary?.total_tasks ?? squads.reduce((s, q) => s + q.taskCount, 0),
+        total_workflows: registry?.summary?.total_workflows ?? squads.reduce((s, q) => s + q.workflowCount, 0),
+        total_templates: registry?.summary?.total_templates ?? squads.reduce((s, q) => s + q.templateCount, 0),
+        total_checklists: registry?.summary?.total_checklists ?? squads.reduce((s, q) => s + q.checklistCount, 0),
+        total_data_files: registry?.summary?.total_data_files ?? squads.reduce((s, q) => s + q.dataCount, 0),
       },
     });
   } catch (error) {

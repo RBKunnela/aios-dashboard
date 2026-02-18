@@ -10,6 +10,9 @@ interface SquadState {
     total_agents: number;
     total_tasks: number;
     total_workflows: number;
+    total_templates: number;
+    total_checklists: number;
+    total_data_files: number;
   };
 
   setSquads: (squads: Squad[]) => void;
@@ -27,7 +30,7 @@ export const useSquadStore = create<SquadState>((set, get) => ({
   selectedSquad: null,
   connections: [],
   domainIndex: {},
-  summary: { total_agents: 0, total_tasks: 0, total_workflows: 0 },
+  summary: { total_agents: 0, total_tasks: 0, total_workflows: 0, total_templates: 0, total_checklists: 0, total_data_files: 0 },
 
   setSquads: (squads) => set({ squads }),
   setSelectedSquad: (name) => set({ selectedSquad: name }),

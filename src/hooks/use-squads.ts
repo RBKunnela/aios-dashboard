@@ -13,6 +13,9 @@ interface SquadsResponse {
     total_agents: number;
     total_tasks: number;
     total_workflows: number;
+    total_templates: number;
+    total_checklists: number;
+    total_data_files: number;
   };
 }
 
@@ -47,7 +50,7 @@ export function useSquads() {
     squads: data?.squads ?? [],
     domainIndex: data?.domainIndex ?? {},
     connections: data?.connections ?? [],
-    summary: data?.summary ?? { total_agents: 0, total_tasks: 0, total_workflows: 0 },
+    summary: data?.summary ?? { total_agents: 0, total_tasks: 0, total_workflows: 0, total_templates: 0, total_checklists: 0, total_data_files: 0 },
     isLoading,
     isError: !!error,
     refresh: mutate,
@@ -99,6 +102,60 @@ export interface AgentDetailData {
 
 interface AgentDetailResponse {
   agent: AgentDetailData;
+}
+
+// Section items types and hooks
+
+export interface SectionItem {
+  slug: string;
+  name: string;
+  relativePath: string;
+}
+
+interface SectionItemsResponse {
+  items: SectionItem[];
+}
+
+export function useSquadSectionItems(squadName: string | null, section: string | null) {
+  const { data, error, isLoading } = useSWR<SectionItemsResponse>(
+    squadName && section ? `/api/squads/${squadName}/sections/${section}` : null,
+    fetcher,
+    { revalidateOnFocus: false }
+  );
+
+  return {
+    items: data?.items ?? [],
+    isLoading,
+    isError: !!error,
+  };
+}
+
+export interface ItemContent {
+  title: string;
+  content: string;
+  filePath: string;
+  isYaml: boolean;
+}
+
+interface ItemContentResponse {
+  title: string;
+  content: string;
+  filePath: string;
+  isYaml: boolean;
+}
+
+export function useSquadItemContent(squadName: string | null, section: string | null, slug: string | null) {
+  const { data, error, isLoading } = useSWR<ItemContentResponse>(
+    squadName && section && slug ? `/api/squads/${squadName}/sections/${section}/${slug}` : null,
+    fetcher,
+    { revalidateOnFocus: false }
+  );
+
+  return {
+    item: data ?? null,
+    isLoading,
+    isError: !!error,
+  };
 }
 
 export function useSquadAgentDetail(squadName: string | null, agentId: string | null) {

@@ -8,6 +8,7 @@ import {
   resolveSquadVersion,
   resolveSquadScore,
 } from '@/lib/squad-metadata';
+import { resolveSquadDomain } from '@/lib/domain-taxonomy';
 
 function getProjectRoot(): string {
   if (process.env.AIOS_PROJECT_ROOT) {
@@ -31,6 +32,30 @@ async function countFiles(dir: string, ext: string): Promise<number> {
       if (entry.isFile() && entry.name.endsWith(ext)) count++;
     }
     return count;
+  } catch {
+    return 0;
+  }
+}
+
+async function countFilesMultiExt(dir: string, exts: string[]): Promise<number> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    let count = 0;
+    for (const entry of entries) {
+      if (entry.isFile() && exts.some((ext) => entry.name.endsWith(ext))) {
+        count++;
+      }
+    }
+    return count;
+  } catch {
+    return 0;
+  }
+}
+
+async function countFilesInDir(dir: string): Promise<number> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    return entries.filter((e) => e.isFile()).length;
   } catch {
     return 0;
   }
@@ -290,16 +315,16 @@ export async function GET(
       return NextResponse.json({ error: `Squad '${name}' not found` }, { status: 404 });
     }
 
-    // Read config
+    // Read canonical squad manifest
     let config: Record<string, unknown> | null = null;
-    for (const filename of ['squad.yaml', 'config.yaml']) {
-      try {
-        const content = await fs.readFile(path.join(squadDir, filename), 'utf-8');
-        config = yaml.load(content) as Record<string, unknown>;
-        break;
-      } catch {
-        continue;
-      }
+    try {
+      const content = await fs.readFile(path.join(squadDir, 'squad.yaml'), 'utf-8');
+      config = yaml.load(content) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json(
+        { error: `Squad '${name}' is missing a valid squad.yaml manifest` },
+        { status: 500 }
+      );
     }
 
     // Get agent names from filesystem
@@ -317,6 +342,8 @@ export async function GET(
     const taskCount = await countFiles(path.join(squadDir, 'tasks'), '.md');
     const workflowCount = await countFiles(path.join(squadDir, 'workflows'), '.yaml');
     const checklistCount = await countFiles(path.join(squadDir, 'checklists'), '.md');
+    const templateCount = await countFilesMultiExt(path.join(squadDir, 'templates'), ['.md', '.yaml', '.yml']);
+    const dataCount = await countFilesInDir(path.join(squadDir, 'data'));
     const hasReadme = await fileExists(path.join(squadDir, 'README.md'));
     const registryEntry = await readRegistrySquad(projectRoot, name);
 
@@ -394,13 +421,18 @@ export async function GET(
       description: description.trim(),
       version,
       score,
-      domain: (meta?.domain as string) || (config?.domain as string) || 'other',
+      domain: resolveSquadDomain(
+        name,
+        (meta?.domain as string) || (config?.domain as string) || 'other'
+      ),
       status,
       path: `squads/${name}/`,
       agentCount: agentNames.length,
       taskCount,
       workflowCount,
       checklistCount,
+      templateCount,
+      dataCount,
       agentNames,
       tiers,
       dependencies: deps,

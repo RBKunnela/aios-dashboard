@@ -73,7 +73,7 @@ export function SquadsPanel() {
             </h1>
 
             {/* Summary badges */}
-            <div className="flex items-center gap-3 ml-4">
+            <div className="flex items-center gap-3 ml-4 flex-wrap">
               <span className="text-[10px] text-[var(--text-muted)]">
                 <span className="font-mono text-[var(--text-secondary)]">
                   {squads.length}
@@ -91,6 +91,30 @@ export function SquadsPanel() {
                   {summary.total_tasks}
                 </span>{' '}
                 tasks
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                <span className="font-mono text-[var(--text-secondary)]">
+                  {summary.total_workflows}
+                </span>{' '}
+                workflows
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                <span className="font-mono text-[var(--text-secondary)]">
+                  {summary.total_templates}
+                </span>{' '}
+                templates
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                <span className="font-mono text-[var(--text-secondary)]">
+                  {summary.total_checklists}
+                </span>{' '}
+                checklists
+              </span>
+              <span className="text-[10px] text-[var(--text-muted)]">
+                <span className="font-mono text-[var(--text-secondary)]">
+                  {summary.total_data_files}
+                </span>{' '}
+                data
               </span>
             </div>
           </div>
