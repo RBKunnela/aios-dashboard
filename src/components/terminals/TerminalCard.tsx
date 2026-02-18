@@ -56,7 +56,7 @@ export const TerminalCard = memo(function TerminalCard({
               boxShadow: statusStyle.glow ? `0 0 8px ${statusStyle.glow}` : undefined,
             }}
           />
-          <span className="font-normal text-label" style={{ color: 'var(--text-secondary)' }}>{terminal.name}</span>
+          <span className="font-normal text-label text-text-secondary">{terminal.name}</span>
           <span
             className="px-1.5 py-0.5 text-caption uppercase tracking-wider border"
             style={{
@@ -80,7 +80,7 @@ export const TerminalCard = memo(function TerminalCard({
             </span>
           )}
         </div>
-        <div className="flex gap-2" style={{ color: 'var(--text-muted)' }}>
+        <div className="flex gap-2 text-text-muted">
           <button className="transition-colors p-1 hover:opacity-80">
             <SettingsIcon className="h-3 w-3" />
           </button>
@@ -91,14 +91,14 @@ export const TerminalCard = memo(function TerminalCard({
       </div>
 
       {/* Terminal Body */}
-      <div className="p-3 space-y-1 flex-1" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-tertiary)' }}>
+      <div className="p-3 space-y-1 flex-1 text-text-tertiary" style={{ backgroundColor: 'var(--bg-base)' }}>
         {/* Claude Info Header */}
         <div className="space-y-0.5 pb-2 border-b mb-2" style={{ borderColor: 'var(--border-subtle)' }}>
           <div className="flex gap-2 text-detail">
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
-            <span className="font-normal" style={{ color: 'var(--text-primary)' }}>Claude Code</span>
+            <span className="font-normal text-text-primary">Claude Code</span>
             <span style={{ color: 'var(--accent-gold)' }}>v2.0</span>
           </div>
           <div className="flex gap-2 text-detail">
