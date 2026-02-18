@@ -129,3 +129,9 @@ export function formatSquadScore(score: number | null | undefined): string {
     : DEFAULT_SQUAD_SCORE;
   return value.toFixed(1);
 }
+
+export function getScoreColor(score: number): string {
+  if (score < 5.0) return 'var(--status-error)';
+  if (score < 7.0) return 'var(--status-warning)';
+  return 'var(--status-success)';
+}

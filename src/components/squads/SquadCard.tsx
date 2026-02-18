@@ -3,14 +3,8 @@
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
 import { getDomainColor } from '@/lib/domain-taxonomy';
-import { formatSquadScore, formatSquadVersion } from '@/lib/squad-metadata';
+import { formatSquadScore, formatSquadVersion, getScoreColor } from '@/lib/squad-metadata';
 import type { Squad } from '@/types';
-
-function getScoreColor(score: number): string {
-  if (score < 5.0) return 'var(--status-error)';
-  if (score < 7.0) return 'var(--status-warning)';
-  return 'var(--status-success)';
-}
 
 interface SquadCardProps {
   squad: Squad;
