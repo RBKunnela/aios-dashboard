@@ -120,7 +120,6 @@ export function SquadsPanel() {
       <SquadAgentDetail
         squadName={selectedSquad}
         agentId={selectedAgent}
-        onBack={navigateToSquad}
         breadcrumb={<SquadBreadcrumb segments={breadcrumbSegments} className="mb-6" />}
       />
     );
@@ -131,7 +130,6 @@ export function SquadsPanel() {
     return (
       <SquadDetail
         squadName={selectedSquad}
-        onBack={navigateToOrganogram}
         onAgentClick={handleAgentClick}
         selectedItem={selectedItem}
         onItemClick={handleItemClick}
@@ -146,7 +144,6 @@ export function SquadsPanel() {
     return (
       <SquadDetail
         squadName={selectedSquad}
-        onBack={navigateToOrganogram}
         onAgentClick={handleAgentClick}
         selectedItem={null}
         onItemClick={handleItemClick}
@@ -171,12 +168,12 @@ export function SquadsPanel() {
             </h1>
 
             {/* Primary count */}
-            <span className="text-[10px] text-[var(--text-muted)] ml-2">
+            <span className="text-detail text-[var(--text-muted)] ml-2">
               <span className="font-mono text-[var(--text-secondary)]">{squads.length}</span> squads
             </span>
 
             {/* Secondary counts - compact */}
-            <span className="text-[9px] text-[var(--text-disabled)] ml-3 hidden sm:inline" aria-label="Asset totals">
+            <span className="text-caption text-[var(--text-disabled)] ml-3 hidden sm:inline" aria-label="Asset totals">
               <span className="font-mono text-[var(--text-muted)]">{summary.total_agents}</span> agents
               <span className="mx-1 opacity-40">/</span>
               <span className="font-mono text-[var(--text-muted)]">{summary.total_tasks}</span> tasks
@@ -208,7 +205,7 @@ export function SquadsPanel() {
                 }}
                 placeholder="Filter squads..."
                 className={cn(
-                  'pl-7 pr-2 py-1 w-[160px] text-[11px]',
+                  'pl-7 pr-2 py-1 w-[160px] text-label',
                   'bg-[var(--bg-secondary)] border border-[var(--border)]',
                   'text-[var(--text-primary)] placeholder:text-[var(--text-disabled)]',
                   'focus:outline-none focus:border-[var(--accent-gold)]',
@@ -245,7 +242,7 @@ export function SquadsPanel() {
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <Loader2 className="h-5 w-5 animate-spin text-[var(--accent-gold)] mx-auto mb-3" />
-              <span className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
+              <span className="text-label text-[var(--text-muted)] uppercase tracking-wider">
                 Loading squads...
               </span>
             </div>
@@ -254,14 +251,14 @@ export function SquadsPanel() {
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <p className="text-sm text-[var(--text-muted)]">No squads found</p>
-              <p className="text-[11px] text-[var(--text-disabled)] mt-1">
+              <p className="text-label text-[var(--text-disabled)] mt-1">
                 Check that squads/ directory exists in the project root
               </p>
             </div>
           </div>
         ) : filteredSquads.length === 0 && filterQuery.trim() ? (
           <div className="flex items-center justify-center h-32">
-            <p className="text-[11px] text-[var(--text-muted)]">
+            <p className="text-label text-[var(--text-muted)]">
               No squads match &apos;{filterQuery.trim()}&apos;
             </p>
           </div>

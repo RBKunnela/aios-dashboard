@@ -26,15 +26,15 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
         className="w-full text-left px-4 py-3 border-b border-[var(--border-subtle)]"
       >
         <div className="flex items-center justify-between">
-          <span className="text-[12px] font-medium text-[var(--text-primary)] truncate">
+          <span className="text-xs font-medium text-[var(--text-primary)] truncate">
             {task.name || task.id}
           </span>
-          <span className="text-[9px] text-[var(--text-muted)] ml-2 shrink-0">
+          <span className="text-caption text-[var(--text-muted)] ml-2 shrink-0">
             {expanded ? '−' : '+'}
           </span>
         </div>
         {task.category && (
-          <span className="text-[9px] uppercase tracking-wider text-[var(--accent-gold)]">
+          <span className="text-caption uppercase tracking-wider text-[var(--accent-gold)]">
             {task.category}
           </span>
         )}
@@ -44,12 +44,12 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
       <div className="px-4 py-2.5 space-y-2">
         {task.inputs.length > 0 && (
           <div>
-            <span className="text-[9px] font-medium uppercase tracking-wider text-[var(--text-muted)] block mb-1">
+            <span className="text-caption font-medium uppercase tracking-wider text-[var(--text-muted)] block mb-1">
               Input
             </span>
             <ul className="space-y-0.5">
               {task.inputs.slice(0, 3).map((input, i) => (
-                <li key={i} className="text-[10px] text-[var(--text-secondary)] leading-snug truncate">
+                <li key={i} className="text-detail text-[var(--text-secondary)] leading-snug truncate">
                   {input}
                 </li>
               ))}
@@ -59,12 +59,12 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
 
         {task.outputs.length > 0 && (
           <div>
-            <span className="text-[9px] font-medium uppercase tracking-wider text-[var(--text-muted)] block mb-1">
+            <span className="text-caption font-medium uppercase tracking-wider text-[var(--text-muted)] block mb-1">
               Output
             </span>
             <ul className="space-y-0.5">
               {task.outputs.slice(0, 3).map((output, i) => (
-                <li key={i} className="text-[10px] text-[var(--text-secondary)] leading-snug truncate">
+                <li key={i} className="text-detail text-[var(--text-secondary)] leading-snug truncate">
                   {output}
                 </li>
               ))}
@@ -73,7 +73,7 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
         )}
 
         {task.inputs.length === 0 && task.outputs.length === 0 && task.description && (
-          <p className="text-[10px] text-[var(--text-muted)] leading-relaxed line-clamp-3">
+          <p className="text-detail text-[var(--text-muted)] leading-relaxed line-clamp-3">
             {task.description}
           </p>
         )}
@@ -84,12 +84,12 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
         <div className="px-4 pb-3 space-y-2.5 border-t border-[var(--border-subtle)] pt-2.5">
           {task.responsibilities.length > 0 && (
             <div>
-              <span className="text-[9px] font-medium uppercase tracking-wider text-[var(--status-success)] block mb-1">
+              <span className="text-caption font-medium uppercase tracking-wider text-[var(--status-success)] block mb-1">
                 O que faz
               </span>
               <ul className="space-y-0.5">
                 {task.responsibilities.map((r, i) => (
-                  <li key={i} className="text-[10px] text-[var(--text-secondary)] leading-snug flex items-start gap-1">
+                  <li key={i} className="text-detail text-[var(--text-secondary)] leading-snug flex items-start gap-1">
                     <span className="text-[var(--text-muted)] shrink-0 mt-px">-</span>
                     <span className="line-clamp-2">{r}</span>
                   </li>
@@ -100,12 +100,12 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
 
           {task.antiPatterns.length > 0 && (
             <div>
-              <span className="text-[9px] font-medium uppercase tracking-wider text-[var(--status-error)] block mb-1">
+              <span className="text-caption font-medium uppercase tracking-wider text-[var(--status-error)] block mb-1">
                 Nao faz
               </span>
               <ul className="space-y-0.5">
                 {task.antiPatterns.map((a, i) => (
-                  <li key={i} className="text-[10px] text-[var(--text-muted)] leading-snug flex items-start gap-1">
+                  <li key={i} className="text-detail text-[var(--text-muted)] leading-snug flex items-start gap-1">
                     <span className="shrink-0 mt-px">-</span>
                     <span className="line-clamp-2">{a}</span>
                   </li>
@@ -116,14 +116,14 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
 
           {task.tools.length > 0 && (
             <div>
-              <span className="text-[9px] font-medium uppercase tracking-wider text-[var(--status-info)] block mb-1">
+              <span className="text-caption font-medium uppercase tracking-wider text-[var(--status-info)] block mb-1">
                 Ferramentas
               </span>
               <div className="flex flex-wrap gap-1">
                 {task.tools.map((t, i) => (
                   <span
                     key={i}
-                    className="text-[9px] px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-secondary)]"
+                    className="text-caption px-1.5 py-0.5 bg-[var(--bg-elevated)] border border-[var(--border)] text-[var(--text-secondary)]"
                   >
                     {t}
                   </span>
@@ -133,7 +133,7 @@ export const SquadTaskCard = memo(function SquadTaskCard({ task }: SquadTaskCard
           )}
 
           {task.estimatedDuration && (
-            <div className="text-[9px] text-[var(--text-muted)]">
+            <div className="text-caption text-[var(--text-muted)]">
               Duracao: {task.estimatedDuration}
             </div>
           )}

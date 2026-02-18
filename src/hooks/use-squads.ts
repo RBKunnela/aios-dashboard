@@ -102,6 +102,8 @@ export interface AgentDetailData {
   commands: string[];
   tasks: AgentTask[];
   handoffs: { agent: string; when: string; squad?: string }[];
+  sourceMarkdown?: string;
+  sourcePath?: string;
 }
 
 interface AgentDetailResponse {

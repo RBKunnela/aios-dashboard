@@ -19,14 +19,14 @@ export function SquadBreadcrumb({ segments, className }: SquadBreadcrumbProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn('flex items-center gap-1 text-[10px] font-mono', className)}
+      className={cn('flex items-center gap-1 text-detail font-mono', className)}
     >
       {segments.map((segment, i) => {
         const isLast = i === segments.length - 1;
         return (
           <span key={i} className="flex items-center gap-1">
             {i > 0 && (
-              <ChevronRight className="h-2.5 w-2.5 text-[var(--text-disabled)] shrink-0" />
+              <ChevronRight className="h-2.5 w-2.5 text-[var(--text-disabled)] shrink-0" aria-hidden="true" />
             )}
             {isLast || !segment.onClick ? (
               <span

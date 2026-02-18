@@ -2,7 +2,13 @@ import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
-import { getProjectRoot, formatName } from '@/lib/squad-api-utils';
+import {
+  formatName,
+  getProjectRoot,
+  resolvePathWithin,
+  resolveSquadSectionDir,
+  sanitizeRelativePath,
+} from '@/lib/squad-api-utils';
 
 // Extract YAML block from markdown agent file
 function extractYamlFromMarkdown(content: string): Record<string, unknown> | null {
@@ -169,6 +175,8 @@ interface AgentDetail {
   commands: string[];
   tasks: ParsedTask[];
   handoffs: { agent: string; when: string; squad?: string }[];
+  sourceMarkdown?: string;
+  sourcePath?: string;
 }
 
 export async function GET(
@@ -179,9 +187,20 @@ export async function GET(
     const { name: squadName, agentId } = await params;
     const projectRoot = getProjectRoot();
     const squadDir = path.join(projectRoot, 'squads', squadName);
+    const normalizedAgentId = agentId.replace(/\.md$/i, '');
+
+    const agentsDir = resolveSquadSectionDir(projectRoot, squadName, 'agents');
+    if (!agentsDir) {
+      return NextResponse.json({ error: 'Invalid squad path' }, { status: 400 });
+    }
+
+    const relativeAgentPath = sanitizeRelativePath(`${normalizedAgentId}.md`);
+    const agentPath = relativeAgentPath ? resolvePathWithin(agentsDir, relativeAgentPath) : null;
+    if (!agentPath) {
+      return NextResponse.json({ error: `Invalid agent id '${agentId}'` }, { status: 400 });
+    }
 
     // Read agent markdown file
-    const agentPath = path.join(squadDir, 'agents', `${agentId}.md`);
     let agentContent: string;
     try {
       agentContent = await fs.readFile(agentPath, 'utf-8');
@@ -252,7 +271,7 @@ export async function GET(
         if (typeof t === 'object' && t !== null) {
           const taskObj = t as Record<string, unknown>;
           // Add tasks that reference this agent
-          if (taskObj.agent === agentId || taskObj.id) {
+          if (taskObj.agent === normalizedAgentId || taskObj.id) {
             const taskFile = `${taskObj.id}.md`;
             taskFileNames.add(taskFile);
           }
@@ -266,13 +285,17 @@ export async function GET(
     const taskFiles = [...taskFileNames].slice(0, 15);
 
     for (const taskFile of taskFiles) {
+      const safeTaskRelative = sanitizeRelativePath(taskFile);
+      const safeTaskPath = safeTaskRelative ? resolvePathWithin(taskDir, safeTaskRelative) : null;
+      if (!safeTaskPath) {
+        continue;
+      }
       try {
-        const taskPath = path.join(taskDir, taskFile);
-        const content = await fs.readFile(taskPath, 'utf-8');
+        const content = await fs.readFile(safeTaskPath, 'utf-8');
         const taskId = taskFile.replace('.md', '');
         const parsed = parseTaskFile(content, taskId);
         // Only include tasks relevant to this agent or unassigned
-        if (!parsed.agent || parsed.agent.includes(agentId) || parsed.agent === '' || taskFileNames.has(taskFile)) {
+        if (!parsed.agent || parsed.agent.includes(normalizedAgentId) || parsed.agent === '' || taskFileNames.has(taskFile)) {
           tasks.push(parsed);
         }
       } catch {
@@ -283,17 +306,17 @@ export async function GET(
           : null;
         if (configTask) {
           const ct = configTask as Record<string, unknown>;
-          tasks.push({
-            id: taskId,
-            name: (ct.name as string) || formatName(taskId),
-            description: (ct.description as string) || '',
-            category: (ct.category as string) || '',
-            agent: agentId,
-            inputs: [],
-            outputs: [],
-            responsibilities: [],
-            antiPatterns: [],
-            tools: [],
+            tasks.push({
+              id: taskId,
+              name: (ct.name as string) || formatName(taskId),
+              description: (ct.description as string) || '',
+              category: (ct.category as string) || '',
+              agent: normalizedAgentId,
+              inputs: [],
+              outputs: [],
+              responsibilities: [],
+              antiPatterns: [],
+              tools: [],
             estimatedDuration: '',
           });
         }
@@ -321,8 +344,8 @@ export async function GET(
     const principles = (agentYaml?.core_principles || []) as string[];
 
     const detail: AgentDetail = {
-      id: agentId,
-      name: (agentData.name as string) || formatName(agentId),
+      id: normalizedAgentId,
+      name: (agentData.name as string) || formatName(normalizedAgentId),
       title: (agentData.title as string) || (persona.role as string) || '',
       icon: (agentData.icon as string) || '',
       role: (persona.role as string) || '',
@@ -340,6 +363,8 @@ export async function GET(
         when: (h.when as string) || '',
         squad: h.squad as string | undefined,
       })),
+      sourceMarkdown: agentContent,
+      sourcePath: relativeAgentPath ? `agents/${relativeAgentPath}` : undefined,
     };
 
     return NextResponse.json({ agent: detail });

@@ -13,25 +13,40 @@ import {
   getProjectRoot,
   formatName,
   countFilesRecursive,
+  listFilesRecursive,
+  isListableSectionFile,
+  resolveSquadSectionDir,
+  type SquadSectionName,
 } from '@/lib/squad-api-utils';
 
-// Recursive counting functions aligned with squad-api-utils
-async function countFiles(dir: string, ext: string): Promise<number> {
-  return countFilesRecursive(dir, (_relativePath, fileName) =>
-    !fileName.startsWith('.') && fileName.endsWith(ext)
+async function countSectionFiles(
+  projectRoot: string,
+  squadName: string,
+  section: SquadSectionName
+): Promise<number> {
+  const sectionDir = resolveSquadSectionDir(projectRoot, squadName, section);
+  if (!sectionDir) {
+    return 0;
+  }
+  return countFilesRecursive(sectionDir, (_relativePath, fileName) =>
+    isListableSectionFile(section, fileName)
   );
 }
 
-async function countFilesMultiExt(dir: string, exts: string[]): Promise<number> {
-  return countFilesRecursive(dir, (_relativePath, fileName) =>
-    !fileName.startsWith('.') && exts.some((ext) => fileName.endsWith(ext))
-  );
-}
+async function listAgentNames(projectRoot: string, squadName: string): Promise<string[]> {
+  const agentsDir = resolveSquadSectionDir(projectRoot, squadName, 'agents');
+  if (!agentsDir) {
+    return [];
+  }
 
-async function countFilesInDir(dir: string): Promise<number> {
-  return countFilesRecursive(dir, (_relativePath, fileName) =>
-    !fileName.startsWith('.')
+  const files = await listFilesRecursive(
+    agentsDir,
+    (_relativePath, fileName) => isListableSectionFile('agents', fileName)
   );
+
+  return files
+    .map((relativePath) => relativePath.replace(/\.md$/i, '').split('/').pop() || relativePath)
+    .sort((a, b) => a.localeCompare(b));
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -84,6 +99,15 @@ interface RegistrySquadEntry {
   grade?: number | string;
   nota?: number | string;
   has_readme?: boolean;
+  counts?: {
+    agents?: number;
+    tasks?: number;
+    workflows?: number;
+    templates?: number;
+    checklists?: number;
+    data_files?: number;
+  };
+  agent_names?: string[];
 }
 
 interface RegistryFileData {
@@ -300,26 +324,24 @@ export async function GET(
       );
     }
 
-    // Get agent names from filesystem
-    let agentNames: string[] = [];
-    try {
-      const agentEntries = await fs.readdir(path.join(squadDir, 'agents'));
-      agentNames = agentEntries
-        .filter((f) => f.endsWith('.md'))
-        .map((f) => f.replace('.md', ''))
-        .sort();
-    } catch {
-      // No agents dir
-    }
-
-    const taskCount = await countFiles(path.join(squadDir, 'tasks'), '.md');
-    // Workflows can be .md, .yaml, or .yml
-    const workflowCount = await countFilesMultiExt(path.join(squadDir, 'workflows'), ['.md', '.yaml', '.yml']);
-    const checklistCount = await countFiles(path.join(squadDir, 'checklists'), '.md');
-    const templateCount = await countFilesMultiExt(path.join(squadDir, 'templates'), ['.md', '.yaml', '.yml']);
-    const dataCount = await countFilesInDir(path.join(squadDir, 'data'));
-    const hasReadme = await fileExists(path.join(squadDir, 'README.md'));
     const registryEntry = await readRegistrySquad(projectRoot, name);
+    const hasReadme = await fileExists(path.join(squadDir, 'README.md'));
+
+    const agentNames = registryEntry?.agent_names?.length
+      ? [...registryEntry.agent_names].sort((a, b) => a.localeCompare(b))
+      : await listAgentNames(projectRoot, name);
+
+    const taskCount = registryEntry?.counts?.tasks
+      ?? await countSectionFiles(projectRoot, name, 'tasks');
+    const workflowCount = registryEntry?.counts?.workflows
+      ?? await countSectionFiles(projectRoot, name, 'workflows');
+    const checklistCount = registryEntry?.counts?.checklists
+      ?? await countSectionFiles(projectRoot, name, 'checklists');
+    const templateCount = registryEntry?.counts?.templates
+      ?? await countSectionFiles(projectRoot, name, 'templates');
+    const dataCount = registryEntry?.counts?.data_files
+      ?? await countSectionFiles(projectRoot, name, 'data');
+    const agentCount = registryEntry?.counts?.agents ?? agentNames.length;
 
     // Parse tiers
     const tiers: SquadTier[] = config
@@ -377,7 +399,7 @@ export async function GET(
         ...extractConfigScoreCandidates(config),
       ],
       {
-        agents: agentNames.length,
+        agents: agentCount,
         tasks: taskCount,
         workflows: workflowCount,
         checklists: checklistCount,
@@ -401,7 +423,7 @@ export async function GET(
       ),
       status,
       path: `squads/${name}/`,
-      agentCount: agentNames.length,
+      agentCount,
       taskCount,
       workflowCount,
       checklistCount,

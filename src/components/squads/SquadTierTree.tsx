@@ -19,7 +19,7 @@ const LEVEL_LABELS: Record<number, string> = {
 export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
   if (tiers.length === 0) {
     return (
-      <div className="text-[11px] text-[var(--text-muted)] py-4">
+      <div className="text-label text-[var(--text-muted)] py-4">
         No tier structure defined
       </div>
     );
@@ -47,7 +47,7 @@ export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
 
           {/* Tier purpose */}
           {tier.purpose && (
-            <p className="text-[10px] text-[var(--text-muted)] mb-3 ml-1">
+            <p className="text-detail text-[var(--text-muted)] mb-3 ml-1">
               {tier.purpose}
             </p>
           )}

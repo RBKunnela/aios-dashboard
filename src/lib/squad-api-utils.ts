@@ -142,7 +142,18 @@ export function encodeSquadItemSlug(relativePath: string): string {
 export function decodeSquadItemSlug(slug: string): string | null {
   try {
     const decoded = Buffer.from(slug, 'base64url').toString('utf-8');
-    return sanitizeRelativePath(decoded);
+    const sanitized = sanitizeRelativePath(decoded);
+    if (!sanitized) {
+      return null;
+    }
+
+    // Ensure slug is canonical base64url for the sanitized path.
+    const canonical = Buffer.from(sanitized, 'utf-8').toString('base64url');
+    if (canonical !== slug) {
+      return null;
+    }
+
+    return sanitized;
   } catch {
     return null;
   }

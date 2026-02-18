@@ -36,7 +36,7 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
             {squad.displayName}
           </span>
           <span
-            className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border shrink-0 ml-2"
+            className="text-caption uppercase tracking-wider font-medium px-2 py-0.5 border shrink-0 ml-2"
             style={{
               backgroundColor: domainBg,
               borderColor: domainBorder,
@@ -49,13 +49,13 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
 
         {/* Description */}
         {squad.description && (
-          <p className="text-[11px] text-[var(--text-secondary)] line-clamp-3 leading-relaxed mb-3">
+          <p className="text-label text-[var(--text-secondary)] line-clamp-3 leading-relaxed mb-3">
             {squad.description}
           </p>
         )}
 
         {/* Footer: counts + score + version */}
-        <div className="flex items-center gap-3 text-[10px] text-[var(--text-muted)]">
+        <div className="flex items-center gap-3 text-detail text-[var(--text-muted)]">
           <span><span className="font-mono text-[var(--text-tertiary)]">{squad.agentCount}</span> agentes</span>
           <span><span className="font-mono text-[var(--text-tertiary)]">{squad.taskCount}</span> tarefas</span>
           {squad.checklistCount > 0 && (

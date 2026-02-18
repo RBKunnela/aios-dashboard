@@ -29,16 +29,16 @@ export const SquadAgentChip = memo(function SquadAgentChip({ agent, onClick }: S
           isClickable ? 'cursor-pointer' : 'cursor-default'
         )}
       >
-        <span className="text-[11px] font-mono text-[var(--accent-gold)]">
+        <span className="text-label font-mono text-[var(--accent-gold)]">
           {agent.id}
         </span>
         {agent.role && (
-          <span className="text-[10px] text-[var(--text-muted)] truncate max-w-[140px]">
+          <span className="text-detail text-[var(--text-muted)] truncate max-w-[140px]">
             {agent.role}
           </span>
         )}
         {isClickable && (
-          <span className="text-[9px] text-[var(--text-disabled)] ml-1">→</span>
+          <span className="text-caption text-[var(--text-disabled)] ml-1">→</span>
         )}
       </div>
 
@@ -51,11 +51,11 @@ export const SquadAgentChip = memo(function SquadAgentChip({ agent, onClick }: S
             'shadow-lg'
           )}
         >
-          <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed whitespace-pre-line">
+          <p className="text-label text-[var(--text-secondary)] leading-relaxed whitespace-pre-line">
             {agent.description.trim()}
           </p>
           {isClickable && (
-            <p className="text-[9px] text-[var(--accent-gold)] mt-1">Click to see details</p>
+            <p className="text-caption text-[var(--accent-gold)] mt-1">Click to see details</p>
           )}
         </div>
       )}

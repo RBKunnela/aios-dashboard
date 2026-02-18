@@ -314,38 +314,13 @@ export async function GET() {
             continue;
           }
           const config = await readSquadConfig(squadDir);
-          const agentsDir = path.join(squadDir, 'agents');
+          const agentNames = await listAgentNames(projectRoot, entry.name);
 
-          let agentNames: string[] = [];
-          try {
-            const agentEntries = await fs.readdir(agentsDir);
-            agentNames = agentEntries
-              .filter((f) => f.endsWith('.md'))
-              .map((f) => f.replace('.md', ''));
-          } catch {
-            // No agents dir
-          }
-
-          const taskCount = await countFiles(
-            path.join(squadDir, 'tasks'),
-            '.md'
-          );
-          // Workflows can be .md, .yaml, or .yml
-          const workflowCount = await countFilesMultiExt(
-            path.join(squadDir, 'workflows'),
-            ['.md', '.yaml', '.yml']
-          );
-          const checklistCount = await countFiles(
-            path.join(squadDir, 'checklists'),
-            '.md'
-          );
-          const templateCount = await countFilesMultiExt(
-            path.join(squadDir, 'templates'),
-            ['.md', '.yaml', '.yml']
-          );
-          const dataCount = await countFilesInDir(
-            path.join(squadDir, 'data')
-          );
+          const taskCount = await countSectionFiles(projectRoot, entry.name, 'tasks');
+          const workflowCount = await countSectionFiles(projectRoot, entry.name, 'workflows');
+          const checklistCount = await countSectionFiles(projectRoot, entry.name, 'checklists');
+          const templateCount = await countSectionFiles(projectRoot, entry.name, 'templates');
+          const dataCount = await countSectionFiles(projectRoot, entry.name, 'data');
 
           const deps = config ? extractDependencies(entry.name, config) : [];
           allConnections.push(...deps);

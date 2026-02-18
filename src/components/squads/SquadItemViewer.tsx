@@ -9,7 +9,6 @@ interface SquadItemViewerProps {
   squadName: string;
   section: string;
   slug: string;
-  onBack: () => void;
   breadcrumb?: ReactNode;
 }
 
@@ -17,7 +16,6 @@ export function SquadItemViewer({
   squadName,
   section,
   slug,
-  onBack,
   breadcrumb,
 }: SquadItemViewerProps) {
   const { item, isLoading, isError } = useSquadItemContent(squadName, section, slug);
@@ -34,7 +32,7 @@ export function SquadItemViewer({
     return (
       <div className="p-6">
         {breadcrumb}
-        <p className="text-[11px] text-[var(--status-error)]">
+        <p className="text-label text-[var(--status-error)]">
           Failed to load item
         </p>
       </div>

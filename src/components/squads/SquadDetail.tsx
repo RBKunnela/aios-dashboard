@@ -32,7 +32,6 @@ const TAB_DEFS: TabDef[] = [
 
 interface SquadDetailProps {
   squadName: string;
-  onBack: () => void;
   onAgentClick?: (agentId: string) => void;
   selectedItem: { section: string; slug: string } | null;
   onItemClick: (section: string, slug: string) => void;
@@ -40,7 +39,7 @@ interface SquadDetailProps {
   breadcrumb?: ReactNode;
 }
 
-export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onItemClick, onItemBack, breadcrumb }: SquadDetailProps) {
+export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick, onItemBack, breadcrumb }: SquadDetailProps) {
   const { squad, isLoading, isError } = useSquadDetail(squadName);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const activeTabRef = useRef<HTMLButtonElement>(null);
@@ -81,7 +80,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <span className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
+        <span className="text-label text-[var(--text-muted)] uppercase tracking-wider">
           Loading squad...
         </span>
       </div>
@@ -92,7 +91,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
     return (
       <div className="p-6">
         {breadcrumb}
-        <p className="text-[11px] text-[var(--status-error)]">
+        <p className="text-label text-[var(--status-error)]">
           Failed to load squad &quot;{squadName}&quot;
         </p>
       </div>
@@ -106,7 +105,6 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
         squadName={squadName}
         section={selectedItem.section}
         slug={selectedItem.slug}
-        onBack={onItemBack}
         breadcrumb={breadcrumb}
       />
     );
@@ -129,11 +127,11 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
           <h2 className="text-lg font-light text-[var(--text-primary)]">
             {squad.displayName}
           </h2>
-          <span className="text-[10px] font-mono text-[var(--text-muted)]">
+          <span className="text-detail font-mono text-[var(--text-muted)]">
             {formatSquadVersion(squad.version)}
           </span>
           <span
-            className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border"
+            className="text-caption uppercase tracking-wider font-medium px-2 py-0.5 border"
             style={{
               backgroundColor: domainBg,
               borderColor: domainBorder,
@@ -146,7 +144,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
 
         {/* Description */}
         {squad.description && (
-          <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed mb-6 whitespace-pre-line">
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6 whitespace-pre-line">
             {squad.description.trim()}
           </p>
         )}
@@ -178,7 +176,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
                 }}
               />
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">
               Score
             </span>
           </div>
@@ -205,7 +203,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  'px-3 py-2 text-[10px] uppercase tracking-wider font-medium whitespace-nowrap transition-colors',
+                  'px-3 py-2 text-detail uppercase tracking-wider font-medium whitespace-nowrap transition-colors',
                   'border-b-2 -mb-px',
                   isActive
                     ? 'border-[var(--accent-gold)] text-[var(--accent-gold)]'
@@ -214,7 +212,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onI
               >
                 {tab.label}
                 {count !== null && count > 0 && (
-                  <span className="ml-1.5 font-mono text-[9px] opacity-60">{count}</span>
+                  <span className="ml-1.5 font-mono text-caption opacity-60">{count}</span>
                 )}
               </button>
             );
@@ -261,7 +259,7 @@ function OverviewContent({
           <SectionLabel withLine className="mb-3">Objectives</SectionLabel>
           <ul className="space-y-1.5 ml-1">
             {squad.objectives.map((obj, i) => (
-              <li key={i} className="flex items-start gap-2 text-[11px] text-[var(--text-secondary)]">
+              <li key={i} className="flex items-start gap-2 text-label text-[var(--text-secondary)]">
                 <span className="text-[var(--accent-gold)] mt-0.5 shrink-0">-</span>
                 <span className="leading-relaxed">{obj}</span>
               </li>
@@ -279,7 +277,7 @@ function OverviewContent({
               <span
                 key={`${dep.from}-${dep.to}`}
                 className={cn(
-                  'text-[10px] px-2 py-1 border',
+                  'text-detail px-2 py-1 border',
                   dep.type === 'required'
                     ? 'border-[var(--accent-gold)] text-[var(--accent-gold)] bg-[var(--accent-gold)]/5'
                     : 'border-[var(--border)] text-[var(--text-muted)]'
@@ -306,7 +304,7 @@ function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex items-baseline gap-1.5">
       <span className="text-base font-mono text-[var(--text-primary)]">{value}</span>
-      <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">{label}</span>
+      <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">{label}</span>
     </div>
   );
 }
