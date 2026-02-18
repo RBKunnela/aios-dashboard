@@ -2,7 +2,14 @@
 
 import { cn } from '@/lib/utils';
 import { useSquadSectionItems } from '@/hooks/use-squads';
-import { Loader2 } from '@/lib/icons';
+import { Loader2, FileText, FileCode, FolderOpen, type LucideIcon } from '@/lib/icons';
+
+function getFileIcon(path: string): LucideIcon {
+  if (path.endsWith('.md')) return FileText;
+  if (path.endsWith('.yaml') || path.endsWith('.yml')) return FileCode;
+  if (path.endsWith('.json') || path.endsWith('.jsonc')) return FileCode;
+  return FolderOpen;
+}
 
 interface SquadSectionGridProps {
   squadName: string;
@@ -64,10 +71,14 @@ export function SquadSectionGrid({
             'transition-all duration-150 group'
           )}
         >
-          <span className="block text-[11px] font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-gold)] transition-colors">
-            {item.name}
+          <span className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-gold)] transition-colors">
+            {(() => {
+              const Icon = getFileIcon(item.relativePath || item.name);
+              return <Icon className="h-3.5 w-3.5 shrink-0 text-[var(--text-muted)] group-hover:text-[var(--accent-gold)] transition-colors" />;
+            })()}
+            <span className="truncate">{item.name}</span>
           </span>
-          <span className="block text-[9px] text-[var(--text-muted)] font-mono mt-0.5">
+          <span className="block text-[9px] text-[var(--text-muted)] font-mono mt-0.5 pl-5">
             {item.relativePath}
           </span>
         </button>

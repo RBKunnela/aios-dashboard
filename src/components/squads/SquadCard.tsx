@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
-import { getDomainColor } from '@/lib/domain-taxonomy';
+import { getDomainColor, getDomainBg, getDomainBorder } from '@/lib/domain-taxonomy';
 import { formatSquadScore, formatSquadVersion, getScoreColor } from '@/lib/squad-metadata';
 import type { Squad } from '@/types';
 
@@ -13,6 +13,8 @@ interface SquadCardProps {
 
 export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardProps) {
   const domainColor = getDomainColor(squad.domain);
+  const domainBg = getDomainBg(squad.domain);
+  const domainBorder = getDomainBorder(squad.domain);
 
   return (
     <div
@@ -36,8 +38,8 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
           <span
             className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border shrink-0 ml-2"
             style={{
-              backgroundColor: `${domainColor}15`,
-              borderColor: `${domainColor}30`,
+              backgroundColor: domainBg,
+              borderColor: domainBorder,
               color: domainColor,
             }}
           >
@@ -63,8 +65,25 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
             <span><span className="font-mono text-[var(--text-tertiary)]">{squad.workflowCount}</span> workflows</span>
           )}
           <span className="ml-auto flex items-center gap-2 font-mono">
-            <span style={{ color: getScoreColor(squad.score) }}>
-              {formatSquadScore(squad.score)}
+            <span
+              className="flex items-center gap-1.5"
+              title={`Score: ${formatSquadScore(squad.score)}/10`}
+            >
+              <span style={{ color: getScoreColor(squad.score) }}>
+                {formatSquadScore(squad.score)}
+              </span>
+              <span
+                className="inline-block w-[40px] h-[3px] rounded-full bg-[var(--border-subtle)] overflow-hidden"
+                aria-hidden="true"
+              >
+                <span
+                  className="block h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${(squad.score / 10) * 100}%`,
+                    backgroundColor: getScoreColor(squad.score),
+                  }}
+                />
+              </span>
             </span>
             <span className="text-[var(--text-disabled)]">
               {formatSquadVersion(squad.version)}

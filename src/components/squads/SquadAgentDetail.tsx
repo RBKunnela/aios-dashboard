@@ -1,7 +1,7 @@
 'use client';
 
+import { type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowLeft } from '@/lib/icons';
 import { SectionLabel } from '@/components/ui/section-label';
 import { SquadTaskCard } from './SquadTaskCard';
 import { useSquadAgentDetail } from '@/hooks/use-squads';
@@ -10,9 +10,10 @@ interface SquadAgentDetailProps {
   squadName: string;
   agentId: string;
   onBack: () => void;
+  breadcrumb?: ReactNode;
 }
 
-export function SquadAgentDetail({ squadName, agentId, onBack }: SquadAgentDetailProps) {
+export function SquadAgentDetail({ squadName, agentId, onBack, breadcrumb }: SquadAgentDetailProps) {
   const { agent, isLoading, isError } = useSquadAgentDetail(squadName, agentId);
 
   if (isLoading) {
@@ -28,13 +29,7 @@ export function SquadAgentDetail({ squadName, agentId, onBack }: SquadAgentDetai
   if (isError || !agent) {
     return (
       <div className="p-6">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mb-6"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span className="uppercase tracking-wider">Back</span>
-        </button>
+        {breadcrumb}
         <p className="text-[11px] text-[var(--status-error)]">
           Failed to load agent &quot;{agentId}&quot;
         </p>
@@ -45,14 +40,8 @@ export function SquadAgentDetail({ squadName, agentId, onBack }: SquadAgentDetai
   return (
     <div className="h-full overflow-y-auto">
       <div className="p-6">
-        {/* Back button */}
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mb-6"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span className="uppercase tracking-wider">Back to Squad</span>
-        </button>
+        {/* Breadcrumb */}
+        {breadcrumb}
 
         {/* Agent Header Card */}
         <div
@@ -141,8 +130,14 @@ export function SquadAgentDetail({ squadName, agentId, onBack }: SquadAgentDetai
               Tasks ({agent.tasks.length})
             </SectionLabel>
 
-            {/* Horizontal scrollable pipeline */}
-            <div className="overflow-x-auto pb-4 -mx-2 px-2">
+            {/* Horizontal scrollable pipeline with scroll shadows */}
+            <div
+              className="overflow-x-auto pb-4 -mx-2 px-2"
+              style={{
+                maskImage: 'linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent)',
+                WebkitMaskImage: 'linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent)',
+              }}
+            >
               <div className="flex items-start gap-3">
                 {agent.tasks.map((task, i) => (
                   <div key={task.id} className="flex items-start">

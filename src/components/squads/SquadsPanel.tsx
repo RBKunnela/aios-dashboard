@@ -1,40 +1,118 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Network, RefreshCw, Loader2 } from '@/lib/icons';
+import { Network, RefreshCw, Loader2, Search } from '@/lib/icons';
 import { useSquads } from '@/hooks/use-squads';
 import { useSquadStore } from '@/stores/squad-store';
 import { SquadOrganogram } from './SquadOrganogram';
 import { SquadDetail } from './SquadDetail';
 import { SquadAgentDetail } from './SquadAgentDetail';
+import { SquadBreadcrumb, type BreadcrumbSegment } from './SquadBreadcrumb';
 
 export function SquadsPanel() {
   const { squads, domainIndex, summary, isLoading, refresh } =
     useSquads();
   const { selectedSquad, setSelectedSquad } = useSquadStore();
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<{ section: string; slug: string } | null>(null);
+  const [filterQuery, setFilterQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Filter squads based on query
+  const filteredSquads = useMemo(() => {
+    const q = filterQuery.trim().toLowerCase();
+    if (!q) return squads;
+    return squads.filter(
+      (s) =>
+        s.name.toLowerCase().includes(q) ||
+        s.displayName.toLowerCase().includes(q) ||
+        s.description.toLowerCase().includes(q) ||
+        s.domain.toLowerCase().includes(q)
+    );
+  }, [squads, filterQuery]);
+
+  // Build filtered domainIndex
+  const filteredDomainIndex = useMemo(() => {
+    const q = filterQuery.trim().toLowerCase();
+    if (!q) return domainIndex;
+    const filteredNames = new Set(filteredSquads.map((s) => s.name));
+    const result: Record<string, string[]> = {};
+    for (const [domain, names] of Object.entries(domainIndex)) {
+      const filtered = names.filter((n) => filteredNames.has(n));
+      if (filtered.length > 0) result[domain] = filtered;
+    }
+    return result;
+  }, [domainIndex, filteredSquads, filterQuery]);
+
+  // "/" keyboard shortcut to focus search
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (
+        e.key === '/' &&
+        !selectedSquad &&
+        !(e.target instanceof HTMLInputElement) &&
+        !(e.target instanceof HTMLTextAreaElement)
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedSquad]);
 
   const handleSquadClick = useCallback(
     (name: string) => {
       setSelectedSquad(name);
       setSelectedAgent(null);
+      setSelectedItem(null);
     },
     [setSelectedSquad]
   );
 
-  const handleBackToOrganogram = useCallback(() => {
+  const navigateToOrganogram = useCallback(() => {
     setSelectedSquad(null);
     setSelectedAgent(null);
+    setSelectedItem(null);
   }, [setSelectedSquad]);
 
-  const handleBackToSquad = useCallback(() => {
+  const navigateToSquad = useCallback(() => {
     setSelectedAgent(null);
+    setSelectedItem(null);
   }, []);
 
   const handleAgentClick = useCallback((agentId: string) => {
     setSelectedAgent(agentId);
+    setSelectedItem(null);
   }, []);
+
+  const handleItemClick = useCallback((section: string, slug: string) => {
+    setSelectedItem({ section, slug });
+  }, []);
+
+  const handleItemBack = useCallback(() => {
+    setSelectedItem(null);
+  }, []);
+
+  // Build breadcrumb segments
+  const breadcrumbSegments: BreadcrumbSegment[] = [];
+  if (selectedSquad) {
+    breadcrumbSegments.push({ label: 'Squads', onClick: navigateToOrganogram });
+    const squad = squads.find((s) => s.name === selectedSquad);
+    const squadLabel = squad?.displayName || selectedSquad;
+
+    if (selectedAgent) {
+      breadcrumbSegments.push({ label: squadLabel, onClick: navigateToSquad });
+      breadcrumbSegments.push({ label: selectedAgent });
+    } else if (selectedItem) {
+      breadcrumbSegments.push({ label: squadLabel, onClick: navigateToSquad });
+      breadcrumbSegments.push({ label: selectedItem.section, onClick: handleItemBack });
+      breadcrumbSegments.push({ label: selectedItem.slug });
+    } else {
+      breadcrumbSegments.push({ label: squadLabel });
+    }
+  }
 
   // Agent detail view (level 3)
   if (selectedSquad && selectedAgent) {
@@ -42,7 +120,23 @@ export function SquadsPanel() {
       <SquadAgentDetail
         squadName={selectedSquad}
         agentId={selectedAgent}
-        onBack={handleBackToSquad}
+        onBack={navigateToSquad}
+        breadcrumb={<SquadBreadcrumb segments={breadcrumbSegments} className="mb-6" />}
+      />
+    );
+  }
+
+  // Item viewer (level 3)
+  if (selectedSquad && selectedItem) {
+    return (
+      <SquadDetail
+        squadName={selectedSquad}
+        onBack={navigateToOrganogram}
+        onAgentClick={handleAgentClick}
+        selectedItem={selectedItem}
+        onItemClick={handleItemClick}
+        onItemBack={handleItemBack}
+        breadcrumb={<SquadBreadcrumb segments={breadcrumbSegments} className="mb-4" />}
       />
     );
   }
@@ -52,8 +146,12 @@ export function SquadsPanel() {
     return (
       <SquadDetail
         squadName={selectedSquad}
-        onBack={handleBackToOrganogram}
+        onBack={navigateToOrganogram}
         onAgentClick={handleAgentClick}
+        selectedItem={null}
+        onItemClick={handleItemClick}
+        onItemBack={handleItemBack}
+        breadcrumb={<SquadBreadcrumb segments={breadcrumbSegments} className="mb-6" />}
       />
     );
   }
@@ -72,70 +170,72 @@ export function SquadsPanel() {
               Squads
             </h1>
 
-            {/* Summary badges */}
-            <div className="flex items-center gap-3 ml-4 flex-wrap">
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {squads.length}
-                </span>{' '}
-                squads
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_agents}
-                </span>{' '}
-                agents
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_tasks}
-                </span>{' '}
-                tasks
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_workflows}
-                </span>{' '}
-                workflows
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_templates}
-                </span>{' '}
-                templates
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_checklists}
-                </span>{' '}
-                checklists
-              </span>
-              <span className="text-[10px] text-[var(--text-muted)]">
-                <span className="font-mono text-[var(--text-secondary)]">
-                  {summary.total_data_files}
-                </span>{' '}
-                data
-              </span>
-            </div>
+            {/* Primary count */}
+            <span className="text-[10px] text-[var(--text-muted)] ml-2">
+              <span className="font-mono text-[var(--text-secondary)]">{squads.length}</span> squads
+            </span>
+
+            {/* Secondary counts - compact */}
+            <span className="text-[9px] text-[var(--text-disabled)] ml-3 hidden sm:inline" aria-label="Asset totals">
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_agents}</span> agents
+              <span className="mx-1 opacity-40">/</span>
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_tasks}</span> tasks
+              <span className="mx-1 opacity-40">/</span>
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_workflows}</span> wf
+              <span className="mx-1 opacity-40">/</span>
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_templates}</span> tpl
+              <span className="mx-1 opacity-40">/</span>
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_checklists}</span> ck
+              <span className="mx-1 opacity-40">/</span>
+              <span className="font-mono text-[var(--text-muted)]">{summary.total_data_files}</span> data
+            </span>
           </div>
 
-          {/* Refresh */}
-          <button
-            onClick={() => refresh()}
-            disabled={isLoading}
-            className={cn(
-              'p-1.5 transition-colors',
-              'text-[var(--text-muted)] hover:text-[var(--text-primary)]',
-              isLoading && 'animate-spin'
-            )}
-            aria-label="Refresh squads"
-          >
-            {isLoading ? (
-              <Loader2 className="h-3.5 w-3.5" />
-            ) : (
-              <RefreshCw className="h-3.5 w-3.5" />
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-[var(--text-disabled)]" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={filterQuery}
+                onChange={(e) => setFilterQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    setFilterQuery('');
+                    searchInputRef.current?.blur();
+                  }
+                }}
+                placeholder="Filter squads..."
+                className={cn(
+                  'pl-7 pr-2 py-1 w-[160px] text-[11px]',
+                  'bg-[var(--bg-secondary)] border border-[var(--border)]',
+                  'text-[var(--text-primary)] placeholder:text-[var(--text-disabled)]',
+                  'focus:outline-none focus:border-[var(--accent-gold)]',
+                  'transition-colors'
+                )}
+                aria-label="Filter squads"
+              />
+            </div>
+
+            {/* Refresh */}
+            <button
+              onClick={() => refresh()}
+              disabled={isLoading}
+              className={cn(
+                'p-1.5 transition-colors',
+                'text-[var(--text-muted)] hover:text-[var(--text-primary)]',
+                isLoading && 'animate-spin'
+              )}
+              aria-label="Refresh squads"
+            >
+              {isLoading ? (
+                <Loader2 className="h-3.5 w-3.5" />
+              ) : (
+                <RefreshCw className="h-3.5 w-3.5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -159,10 +259,16 @@ export function SquadsPanel() {
               </p>
             </div>
           </div>
+        ) : filteredSquads.length === 0 && filterQuery.trim() ? (
+          <div className="flex items-center justify-center h-32">
+            <p className="text-[11px] text-[var(--text-muted)]">
+              No squads match &apos;{filterQuery.trim()}&apos;
+            </p>
+          </div>
         ) : (
           <SquadOrganogram
-            squads={squads}
-            domainIndex={domainIndex}
+            squads={filteredSquads}
+            domainIndex={filteredDomainIndex}
             onSquadClick={handleSquadClick}
           />
         )}

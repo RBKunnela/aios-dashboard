@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { ArrowLeft } from '@/lib/icons';
 import { SectionLabel } from '@/components/ui/section-label';
 import { formatSquadScore, formatSquadVersion, getScoreColor } from '@/lib/squad-metadata';
-import { getDomainColor, getDomainLabel } from '@/lib/domain-taxonomy';
+import { getDomainColor, getDomainBg, getDomainBorder, getDomainLabel } from '@/lib/domain-taxonomy';
 import { SquadTierTree } from './SquadTierTree';
 import { SquadSectionGrid } from './SquadSectionGrid';
 import { SquadItemViewer } from './SquadItemViewer';
@@ -35,12 +34,49 @@ interface SquadDetailProps {
   squadName: string;
   onBack: () => void;
   onAgentClick?: (agentId: string) => void;
+  selectedItem: { section: string; slug: string } | null;
+  onItemClick: (section: string, slug: string) => void;
+  onItemBack: () => void;
+  breadcrumb?: ReactNode;
 }
 
-export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProps) {
+export function SquadDetail({ squadName, onBack, onAgentClick, selectedItem, onItemClick, onItemBack, breadcrumb }: SquadDetailProps) {
   const { squad, isLoading, isError } = useSquadDetail(squadName);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
-  const [selectedItem, setSelectedItem] = useState<{ section: string; slug: string } | null>(null);
+  const activeTabRef = useRef<HTMLButtonElement>(null);
+
+  // Compute visible tabs early so keyboard handler can reference them
+  const visibleTabs = squad
+    ? TAB_DEFS.filter((tab) => {
+        if (tab.id === 'overview') return true;
+        if (!tab.countKey) return true;
+        return (squad[tab.countKey] as number) > 0;
+      })
+    : TAB_DEFS;
+
+  const handleTabKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const currentIndex = visibleTabs.findIndex((t) => t.id === activeTab);
+      let nextIndex: number | null = null;
+
+      if (e.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % visibleTabs.length;
+      } else if (e.key === 'ArrowLeft') {
+        nextIndex = (currentIndex - 1 + visibleTabs.length) % visibleTabs.length;
+      } else if (e.key === 'Home') {
+        nextIndex = 0;
+      } else if (e.key === 'End') {
+        nextIndex = visibleTabs.length - 1;
+      }
+
+      if (nextIndex !== null) {
+        e.preventDefault();
+        setActiveTab(visibleTabs[nextIndex].id);
+        requestAnimationFrame(() => activeTabRef.current?.focus());
+      }
+    },
+    [activeTab, visibleTabs]
+  );
 
   if (isLoading) {
     return (
@@ -55,13 +91,7 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
   if (isError || !squad) {
     return (
       <div className="p-6">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mb-6"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span className="uppercase tracking-wider">Back</span>
-        </button>
+        {breadcrumb}
         <p className="text-[11px] text-[var(--status-error)]">
           Failed to load squad &quot;{squadName}&quot;
         </p>
@@ -76,34 +106,24 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
         squadName={squadName}
         section={selectedItem.section}
         slug={selectedItem.slug}
-        onBack={() => setSelectedItem(null)}
+        onBack={onItemBack}
+        breadcrumb={breadcrumb}
       />
     );
   }
 
   const domainColor = getDomainColor(squad.domain);
+  const domainBg = getDomainBg(squad.domain);
+  const domainBorder = getDomainBorder(squad.domain);
   const extSquad = squad as Squad & { objectives?: string[]; keyCapabilities?: string[] };
-
-  // Filter tabs to only show ones with items (overview always shows)
-  const visibleTabs = TAB_DEFS.filter((tab) => {
-    if (tab.id === 'overview') return true;
-    if (!tab.countKey) return true;
-    return (squad[tab.countKey] as number) > 0;
-  });
 
   const currentTab = TAB_DEFS.find((t) => t.id === activeTab);
 
   return (
     <div className="h-full overflow-y-auto">
       <div className="p-6 max-w-3xl">
-        {/* Back + Header */}
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors mb-6"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          <span className="uppercase tracking-wider">Back to Squads</span>
-        </button>
+        {/* Breadcrumb */}
+        {breadcrumb}
 
         <div className="flex items-center gap-3 mb-2">
           <h2 className="text-lg font-light text-[var(--text-primary)]">
@@ -115,8 +135,8 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
           <span
             className="text-[9px] uppercase tracking-wider font-medium px-2 py-0.5 border"
             style={{
-              backgroundColor: `${domainColor}15`,
-              borderColor: `${domainColor}30`,
+              backgroundColor: domainBg,
+              borderColor: domainBorder,
               color: domainColor,
             }}
           >
@@ -136,12 +156,27 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
           <Stat label="Agents" value={squad.agentCount} />
           <Stat label="Tasks" value={squad.taskCount} />
           <Stat label="Workflows" value={squad.workflowCount} />
-          <div className="flex items-baseline gap-1.5">
+          <div
+            className="flex items-center gap-1.5"
+            title={`Score: ${formatSquadScore(squad.score)}/10 - baseado em agents, tasks, workflows, checklists`}
+          >
             <span
               className="text-base font-mono"
               style={{ color: getScoreColor(squad.score) }}
             >
               {formatSquadScore(squad.score)}
+            </span>
+            <span
+              className="inline-block w-[50px] h-[3px] rounded-full bg-[var(--border-subtle)] overflow-hidden"
+              aria-hidden="true"
+            >
+              <span
+                className="block h-full rounded-full transition-all duration-300"
+                style={{
+                  width: `${(squad.score / 10) * 100}%`,
+                  backgroundColor: getScoreColor(squad.score),
+                }}
+              />
             </span>
             <span className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
               Score
@@ -150,17 +185,29 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 mb-6 overflow-x-auto pb-px border-b border-[var(--border)]">
+        <div
+          role="tablist"
+          aria-label="Squad sections"
+          className="flex items-center gap-1 mb-6 overflow-x-auto pb-px border-b border-[var(--border)]"
+          onKeyDown={handleTabKeyDown}
+        >
           {visibleTabs.map((tab) => {
             const count = tab.countKey ? (squad[tab.countKey] as number) : null;
+            const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
+                ref={isActive ? activeTabRef : undefined}
+                role="tab"
+                id={`tab-${tab.id}`}
+                aria-selected={isActive}
+                aria-controls={`tabpanel-${tab.id}`}
+                tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
                   'px-3 py-2 text-[10px] uppercase tracking-wider font-medium whitespace-nowrap transition-colors',
                   'border-b-2 -mb-px',
-                  activeTab === tab.id
+                  isActive
                     ? 'border-[var(--accent-gold)] text-[var(--accent-gold)]'
                     : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
                 )}
@@ -175,22 +222,25 @@ export function SquadDetail({ squadName, onBack, onAgentClick }: SquadDetailProp
         </div>
 
         {/* Tab content */}
-        {activeTab === 'overview' ? (
-          <OverviewContent squad={extSquad} onAgentClick={onAgentClick} />
-        ) : currentTab?.section ? (
-          <SquadSectionGrid
-            squadName={squadName}
-            section={currentTab.section}
-            onItemClick={(slug) => {
-              if (currentTab.section === 'agents' && onAgentClick) {
-                onAgentClick(slug);
-              } else {
-                setSelectedItem({ section: currentTab.section!, slug });
-              }
-            }}
-            onAgentClick={onAgentClick}
-          />
-        ) : null}
+        <div
+          role="tabpanel"
+          id={`tabpanel-${activeTab}`}
+          aria-labelledby={`tab-${activeTab}`}
+          tabIndex={0}
+        >
+          {activeTab === 'overview' ? (
+            <OverviewContent squad={extSquad} onAgentClick={onAgentClick} />
+          ) : currentTab?.section ? (
+            <SquadSectionGrid
+              squadName={squadName}
+              section={currentTab.section}
+              onItemClick={(slug) => {
+                onItemClick(currentTab.section!, slug);
+              }}
+              onAgentClick={onAgentClick}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );
