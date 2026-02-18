@@ -105,20 +105,20 @@ export const TerminalCard = memo(function TerminalCard({
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--text-muted)' }}>{terminal.model} • {terminal.apiType}</span>
+            <span className="text-text-muted">{terminal.model} • {terminal.apiType}</span>
           </div>
           <div className="flex gap-2 text-detail">
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
             <span style={{ color: 'var(--border)' }}>*</span>
-            <span style={{ color: 'var(--text-muted)' }}>{terminal.workingDirectory}</span>
+            <span className="text-text-muted">{terminal.workingDirectory}</span>
           </div>
         </div>
 
         {/* Current Command / Prompt */}
         {terminal.currentCommand ? (
           <div className="text-label" style={{ color: 'var(--status-success)' }}>
-            <span className="mr-2" style={{ color: 'var(--text-muted)' }}>{'>'}</span>
+            <span className="mr-2 text-text-muted">{'>'}</span>
             {terminal.currentCommand}
           </div>
         ) : (
@@ -128,8 +128,8 @@ export const TerminalCard = memo(function TerminalCard({
         {/* Story Info */}
         {terminal.storyId && (
           <div className="text-detail mt-3 pt-2 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-            <span className="uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Story:</span>
-            <span className="ml-2" style={{ color: 'var(--text-secondary)' }}>{terminal.storyId}</span>
+            <span className="uppercase tracking-wider text-text-muted">Story:</span>
+            <span className="ml-2 text-text-secondary">{terminal.storyId}</span>
           </div>
         )}
       </div>
