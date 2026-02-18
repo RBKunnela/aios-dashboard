@@ -72,7 +72,7 @@ export function RoadmapView({ className }: RoadmapViewProps) {
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Planning</span>
+            <span className="text-detail uppercase tracking-[0.2em] block mb-1 text-gold">Planning</span>
             <h2 className="text-sm font-light text-text-primary">Product Roadmap</h2>
           </div>
           <div className="h-8 w-px" style={{ backgroundColor: 'var(--border-subtle)' }} />

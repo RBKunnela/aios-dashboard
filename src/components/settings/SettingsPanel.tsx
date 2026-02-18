@@ -50,12 +50,12 @@ export function SettingsPanel() {
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div>
           <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Configuration</span>
-          <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>Settings</h2>
+          <h2 className="text-sm font-light text-text-primary">Settings</h2>
         </div>
         <button
           onClick={resetToDefaults}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80"
-          style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80 text-text-secondary"
+          style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)' }}
         >
           <RotateCcw className="h-3 w-3" />
           Reset
@@ -74,7 +74,7 @@ export function SettingsPanel() {
           <div className="space-y-4">
             {/* Theme */}
             <div>
-              <label className="text-label uppercase tracking-wider mb-3 block" style={{ color: 'var(--text-muted)' }}>Theme</label>
+              <label className="text-label uppercase tracking-wider mb-3 block text-text-muted">Theme</label>
               <div className="flex gap-2">
                 {THEME_OPTIONS.map((option) => {
                   const Icon = option.icon;
@@ -115,7 +115,7 @@ export function SettingsPanel() {
             >
               <div>
                 <label className="text-label font-medium" style={{ color: 'var(--status-warning)' }}>Demo Mode</label>
-                <p className="text-detail mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-detail mt-0.5 text-text-muted">
                   Use mock data for visualization
                 </p>
               </div>
@@ -135,7 +135,7 @@ export function SettingsPanel() {
 
             {/* Stories Path */}
             <div>
-              <label className="text-label uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
+              <label className="text-label uppercase tracking-wider mb-2 block text-text-muted">
                 Stories Directory
               </label>
               <input
@@ -144,13 +144,12 @@ export function SettingsPanel() {
                 onChange={(e) => setStoriesPath(e.target.value)}
                 disabled={settings.useMockData}
                 className={cn(
-                  'w-full px-3 py-2 border text-label focus:outline-none transition-colors',
+                  'w-full px-3 py-2 border text-label focus:outline-none transition-colors text-text-secondary',
                   settings.useMockData && 'opacity-40 cursor-not-allowed'
                 )}
                 style={{
                   borderColor: 'var(--border)',
                   backgroundColor: 'var(--bg-hover)',
-                  color: 'var(--text-secondary)',
                 }}
                 placeholder="docs/stories"
               />
@@ -165,8 +164,8 @@ export function SettingsPanel() {
               style={{ backgroundColor: 'var(--bg-hover)', borderColor: 'var(--border-subtle)' }}
             >
               <div>
-                <label className="text-label font-medium" style={{ color: 'var(--text-secondary)' }}>Auto Refresh</label>
-                <p className="text-detail mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                <label className="text-label font-medium text-text-secondary">Auto Refresh</label>
+                <p className="text-detail mt-0.5 text-text-muted">
                   Automatically refresh data
                 </p>
               </div>
@@ -187,17 +186,16 @@ export function SettingsPanel() {
             {/* Refresh Interval */}
             {settings.autoRefresh && (
               <div>
-                <label className="text-label uppercase tracking-wider mb-2 block" style={{ color: 'var(--text-muted)' }}>
+                <label className="text-label uppercase tracking-wider mb-2 block text-text-muted">
                   Refresh Interval
                 </label>
                 <select
                   value={settings.refreshInterval}
                   onChange={(e) => setRefreshInterval(Number(e.target.value))}
-                  className="w-full px-3 py-2 border text-label focus:outline-none transition-colors cursor-pointer"
+                  className="w-full px-3 py-2 border text-label focus:outline-none transition-colors cursor-pointer text-text-secondary"
                   style={{
                     borderColor: 'var(--border)',
                     backgroundColor: 'var(--bg-surface)',
-                    color: 'var(--text-secondary)',
                   }}
                 >
                   {REFRESH_OPTIONS.map((option) => (
@@ -231,7 +229,7 @@ export function SettingsPanel() {
                     const IconComponent = iconMap[config.icon];
                     return IconComponent ? <IconComponent className="h-4 w-4" style={{ color: config.color }} /> : null;
                   })()}
-                  <span className="flex-1 text-label font-light" style={{ color: 'var(--text-tertiary)' }}>@{agentId}</span>
+                  <span className="flex-1 text-label font-light text-text-tertiary">@{agentId}</span>
                   <input
                     type="color"
                     value={settings.agentColors[agentId] || '#888888'}

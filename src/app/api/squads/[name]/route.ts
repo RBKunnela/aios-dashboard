@@ -15,6 +15,7 @@ import {
   countFilesRecursive,
   listFilesRecursive,
   isListableSectionFile,
+  isSafePathSegment,
   resolveSquadSectionDir,
   type SquadSectionName,
 } from '@/lib/squad-api-utils';
@@ -302,6 +303,10 @@ export async function GET(
 ) {
   try {
     const { name } = await params;
+    if (!isSafePathSegment(name)) {
+      return NextResponse.json({ error: 'Invalid squad name' }, { status: 400 });
+    }
+
     const projectRoot = getProjectRoot();
     const squadDir = path.join(projectRoot, 'squads', name);
 

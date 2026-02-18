@@ -61,7 +61,7 @@ export function StoryDetailModal({
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
         <DialogHeader>
           <div className="mb-1">
-            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>{story.id}</span>
+            <span className="text-detail uppercase tracking-[0.2em] text-gold">{story.id}</span>
           </div>
           <DialogTitle className="text-base font-light pr-8 text-text-primary">
             {story.title}
@@ -133,7 +133,7 @@ export function StoryDetailModal({
 
         {/* Description */}
         <section>
-          <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+          <h3 className="text-detail uppercase tracking-[0.2em] mb-2 text-gold">
             Description
           </h3>
           <p className="text-reading whitespace-pre-wrap leading-relaxed text-text-secondary">
@@ -144,7 +144,7 @@ export function StoryDetailModal({
         {/* Acceptance Criteria */}
         {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
           <section className="mt-5">
-            <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+            <h3 className="text-detail uppercase tracking-[0.2em] mb-2 text-gold">
               Acceptance Criteria
             </h3>
             <ul className="space-y-2">
@@ -164,15 +164,14 @@ export function StoryDetailModal({
         {/* Technical Notes */}
         {story.technicalNotes && (
           <section className="mt-5">
-            <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+            <h3 className="text-detail uppercase tracking-[0.2em] mb-2 text-gold">
               Technical Notes
             </h3>
             <div
-              className="border p-3 text-label font-mono whitespace-pre-wrap"
+              className="border p-3 text-label font-mono whitespace-pre-wrap text-text-tertiary"
               style={{
                 backgroundColor: 'var(--bg-hover)',
                 borderColor: 'var(--border-subtle)',
-                color: 'var(--text-tertiary)',
               }}
             >
               {story.technicalNotes}

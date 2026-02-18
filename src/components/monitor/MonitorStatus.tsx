@@ -27,11 +27,10 @@ export const MonitorStatus = memo(function MonitorStatus({
     return (
       <div className={cn('flex items-center gap-1.5', className)}>
         <LoaderIcon
-          className="h-3 w-3 animate-spin"
-          style={{ color: 'var(--text-muted)' }}
+          className="h-3 w-3 animate-spin text-text-muted"
         />
         {showLabel && (
-          <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-detail text-text-muted">
             Connecting...
           </span>
         )}
@@ -55,9 +54,9 @@ export const MonitorStatus = memo(function MonitorStatus({
   if (!connected) {
     return (
       <div className={cn('flex items-center gap-1.5', className)}>
-        <WifiOffIcon className="h-3 w-3" style={{ color: 'var(--text-muted)' }} />
+        <WifiOffIcon className="h-3 w-3 text-text-muted" />
         {showLabel && (
-          <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-detail text-text-muted">
             Offline
           </span>
         )}
@@ -81,10 +80,9 @@ export const MonitorStatus = memo(function MonitorStatus({
       )}
       {events.length > 0 && (
         <span
-          className="text-caption px-1 rounded"
+          className="text-caption px-1 rounded text-text-muted"
           style={{
             backgroundColor: 'var(--bg-hover)',
-            color: 'var(--text-muted)',
           }}
         >
           {events.length}
