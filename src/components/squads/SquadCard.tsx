@@ -22,9 +22,9 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
       onClick={onClick}
       className={cn(
         'group relative',
-        'bg-[var(--card)] border border-[var(--border)] border-l-2',
+        'bg-card border border-border border-l-2',
         'transition-luxury hover-lift',
-        'hover:bg-[var(--card-hover)] hover:border-[var(--border-medium)]',
+        'hover:bg-card-hover hover:border-border-medium',
         'cursor-pointer'
       )}
       style={{ borderLeftColor: domainColor }}
@@ -32,7 +32,7 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
       <div className="p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-light text-[var(--text-primary)] truncate">
+          <span className="text-sm font-light text-text-primary truncate">
             {squad.displayName}
           </span>
           <span
@@ -49,20 +49,20 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
 
         {/* Description */}
         {squad.description && (
-          <p className="text-label text-[var(--text-secondary)] line-clamp-3 leading-relaxed mb-3">
+          <p className="text-label text-text-secondary line-clamp-3 leading-relaxed mb-3">
             {squad.description}
           </p>
         )}
 
         {/* Footer: counts + score + version */}
-        <div className="flex items-center gap-3 text-detail text-[var(--text-muted)]">
-          <span><span className="font-mono text-[var(--text-tertiary)]">{squad.agentCount}</span> agentes</span>
-          <span><span className="font-mono text-[var(--text-tertiary)]">{squad.taskCount}</span> tarefas</span>
+        <div className="flex items-center gap-3 text-detail text-text-muted">
+          <span><span className="font-mono text-text-tertiary">{squad.agentCount}</span> agentes</span>
+          <span><span className="font-mono text-text-tertiary">{squad.taskCount}</span> tarefas</span>
           {squad.checklistCount > 0 && (
-            <span><span className="font-mono text-[var(--text-tertiary)]">{squad.checklistCount}</span> checklists</span>
+            <span><span className="font-mono text-text-tertiary">{squad.checklistCount}</span> checklists</span>
           )}
           {squad.workflowCount > 0 && (
-            <span><span className="font-mono text-[var(--text-tertiary)]">{squad.workflowCount}</span> workflows</span>
+            <span><span className="font-mono text-text-tertiary">{squad.workflowCount}</span> workflows</span>
           )}
           <span className="ml-auto flex items-center gap-2 font-mono">
             <span
@@ -73,7 +73,7 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
                 {formatSquadScore(squad.score)}
               </span>
               <span
-                className="inline-block w-[40px] h-[3px] rounded-full bg-[var(--border-subtle)] overflow-hidden"
+                className="inline-block w-[40px] h-[3px] rounded-full bg-border-subtle overflow-hidden"
                 aria-hidden="true"
               >
                 <span
@@ -85,7 +85,7 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
                 />
               </span>
             </span>
-            <span className="text-[var(--text-disabled)]">
+            <span className="text-text-disabled">
               {formatSquadVersion(squad.version)}
             </span>
           </span>

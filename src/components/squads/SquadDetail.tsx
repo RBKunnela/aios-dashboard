@@ -80,7 +80,7 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <span className="text-label text-[var(--text-muted)] uppercase tracking-wider">
+        <span className="text-label text-text-muted uppercase tracking-wider">
           Loading squad...
         </span>
       </div>
@@ -91,7 +91,7 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
     return (
       <div className="p-6">
         {breadcrumb}
-        <p className="text-label text-[var(--status-error)]">
+        <p className="text-label text-status-error">
           Failed to load squad &quot;{squadName}&quot;
         </p>
       </div>
@@ -124,10 +124,10 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
         {breadcrumb}
 
         <div className="flex items-center gap-3 mb-2">
-          <h2 className="text-lg font-light text-[var(--text-primary)]">
+          <h2 className="text-lg font-light text-text-primary">
             {squad.displayName}
           </h2>
-          <span className="text-detail font-mono text-[var(--text-muted)]">
+          <span className="text-detail font-mono text-text-muted">
             {formatSquadVersion(squad.version)}
           </span>
           <span
@@ -144,13 +144,13 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
 
         {/* Description */}
         {squad.description && (
-          <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6 whitespace-pre-line">
+          <p className="text-xs text-text-secondary leading-relaxed mb-6 whitespace-pre-line">
             {squad.description.trim()}
           </p>
         )}
 
         {/* Stats row */}
-        <div className="flex items-center gap-4 mb-6 pb-4 border-b border-[var(--border)]">
+        <div className="flex items-center gap-4 mb-6 pb-4 border-b border-border">
           <Stat label="Agents" value={squad.agentCount} />
           <Stat label="Tasks" value={squad.taskCount} />
           <Stat label="Workflows" value={squad.workflowCount} />
@@ -165,7 +165,7 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
               {formatSquadScore(squad.score)}
             </span>
             <span
-              className="inline-block w-[50px] h-[3px] rounded-full bg-[var(--border-subtle)] overflow-hidden"
+              className="inline-block w-[50px] h-[3px] rounded-full bg-border-subtle overflow-hidden"
               aria-hidden="true"
             >
               <span
@@ -176,7 +176,7 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
                 }}
               />
             </span>
-            <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-detail uppercase tracking-wider text-text-muted">
               Score
             </span>
           </div>
@@ -186,7 +186,7 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
         <div
           role="tablist"
           aria-label="Squad sections"
-          className="flex items-center gap-1 mb-6 overflow-x-auto pb-px border-b border-[var(--border)]"
+          className="flex items-center gap-1 mb-6 overflow-x-auto pb-px border-b border-border"
           onKeyDown={handleTabKeyDown}
         >
           {visibleTabs.map((tab) => {
@@ -206,8 +206,8 @@ export function SquadDetail({ squadName, onAgentClick, selectedItem, onItemClick
                   'px-3 py-2 text-detail uppercase tracking-wider font-medium whitespace-nowrap transition-colors',
                   'border-b-2 -mb-px',
                   isActive
-                    ? 'border-[var(--accent-gold)] text-[var(--accent-gold)]'
-                    : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                    ? 'border-gold text-gold'
+                    : 'border-transparent text-text-muted hover:text-text-secondary'
                 )}
               >
                 {tab.label}
@@ -259,8 +259,8 @@ function OverviewContent({
           <SectionLabel withLine className="mb-3">Objectives</SectionLabel>
           <ul className="space-y-1.5 ml-1">
             {squad.objectives.map((obj, i) => (
-              <li key={i} className="flex items-start gap-2 text-label text-[var(--text-secondary)]">
-                <span className="text-[var(--accent-gold)] mt-0.5 shrink-0">-</span>
+              <li key={i} className="flex items-start gap-2 text-label text-text-secondary">
+                <span className="text-gold mt-0.5 shrink-0">-</span>
                 <span className="leading-relaxed">{obj}</span>
               </li>
             ))}
@@ -279,8 +279,8 @@ function OverviewContent({
                 className={cn(
                   'text-detail px-2 py-1 border',
                   dep.type === 'required'
-                    ? 'border-[var(--accent-gold)] text-[var(--accent-gold)] bg-[var(--accent-gold)]/5'
-                    : 'border-[var(--border)] text-[var(--text-muted)]'
+                    ? 'border-gold text-gold bg-gold/5'
+                    : 'border-border text-text-muted'
                 )}
               >
                 {dep.to}
@@ -303,8 +303,8 @@ function OverviewContent({
 function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex items-baseline gap-1.5">
-      <span className="text-base font-mono text-[var(--text-primary)]">{value}</span>
-      <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">{label}</span>
+      <span className="text-base font-mono text-text-primary">{value}</span>
+      <span className="text-detail uppercase tracking-wider text-text-muted">{label}</span>
     </div>
   );
 }

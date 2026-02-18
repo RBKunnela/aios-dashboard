@@ -23,7 +23,7 @@ export function SquadItemViewer({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 className="h-4 w-4 animate-spin text-[var(--accent-gold)]" />
+        <Loader2 className="h-4 w-4 animate-spin text-gold" />
       </div>
     );
   }
@@ -32,7 +32,7 @@ export function SquadItemViewer({
     return (
       <div className="p-6">
         {breadcrumb}
-        <p className="text-label text-[var(--status-error)]">
+        <p className="text-label text-status-error">
           Failed to load item
         </p>
       </div>
@@ -46,7 +46,7 @@ export function SquadItemViewer({
         {breadcrumb}
 
         {/* Title */}
-        <h2 className="text-base font-light text-[var(--text-primary)] mb-6">
+        <h2 className="text-base font-light text-text-primary mb-6">
           {item.title}
         </h2>
 

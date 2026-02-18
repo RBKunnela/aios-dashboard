@@ -29,14 +29,14 @@ export function SquadSectionGrid({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-4 w-4 animate-spin text-[var(--accent-gold)]" />
+        <Loader2 className="h-4 w-4 animate-spin text-gold" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <p className="text-label text-[var(--status-error)] py-6">
+      <p className="text-label text-status-error py-6">
         Failed to load {section} items
       </p>
     );
@@ -44,7 +44,7 @@ export function SquadSectionGrid({
 
   if (items.length === 0) {
     return (
-      <p className="text-label text-[var(--text-muted)] py-6">
+      <p className="text-label text-text-muted py-6">
         No items in {section}
       </p>
     );
@@ -67,20 +67,20 @@ export function SquadSectionGrid({
           key={item.slug}
           onClick={() => handleClick(item.slug, item.relativePath)}
           className={cn(
-            'text-left p-3 border border-[var(--border)]',
-            'bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)]',
-            'hover:border-[var(--accent-gold)]/40',
+            'text-left p-3 border border-border',
+            'bg-bg-secondary hover:bg-bg-tertiary',
+            'hover:border-gold/40',
             'transition-all duration-150 group'
           )}
         >
-          <span className="flex items-center gap-1.5 text-label font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-gold)] transition-colors">
+          <span className="flex items-center gap-1.5 text-label font-medium text-text-primary group-hover:text-gold transition-colors">
             {(() => {
               const Icon = getFileIcon(item.relativePath || item.name);
-              return <Icon className="h-3.5 w-3.5 shrink-0 text-[var(--text-muted)] group-hover:text-[var(--accent-gold)] transition-colors" />;
+              return <Icon className="h-3.5 w-3.5 shrink-0 text-text-muted group-hover:text-gold transition-colors" />;
             })()}
             <span className="truncate">{item.name}</span>
           </span>
-          <span className="block text-caption text-[var(--text-muted)] font-mono mt-0.5 pl-5">
+          <span className="block text-caption text-text-muted font-mono mt-0.5 pl-5">
             {item.relativePath}
           </span>
         </button>

@@ -26,14 +26,14 @@ export function SquadBreadcrumb({ segments, className }: SquadBreadcrumbProps) {
         return (
           <span key={i} className="flex items-center gap-1">
             {i > 0 && (
-              <ChevronRight className="h-2.5 w-2.5 text-[var(--text-disabled)] shrink-0" aria-hidden="true" />
+              <ChevronRight className="h-2.5 w-2.5 text-text-disabled shrink-0" aria-hidden="true" />
             )}
             {isLast || !segment.onClick ? (
               <span
                 className={cn(
                   isLast
-                    ? 'text-[var(--text-primary)]'
-                    : 'text-[var(--text-muted)]'
+                    ? 'text-text-primary'
+                    : 'text-text-muted'
                 )}
               >
                 {segment.label}
@@ -41,7 +41,7 @@ export function SquadBreadcrumb({ segments, className }: SquadBreadcrumbProps) {
             ) : (
               <button
                 onClick={segment.onClick}
-                className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                className="text-text-muted hover:text-text-primary transition-colors"
               >
                 {segment.label}
               </button>

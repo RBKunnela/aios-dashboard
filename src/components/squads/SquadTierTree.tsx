@@ -19,7 +19,7 @@ const LEVEL_LABELS: Record<number, string> = {
 export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
   if (tiers.length === 0) {
     return (
-      <div className="text-label text-[var(--text-muted)] py-4">
+      <div className="text-label text-text-muted py-4">
         No tier structure defined
       </div>
     );
@@ -32,7 +32,7 @@ export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
           {/* Connector line from previous tier */}
           {tierIndex > 0 && (
             <div
-              className="absolute -top-6 left-6 w-px h-6 bg-[var(--border)]"
+              className="absolute -top-6 left-6 w-px h-6 bg-border"
             />
           )}
 
@@ -47,7 +47,7 @@ export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
 
           {/* Tier purpose */}
           {tier.purpose && (
-            <p className="text-detail text-[var(--text-muted)] mb-3 ml-1">
+            <p className="text-detail text-text-muted mb-3 ml-1">
               {tier.purpose}
             </p>
           )}
@@ -60,7 +60,7 @@ export function SquadTierTree({ tiers, onAgentClick }: SquadTierTreeProps) {
                 <div className="flex items-center shrink-0">
                   <div
                     className={cn(
-                      'w-4 border-b border-l border-[var(--border)]',
+                      'w-4 border-b border-l border-border',
                       'h-3',
                       agentIndex === tier.agents.length - 1 && 'rounded-bl'
                     )}

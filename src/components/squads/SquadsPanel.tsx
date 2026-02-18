@@ -157,41 +157,41 @@ export function SquadsPanel() {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="shrink-0 px-6 py-4 border-b border-[var(--border)]">
+      <div className="shrink-0 px-6 py-4 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Network
-              className="h-4 w-4 text-[var(--accent-gold)]"
+              className="h-4 w-4 text-gold"
             />
-            <h1 className="text-sm font-light text-[var(--text-primary)]">
+            <h1 className="text-sm font-light text-text-primary">
               Squads
             </h1>
 
             {/* Primary count */}
-            <span className="text-detail text-[var(--text-muted)] ml-2">
-              <span className="font-mono text-[var(--text-secondary)]">{squads.length}</span> squads
+            <span className="text-detail text-text-muted ml-2">
+              <span className="font-mono text-text-secondary">{squads.length}</span> squads
             </span>
 
             {/* Secondary counts - compact */}
-            <span className="text-caption text-[var(--text-disabled)] ml-3 hidden sm:inline" aria-label="Asset totals">
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_agents}</span> agents
+            <span className="text-caption text-text-disabled ml-3 hidden sm:inline" aria-label="Asset totals">
+              <span className="font-mono text-text-muted">{summary.total_agents}</span> agents
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_tasks}</span> tasks
+              <span className="font-mono text-text-muted">{summary.total_tasks}</span> tasks
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_workflows}</span> wf
+              <span className="font-mono text-text-muted">{summary.total_workflows}</span> wf
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_templates}</span> tpl
+              <span className="font-mono text-text-muted">{summary.total_templates}</span> tpl
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_checklists}</span> ck
+              <span className="font-mono text-text-muted">{summary.total_checklists}</span> ck
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-[var(--text-muted)]">{summary.total_data_files}</span> data
+              <span className="font-mono text-text-muted">{summary.total_data_files}</span> data
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-[var(--text-disabled)]" />
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-text-disabled" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -206,9 +206,9 @@ export function SquadsPanel() {
                 placeholder="Filter squads..."
                 className={cn(
                   'pl-7 pr-2 py-1 w-[160px] text-label',
-                  'bg-[var(--bg-secondary)] border border-[var(--border)]',
-                  'text-[var(--text-primary)] placeholder:text-[var(--text-disabled)]',
-                  'focus:outline-none focus:border-[var(--accent-gold)]',
+                  'bg-bg-secondary border border-border',
+                  'text-text-primary placeholder:text-text-disabled',
+                  'focus:outline-none focus:border-gold',
                   'transition-colors'
                 )}
                 aria-label="Filter squads"
@@ -221,7 +221,7 @@ export function SquadsPanel() {
               disabled={isLoading}
               className={cn(
                 'p-1.5 transition-colors',
-                'text-[var(--text-muted)] hover:text-[var(--text-primary)]',
+                'text-text-muted hover:text-text-primary',
                 isLoading && 'animate-spin'
               )}
               aria-label="Refresh squads"
@@ -241,8 +241,8 @@ export function SquadsPanel() {
         {isLoading && squads.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Loader2 className="h-5 w-5 animate-spin text-[var(--accent-gold)] mx-auto mb-3" />
-              <span className="text-label text-[var(--text-muted)] uppercase tracking-wider">
+              <Loader2 className="h-5 w-5 animate-spin text-gold mx-auto mb-3" />
+              <span className="text-label text-text-muted uppercase tracking-wider">
                 Loading squads...
               </span>
             </div>
@@ -250,15 +250,15 @@ export function SquadsPanel() {
         ) : squads.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <p className="text-sm text-[var(--text-muted)]">No squads found</p>
-              <p className="text-label text-[var(--text-disabled)] mt-1">
+              <p className="text-sm text-text-muted">No squads found</p>
+              <p className="text-label text-text-disabled mt-1">
                 Check that squads/ directory exists in the project root
               </p>
             </div>
           </div>
         ) : filteredSquads.length === 0 && filterQuery.trim() ? (
           <div className="flex items-center justify-center h-32">
-            <p className="text-label text-[var(--text-muted)]">
+            <p className="text-label text-text-muted">
               No squads match &apos;{filterQuery.trim()}&apos;
             </p>
           </div>

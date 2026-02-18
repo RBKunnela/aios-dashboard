@@ -23,22 +23,22 @@ export const SquadAgentChip = memo(function SquadAgentChip({ agent, onClick }: S
         onClick={isClickable ? () => onClick(agent.id) : undefined}
         className={cn(
           'flex items-center gap-2 px-3 py-1.5',
-          'bg-[var(--card)] border border-[var(--border)]',
-          'hover:bg-[var(--card-hover)] hover:border-[var(--border-medium)]',
+          'bg-card border border-border',
+          'hover:bg-card-hover hover:border-border-medium',
           'transition-luxury',
           isClickable ? 'cursor-pointer' : 'cursor-default'
         )}
       >
-        <span className="text-label font-mono text-[var(--accent-gold)]">
+        <span className="text-label font-mono text-gold">
           {agent.id}
         </span>
         {agent.role && (
-          <span className="text-detail text-[var(--text-muted)] truncate max-w-[140px]">
+          <span className="text-detail text-text-muted truncate max-w-[140px]">
             {agent.role}
           </span>
         )}
         {isClickable && (
-          <span className="text-caption text-[var(--text-disabled)] ml-1">→</span>
+          <span className="text-caption text-text-disabled ml-1">→</span>
         )}
       </div>
 
@@ -47,15 +47,15 @@ export const SquadAgentChip = memo(function SquadAgentChip({ agent, onClick }: S
           className={cn(
             'absolute bottom-full left-0 mb-2 z-50',
             'px-3 py-2 max-w-[260px]',
-            'bg-[var(--bg-elevated)] border border-[var(--border-medium)]',
+            'bg-bg-elevated border border-border-medium',
             'shadow-lg'
           )}
         >
-          <p className="text-label text-[var(--text-secondary)] leading-relaxed whitespace-pre-line">
+          <p className="text-label text-text-secondary leading-relaxed whitespace-pre-line">
             {agent.description.trim()}
           </p>
           {isClickable && (
-            <p className="text-caption text-[var(--accent-gold)] mt-1">Click to see details</p>
+            <p className="text-caption text-gold mt-1">Click to see details</p>
           )}
         </div>
       )}
