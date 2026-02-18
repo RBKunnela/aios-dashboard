@@ -61,9 +61,9 @@ export const AgentCard = memo(function AgentCard({
       onClick={onClick}
       className={cn(
         'group relative p-4',
-        'bg-[var(--card)] border border-[var(--border)] border-l-2',
+        'bg-card border border-border border-l-2',
         'transition-luxury hover-lift',
-        'hover:bg-[var(--card-hover)] hover:border-[var(--border-medium)]',
+        'hover:bg-card-hover hover:border-border-medium',
         'cursor-pointer'
       )}
       style={{ borderLeftColor: isActive ? agent.color : 'var(--border)' }}
@@ -76,14 +76,14 @@ export const AgentCard = memo(function AgentCard({
             const IconComponent = iconMap[agent.icon];
             return IconComponent ? (
               <IconComponent
-                className="h-4 w-4 transition-colors"
-                style={{ color: isActive ? agent.color : 'var(--text-muted)' }}
+                className={cn("h-4 w-4 transition-colors", !isActive && "text-text-muted")}
+                style={isActive ? { color: agent.color } : undefined}
               />
             ) : null;
           })()}
           <span className={cn(
             "font-light text-sm transition-colors",
-            isActive ? "text-[var(--text-primary)]" : "text-[var(--text-tertiary)]"
+            isActive ? "text-text-primary" : "text-text-tertiary"
           )}>
             @{agent.id}
           </span>
@@ -108,15 +108,15 @@ export const AgentCard = memo(function AgentCard({
           {/* Current Story */}
           {agent.currentStoryId && (
             <div className="flex items-center justify-between">
-              <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">Story</span>
-              <span className="text-label font-mono text-[var(--text-secondary)]">{agent.currentStoryId}</span>
+              <span className="text-detail uppercase tracking-wider text-text-muted">Story</span>
+              <span className="text-label font-mono text-text-secondary">{agent.currentStoryId}</span>
             </div>
           )}
 
           {/* Phase */}
           {phaseConfig && (
             <div className="flex items-center justify-between">
-              <span className="text-detail uppercase tracking-wider text-[var(--text-muted)]">Phase</span>
+              <span className="text-detail uppercase tracking-wider text-text-muted">Phase</span>
               <span
                 className="text-label font-medium"
                 style={{ color: phaseConfig.color }}
@@ -128,10 +128,10 @@ export const AgentCard = memo(function AgentCard({
 
           {/* Progress bar */}
           {typeof agent.progress === 'number' && (
-            <div className="pt-2 border-t border-[var(--border-subtle)]">
+            <div className="pt-2 border-t border-border-subtle">
               <div className="flex items-center justify-between text-detail mb-2">
-                <span className="uppercase tracking-wider text-[var(--text-muted)]">Progress</span>
-                <span className="font-mono text-[var(--text-secondary)]">{agent.progress}%</span>
+                <span className="uppercase tracking-wider text-text-muted">Progress</span>
+                <span className="font-mono text-text-secondary">{agent.progress}%</span>
               </div>
               <ProgressBar
                 progress={agent.progress}
@@ -145,14 +145,14 @@ export const AgentCard = memo(function AgentCard({
           {agent.lastActivity && (
             <div
               className={cn(
-                'flex items-center gap-1.5 pt-2 border-t border-[var(--border-subtle)]',
+                'flex items-center gap-1.5 pt-2 border-t border-border-subtle',
                 'text-detail',
-                stale ? 'text-[var(--status-warning)]' : 'text-[var(--text-muted)]'
+                stale ? 'text-status-warning' : 'text-text-muted'
               )}
             >
               {stale && <AlertTriangle className="h-3 w-3" />}
               <span className="uppercase tracking-wider">Last active:</span>
-              <span className="text-[var(--text-tertiary)]">{getRelativeTime(agent.lastActivity)}</span>
+              <span className="text-text-tertiary">{getRelativeTime(agent.lastActivity)}</span>
             </div>
           )}
         </div>
@@ -160,7 +160,7 @@ export const AgentCard = memo(function AgentCard({
 
       {/* Idle state */}
       {!isActive && (
-        <div className="text-label text-[var(--text-muted)] font-light">
+        <div className="text-label text-text-muted font-light">
           {agent.name} is standing by
         </div>
       )}

@@ -37,11 +37,11 @@ export const StoryCard = memo(function StoryCard({
       onClick={onClick}
       className={cn(
         'group relative border p-3',
-        'bg-[var(--card)] border-[var(--border)]',
+        'bg-card border-border',
         'cursor-pointer transition-luxury hover-lift',
-        'hover:bg-[var(--card-hover)] hover:border-[var(--border-medium)]',
-        isRunning && 'border-[var(--status-success-border)] bg-[var(--status-success-bg)]',
-        isStuck && 'border-[var(--status-warning-border)] bg-[var(--status-warning-bg)]',
+        'hover:bg-card-hover hover:border-border-medium',
+        isRunning && 'border-status-success-border bg-status-success-bg',
+        isStuck && 'border-status-warning-border bg-status-warning-bg',
         className
       )}
     >
@@ -74,13 +74,13 @@ export const StoryCard = memo(function StoryCard({
       </div>
 
       {/* Title */}
-      <h3 className="text-sm font-normal text-[var(--text-primary)] line-clamp-2 mb-1 leading-snug group-hover:text-white transition-colors">
+      <h3 className="text-sm font-normal text-text-primary line-clamp-2 mb-1 leading-snug group-hover:text-white transition-colors">
         {title}
       </h3>
 
       {/* Description */}
       {description && (
-        <p className="text-label text-[var(--text-tertiary)] line-clamp-2 mb-2 leading-relaxed">
+        <p className="text-label text-text-tertiary line-clamp-2 mb-2 leading-relaxed">
           {description}
         </p>
       )}
@@ -142,7 +142,7 @@ function AgentBadge({ agentId, isActive = false }: AgentBadgeProps) {
           {[0, 150, 300].map((delay) => (
             <span
               key={delay}
-              className="h-1 w-1 rounded-full bg-[var(--status-success)] animate-bounce"
+              className="h-1 w-1 rounded-full bg-status-success animate-bounce"
               style={{ animationDelay: `${delay}ms` }}
             />
           ))}

@@ -97,8 +97,8 @@ function SidebarNavItem({ item, isActive, isCollapsed, onClick, badge }: Sidebar
           const IconComponent = iconMap[item.icon];
           return IconComponent ? (
             <IconComponent
-              className="h-4 w-4 flex-shrink-0 transition-luxury"
-              style={{ color: isActive ? 'var(--accent-gold)' : 'var(--text-muted)' }}
+              className={cn("h-4 w-4 flex-shrink-0 transition-luxury", !isActive && "text-text-muted")}
+              style={isActive ? { color: 'var(--accent-gold)' } : undefined}
             />
           ) : null;
         })()}

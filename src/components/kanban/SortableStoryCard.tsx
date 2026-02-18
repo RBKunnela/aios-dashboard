@@ -49,7 +49,7 @@ export function SortableStoryCard({ story, onClick }: SortableStoryCardProps) {
       aria-describedby="dnd-instructions"
       className={cn(
         'touch-none outline-none',
-        'focus-visible:ring-2 focus-visible:ring-[var(--accent-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-surface)]',
+        'focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface',
         isDragging && 'opacity-50 scale-105 z-50'
       )}
     >

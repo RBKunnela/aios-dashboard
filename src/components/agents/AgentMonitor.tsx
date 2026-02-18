@@ -29,18 +29,18 @@ export function AgentMonitor() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[var(--background)]">
+    <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-[var(--border-subtle)]">
+      <div className="flex items-center justify-between p-4 border-b border-border-subtle">
         <div className="flex items-center gap-4">
           <div>
             <span className="section-label block mb-1">Monitor</span>
-            <h2 className="text-sm font-light text-[var(--text-primary)]">Agent Activity</h2>
+            <h2 className="text-sm font-light text-text-primary">Agent Activity</h2>
           </div>
-          <div className="h-8 w-px bg-[var(--border-subtle)]" />
+          <div className="h-8 w-px bg-border-subtle" />
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-light text-[var(--text-primary)]">{activeAgents.length}</span>
-            <span className="text-label text-[var(--text-muted)]">/ {activeAgents.length + idleAgents.length} active</span>
+            <span className="text-2xl font-light text-text-primary">{activeAgents.length}</span>
+            <span className="text-label text-text-muted">/ {activeAgents.length + idleAgents.length} active</span>
           </div>
         </div>
 
@@ -53,8 +53,8 @@ export function AgentMonitor() {
               'flex items-center gap-1.5 px-3 py-1.5 text-label font-medium',
               'border transition-luxury',
               autoRefresh
-                ? 'bg-[var(--status-success-bg)] border-[var(--status-success-border)] text-[var(--status-success)]'
-                : 'bg-[var(--border)] border-[var(--border)] text-[var(--text-tertiary)]'
+                ? 'bg-status-success-bg border-status-success-border text-status-success'
+                : 'bg-border border-border text-text-tertiary'
             )}
           >
             {autoRefresh ? (
@@ -77,9 +77,9 @@ export function AgentMonitor() {
             aria-label="Refresh agent data"
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 text-label',
-              'border border-[var(--border)] bg-[var(--border)]',
-              'text-[var(--text-secondary)] hover:text-[var(--text-primary)]',
-              'hover:bg-[var(--border-medium)] transition-luxury',
+              'border border-border bg-border',
+              'text-text-secondary hover:text-text-primary',
+              'hover:bg-border-medium transition-luxury',
               isLoading && 'opacity-50 cursor-not-allowed'
             )}
           >
@@ -106,10 +106,10 @@ export function AgentMonitor() {
         {/* No active agents message */}
         {activeAgents.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16">
-            <Moon className="h-8 w-8 text-[var(--text-disabled)] mb-4" />
-            <p className="text-[var(--text-tertiary)] font-light mb-1">All agents standing by</p>
-            <p className="text-label text-[var(--text-muted)]">
-              Activate via CLI: <code className="text-[var(--accent-gold)]">@agent-name</code>
+            <Moon className="h-8 w-8 text-text-disabled mb-4" />
+            <p className="text-text-tertiary font-light mb-1">All agents standing by</p>
+            <p className="text-label text-text-muted">
+              Activate via CLI: <code className="text-gold">@agent-name</code>
             </p>
           </div>
         )}
@@ -124,9 +124,9 @@ export function AgentMonitor() {
                   key={agent.id}
                   className={cn(
                     'flex items-center gap-2 px-3 py-2',
-                    'bg-[var(--border)] border border-[var(--border)]',
-                    'text-label text-[var(--text-muted)]',
-                    'transition-luxury hover:bg-[var(--border-medium)] hover:text-[var(--text-tertiary)]'
+                    'bg-border border border-border',
+                    'text-label text-text-muted',
+                    'transition-luxury hover:bg-border-medium hover:text-text-tertiary'
                   )}
                 >
                   <StatusDot status="idle" size="sm" glow={false} />
@@ -143,7 +143,7 @@ export function AgentMonitor() {
       </div>
 
       {/* Footer with polling info */}
-      <div className="px-4 py-2 border-t border-[var(--border-subtle)] bg-[var(--bg-elevated)] text-detail text-[var(--text-muted)] flex items-center justify-center gap-2">
+      <div className="px-4 py-2 border-t border-border-subtle bg-bg-elevated text-detail text-text-muted flex items-center justify-center gap-2">
         {autoRefresh ? (
           <>
             <StatusDot status="success" size="sm" glow />

@@ -83,7 +83,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
   return (
     <div
       className={cn(
-        'flex items-start gap-2 px-3 py-2 border-b transition-colors hover:bg-[var(--bg-hover)]',
+        'flex items-start gap-2 px-3 py-2 border-b transition-colors hover:bg-bg-hover',
         event.is_error && 'bg-[rgba(239,68,68,0.05)]'
       )}
       style={{ borderColor: 'var(--border-subtle)' }}

@@ -116,8 +116,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
               {/* Connector */}
               {idx < pipeline.stages.length - 1 && (
                 <span
-                  className="text-detail max-md:hidden"
-                  style={{ color: isPending ? 'var(--text-muted)' : 'var(--text-tertiary)' }}
+                  className={cn("text-detail max-md:hidden", isPending ? "text-text-muted" : "text-text-tertiary")}
                 >
                   →
                 </span>
