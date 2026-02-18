@@ -1,0 +1,309 @@
+import { NextResponse } from 'next/server';
+import { promises as fs } from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+import type { Squad, SquadAgent, SquadTier, SquadConnection, SquadStatus } from '@/types';
+
+function getProjectRoot(): string {
+  if (process.env.AIOS_PROJECT_ROOT) {
+    return process.env.AIOS_PROJECT_ROOT;
+  }
+  return path.resolve(process.cwd(), '..', '..');
+}
+
+function formatName(name: string): string {
+  return name
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+async function countFiles(dir: string, ext: string): Promise<number> {
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    let count = 0;
+    for (const entry of entries) {
+      if (entry.isFile() && entry.name.endsWith(ext)) count++;
+    }
+    return count;
+  } catch {
+    return 0;
+  }
+}
+
+function parseTierLevel(key: string): number {
+  if (key === 'orchestrator') return 0;
+  if (key.match(/tier_0|tier_1_/)) return 1;
+  if (key.match(/tier_2_|tier_3_/)) return 2;
+  return 1;
+}
+
+interface TierSystemEntry {
+  name: string;
+  purpose: string;
+  agents: string[];
+}
+
+interface AgentEntry {
+  id: string;
+  name: string;
+  role: string;
+  tier: string | number;
+  description?: string;
+  specialty?: string;
+}
+
+function parseTiersFromConfig(config: Record<string, unknown>): SquadTier[] {
+  const tiers: SquadTier[] = [];
+  const tierSystem = config.tier_system as Record<string, TierSystemEntry> | undefined;
+  const agents = config.agents as AgentEntry[] | undefined;
+
+  if (tierSystem && typeof tierSystem === 'object') {
+    // V2 format: tier_system with named tiers
+    for (const [key, tierData] of Object.entries(tierSystem)) {
+      if (!tierData || typeof tierData !== 'object') continue;
+
+      const level = parseTierLevel(key);
+      const tierAgents: SquadAgent[] = [];
+
+      if (Array.isArray(tierData.agents)) {
+        for (const agentId of tierData.agents) {
+          // Find full agent data
+          const agentData = agents?.find((a) => a.id === agentId);
+          tierAgents.push({
+            id: typeof agentId === 'string' ? agentId : (agentId as Record<string, string>).id,
+            name: agentData?.name || formatName(typeof agentId === 'string' ? agentId : ''),
+            role: agentData?.role || '',
+            tier: key,
+            description: agentData?.description || agentData?.specialty,
+          });
+        }
+      }
+
+      tiers.push({
+        key,
+        name: tierData.name || formatName(key),
+        purpose: tierData.purpose || '',
+        agents: tierAgents,
+        level,
+      });
+    }
+  } else if (Array.isArray(agents)) {
+    // Legacy format: agents with tier field
+    const tierMap = new Map<string, SquadAgent[]>();
+
+    for (const agent of agents) {
+      const tierKey = String(agent.tier || 'core');
+      if (!tierMap.has(tierKey)) {
+        tierMap.set(tierKey, []);
+      }
+      tierMap.get(tierKey)!.push({
+        id: agent.id,
+        name: agent.name || formatName(agent.id),
+        role: agent.role || '',
+        tier: tierKey,
+        description: agent.description || agent.specialty,
+      });
+    }
+
+    // Convert to tiers with level mapping
+    const levelMap: Record<string, number> = {
+      orchestrator: 0,
+      '0': 1,
+      '1': 1,
+      '2': 2,
+      '3': 2,
+      core: 1,
+      aligned: 1,
+      foundation: 1,
+      masters: 1,
+      specialists: 2,
+      complementary: 2,
+      tool: 2,
+    };
+
+    for (const [tierKey, tierAgents] of tierMap) {
+      const level = levelMap[tierKey] ?? 1;
+      tiers.push({
+        key: tierKey,
+        name: formatName(tierKey),
+        purpose: '',
+        agents: tierAgents,
+        level,
+      });
+    }
+  }
+
+  // Sort by level
+  tiers.sort((a, b) => a.level - b.level);
+  return tiers;
+}
+
+function extractDependencies(
+  squadName: string,
+  config: Record<string, unknown>
+): SquadConnection[] {
+  const connections: SquadConnection[] = [];
+  const deps = config.dependencies as Record<string, unknown> | unknown[] | undefined;
+  if (!deps) return connections;
+
+  if (Array.isArray(deps)) {
+    for (const dep of deps) {
+      if (typeof dep === 'string' && dep !== 'aios-core') {
+        connections.push({ from: squadName, to: dep, type: 'required' });
+      } else if (typeof dep === 'object' && dep !== null) {
+        const d = dep as Record<string, unknown>;
+        const name = (d.name || d.squad) as string;
+        if (name && name !== 'aios-core') {
+          connections.push({
+            from: squadName,
+            to: name,
+            type: (d.type as string) === 'optional' ? 'optional' : 'required',
+            reason: d.reason as string | undefined,
+          });
+        }
+      }
+    }
+  } else if (typeof deps === 'object') {
+    const squads = (deps as Record<string, unknown>).squads;
+    const optional = (deps as Record<string, unknown>).optional;
+    if (Array.isArray(squads)) {
+      for (const s of squads) {
+        const name = typeof s === 'string' ? s : (s as Record<string, unknown>)?.name as string;
+        if (name && name !== 'aios-core') {
+          connections.push({ from: squadName, to: name, type: 'required' });
+        }
+      }
+    }
+    if (Array.isArray(optional)) {
+      for (const s of optional) {
+        const name = typeof s === 'string' ? s : (s as Record<string, unknown>)?.name as string;
+        if (name && name !== 'aios-core') {
+          connections.push({
+            from: squadName,
+            to: name,
+            type: 'optional',
+            reason: typeof s === 'object' ? ((s as Record<string, unknown>)?.reason as string) : undefined,
+          });
+        }
+      }
+    }
+  }
+  return connections;
+}
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ name: string }> }
+) {
+  try {
+    const { name } = await params;
+    const projectRoot = getProjectRoot();
+    const squadDir = path.join(projectRoot, 'squads', name);
+
+    // Check if squad exists
+    try {
+      await fs.access(squadDir);
+    } catch {
+      return NextResponse.json({ error: `Squad '${name}' not found` }, { status: 404 });
+    }
+
+    // Read config
+    let config: Record<string, unknown> | null = null;
+    for (const filename of ['squad.yaml', 'config.yaml']) {
+      try {
+        const content = await fs.readFile(path.join(squadDir, filename), 'utf-8');
+        config = yaml.load(content) as Record<string, unknown>;
+        break;
+      } catch {
+        continue;
+      }
+    }
+
+    // Get agent names from filesystem
+    let agentNames: string[] = [];
+    try {
+      const agentEntries = await fs.readdir(path.join(squadDir, 'agents'));
+      agentNames = agentEntries
+        .filter((f) => f.endsWith('.md'))
+        .map((f) => f.replace('.md', ''))
+        .sort();
+    } catch {
+      // No agents dir
+    }
+
+    const taskCount = await countFiles(path.join(squadDir, 'tasks'), '.md');
+    const workflowCount = await countFiles(path.join(squadDir, 'workflows'), '.yaml');
+    const checklistCount = await countFiles(path.join(squadDir, 'checklists'), '.md');
+
+    // Parse tiers
+    const tiers: SquadTier[] = config
+      ? parseTiersFromConfig(config)
+      : agentNames.length > 0
+        ? [
+            {
+              key: 'agents',
+              name: 'Agents',
+              purpose: '',
+              agents: agentNames.map((id) => ({
+                id,
+                name: formatName(id),
+                role: '',
+                tier: 'agents',
+              })),
+              level: 1,
+            },
+          ]
+        : [];
+
+    // Extract metadata
+    const meta = config?.metadata as Record<string, unknown> | undefined;
+    const description =
+      typeof config?.description === 'string'
+        ? config.description
+        : (meta?.description as string) || '';
+
+    let status: SquadStatus = 'active';
+    const rawStatus = (meta?.status || config?.status) as string | undefined;
+    if (rawStatus && ['active', 'draft', 'beta', 'planned'].includes(rawStatus)) {
+      status = rawStatus as SquadStatus;
+    }
+
+    const deps = config ? extractDependencies(name, config) : [];
+
+    // Read objectives and key_capabilities if available
+    const objectives = config?.objectives as string[] | undefined;
+    const keyCapabilities = config?.key_capabilities as string[] | undefined;
+
+    const squad: Squad & {
+      objectives?: string[];
+      keyCapabilities?: string[];
+    } = {
+      name,
+      displayName: (meta?.display_name as string) || formatName(name),
+      description: description.trim(),
+      version: (meta?.version as string) || (config?.version as string) || 'unknown',
+      domain: (meta?.domain as string) || (config?.domain as string) || 'other',
+      status,
+      path: `squads/${name}/`,
+      agentCount: agentNames.length,
+      taskCount,
+      workflowCount,
+      checklistCount,
+      agentNames,
+      tiers,
+      dependencies: deps,
+      keywords: [],
+      objectives,
+      keyCapabilities,
+    };
+
+    return NextResponse.json({ squad });
+  } catch (error) {
+    console.error('Error in /api/squads/[name]:', error);
+    return NextResponse.json(
+      { error: 'Failed to load squad detail' },
+      { status: 500 }
+    );
+  }
+}
