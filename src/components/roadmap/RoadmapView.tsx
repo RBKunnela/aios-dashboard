@@ -51,13 +51,13 @@ export function RoadmapView({ className }: RoadmapViewProps) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center" style={{ backgroundColor: 'var(--bg-base)' }}>
         <MapIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
-        <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>No Roadmap Items</h3>
-        <p className="text-[11px] mb-4" style={{ color: 'var(--text-muted)' }}>
+        <h3 className="text-sm font-light mb-1 text-text-tertiary">No Roadmap Items</h3>
+        <p className="text-label mb-4 text-text-muted">
           Enable Demo Mode in Settings to see sample roadmap.
         </p>
         <button
-          className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] border transition-luxury hover:opacity-80"
-          style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80 text-text-secondary"
+          style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)' }}
         >
           <PlusIcon className="h-3 w-3" />
           Add Feature
@@ -72,20 +72,20 @@ export function RoadmapView({ className }: RoadmapViewProps) {
       <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
         <div className="flex items-center gap-4">
           <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Planning</span>
-            <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>Product Roadmap</h2>
+            <span className="text-detail uppercase tracking-[0.2em] block mb-1" style={{ color: 'var(--accent-gold)' }}>Planning</span>
+            <h2 className="text-sm font-light text-text-primary">Product Roadmap</h2>
           </div>
           <div className="h-8 w-px" style={{ backgroundColor: 'var(--border-subtle)' }} />
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-light" style={{ color: 'var(--text-primary)' }}>{items.length}</span>
-            <span className="text-[11px]" style={{ color: 'var(--text-muted)' }}>features</span>
+            <span className="text-2xl font-light text-text-primary">{items.length}</span>
+            <span className="text-label text-text-muted">features</span>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] border transition-luxury hover:opacity-80"
-            style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)', color: 'var(--text-secondary)' }}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-label border transition-luxury hover:opacity-80 text-text-secondary"
+            style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-hover)' }}
           >
             <PlusIcon className="h-3 w-3" />
             Add Feature
@@ -100,7 +100,7 @@ export function RoadmapView({ className }: RoadmapViewProps) {
             <button
               key={btn.id}
               onClick={() => setFilterMode(btn.id)}
-              className="px-3 py-1.5 text-[11px] font-medium transition-luxury"
+              className="px-3 py-1.5 text-label font-medium transition-luxury"
               style={{
                 backgroundColor: filterMode === btn.id ? 'var(--accent-gold-bg)' : 'transparent',
                 color: filterMode === btn.id ? 'var(--accent-gold)' : 'var(--text-muted)',
@@ -147,24 +147,24 @@ export function RoadmapView({ className }: RoadmapViewProps) {
 
       {/* Footer */}
       <div className="flex items-center justify-between px-4 py-2 border-t" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-elevated)' }}>
-        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-detail text-text-muted">
           {settings.useMockData ? 'Demo Mode' : 'Connected to AIOS'}
         </span>
-        <div className="flex items-center gap-4 text-[10px]">
+        <div className="flex items-center gap-4 text-detail">
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--priority-must)' }} />
-            <span className="uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Must</span>
-            <span style={{ color: 'var(--text-tertiary)' }}>{groupedItems.must_have.length}</span>
+            <span className="uppercase tracking-wider text-text-muted">Must</span>
+            <span className="text-text-tertiary">{groupedItems.must_have.length}</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--priority-should)' }} />
-            <span className="uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Should</span>
-            <span style={{ color: 'var(--text-tertiary)' }}>{groupedItems.should_have.length}</span>
+            <span className="uppercase tracking-wider text-text-muted">Should</span>
+            <span className="text-text-tertiary">{groupedItems.should_have.length}</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--priority-could)' }} />
-            <span className="uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Could</span>
-            <span style={{ color: 'var(--text-tertiary)' }}>{groupedItems.could_have.length}</span>
+            <span className="uppercase tracking-wider text-text-muted">Could</span>
+            <span className="text-text-tertiary">{groupedItems.could_have.length}</span>
           </span>
         </div>
       </div>
@@ -194,7 +194,7 @@ function PrioritySection({ priority, items, config }: PrioritySectionProps) {
       {/* Section Header */}
       <div className="flex items-center gap-3 mb-3">
         <span
-          className="text-[10px] font-medium uppercase tracking-wider px-2 py-1 border"
+          className="text-detail font-medium uppercase tracking-wider px-2 py-1 border"
           style={{
             backgroundColor: colors.bg,
             color: colors.text,
@@ -204,7 +204,7 @@ function PrioritySection({ priority, items, config }: PrioritySectionProps) {
           {config.label}
         </span>
         <div className="flex-1 h-px" style={{ backgroundColor: colors.border }} />
-        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{items.length}</span>
+        <span className="text-detail text-text-muted">{items.length}</span>
       </div>
 
       {/* Cards */}
@@ -213,7 +213,7 @@ function PrioritySection({ priority, items, config }: PrioritySectionProps) {
           items.map((item) => <RoadmapCard key={item.id} item={item} />)
         ) : (
           <div
-            className="h-20 border border-dashed flex items-center justify-center text-[11px] italic"
+            className="h-20 border border-dashed flex items-center justify-center text-label italic"
             style={{ borderColor: 'var(--border)', color: 'var(--border)' }}
           >
             No items

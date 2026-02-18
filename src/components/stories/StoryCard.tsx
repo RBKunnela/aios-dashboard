@@ -49,7 +49,7 @@ export const StoryCard = memo(function StoryCard({
       <div className="flex items-center justify-between gap-2 mb-2.5">
         {category && (
           <span
-            className="inline-flex items-center px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide"
+            className="inline-flex items-center px-2 py-0.5 text-detail font-medium uppercase tracking-wide"
             style={{
               backgroundColor: `var(--category-${category}-bg, var(--border))`,
               color: `var(--category-${category}, var(--text-tertiary))`,
@@ -61,7 +61,7 @@ export const StoryCard = memo(function StoryCard({
 
         {complexity && (
           <span
-            className="inline-flex items-center border px-2 py-0.5 text-[10px] font-medium"
+            className="inline-flex items-center border px-2 py-0.5 text-detail font-medium"
             style={{
               backgroundColor: `var(--complexity-${complexity}-bg)`,
               color: `var(--complexity-${complexity})`,
@@ -80,7 +80,7 @@ export const StoryCard = memo(function StoryCard({
 
       {/* Description */}
       {description && (
-        <p className="text-[11px] text-[var(--text-tertiary)] line-clamp-2 mb-2 leading-relaxed">
+        <p className="text-label text-[var(--text-tertiary)] line-clamp-2 mb-2 leading-relaxed">
           {description}
         </p>
       )}
@@ -88,8 +88,8 @@ export const StoryCard = memo(function StoryCard({
       {/* Bob badge */}
       {isBobOrchestrated && (
         <div
-          className="flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-medium mt-1 w-fit"
-          style={{ backgroundColor: 'var(--agent-pm)' + '20', color: 'var(--agent-pm)' }}
+          className="flex items-center gap-1 rounded-full px-1.5 py-0.5 text-detail font-medium mt-1 w-fit"
+          style={{ backgroundColor: 'var(--agent-pm-bg)', color: 'var(--agent-pm)' }}
         >
           <Bot className="h-2.5 w-2.5" />
           Bot Bob
@@ -126,7 +126,7 @@ function AgentBadge({ agentId, isActive = false }: AgentBadgeProps) {
   return (
     <div
       className="flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs"
-      style={{ backgroundColor: `${config.color}15` }}
+      style={{ backgroundColor: config.bg }}
     >
       {IconComponent && (
         <IconComponent

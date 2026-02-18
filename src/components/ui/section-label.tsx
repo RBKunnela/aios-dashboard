@@ -26,7 +26,7 @@ export function SectionLabel({
   const label = (
     <span
       className={cn(
-        'text-[10px] font-medium uppercase tracking-[0.2em]',
+        'text-detail font-medium uppercase tracking-[0.2em]',
         VARIANT_CLASSES[variant],
         className
       )}

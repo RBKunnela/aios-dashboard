@@ -120,7 +120,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
 
           {/* Duration */}
           {event.duration_ms && (
-            <span className="text-caption" style={{ color: 'var(--text-muted)' }}>
+            <span className="text-caption text-text-muted">
               {formatDuration(event.duration_ms)}
             </span>
           )}
@@ -129,8 +129,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
         {/* Summary */}
         {summary && (
           <div
-            className="text-label truncate mt-0.5 font-mono"
-            style={{ color: 'var(--text-tertiary)' }}
+            className="text-label truncate mt-0.5 font-mono text-text-tertiary"
           >
             {summary}
           </div>
@@ -148,7 +147,7 @@ const EventItem = memo(function EventItem({ event }: { event: MonitorEvent }) {
       </div>
 
       {/* Timestamp */}
-      <div className="text-caption shrink-0" style={{ color: 'var(--text-muted)' }}>
+      <div className="text-caption shrink-0 text-text-muted">
         {formatTimestamp(event.timestamp)}
       </div>
     </div>
@@ -171,14 +170,14 @@ export const ActivityFeed = memo(function ActivityFeed({
     return (
       <div className={cn('flex flex-col h-full', className)} style={{ backgroundColor: 'var(--bg-base)' }}>
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <WifiOffIcon className="h-8 w-8 mb-4" style={{ color: 'var(--text-muted)' }} />
-          <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>
+          <WifiOffIcon className="h-8 w-8 mb-4 text-text-muted" />
+          <h3 className="text-sm font-light mb-1 text-text-tertiary">
             Monitor Disconnected
           </h3>
-          <p className="text-label" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-label text-text-muted">
             Start the monitor server to see real-time activity.
           </p>
-          <code className="mt-3 px-3 py-1.5 text-detail font-mono rounded" style={{ backgroundColor: 'var(--bg-elevated)', color: 'var(--text-secondary)' }}>
+          <code className="mt-3 px-3 py-1.5 text-detail font-mono rounded text-text-secondary" style={{ backgroundColor: 'var(--bg-elevated)' }}>
             cd apps/monitor-server && bun run dev
           </code>
         </div>
@@ -191,10 +190,10 @@ export const ActivityFeed = memo(function ActivityFeed({
       <div className={cn('flex flex-col h-full', className)} style={{ backgroundColor: 'var(--bg-base)' }}>
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
           <ActivityIcon className="h-8 w-8 mb-4" style={{ color: 'var(--border)' }} />
-          <h3 className="text-sm font-light mb-1" style={{ color: 'var(--text-tertiary)' }}>
+          <h3 className="text-sm font-light mb-1 text-text-tertiary">
             Waiting for Activity
           </h3>
-          <p className="text-label" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-label text-text-muted">
             Events will appear here as you use Claude Code.
           </p>
         </div>
@@ -215,7 +214,7 @@ export const ActivityFeed = memo(function ActivityFeed({
         className="px-3 py-2 border-t flex items-center justify-between"
         style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}
       >
-        <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
+        <span className="text-detail text-text-muted">
           {displayEvents.length} events
         </span>
         <div className="flex items-center gap-1">

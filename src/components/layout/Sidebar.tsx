@@ -27,11 +27,11 @@ export function Sidebar({ className }: SidebarProps) {
       {/* Logo/Brand */}
       <div className="flex h-14 items-center border-b px-4" style={{ borderColor: 'var(--border-subtle)' }}>
         {sidebarCollapsed ? (
-          <span className="text-xl font-light" style={{ color: 'var(--accent-gold)' }}>A</span>
+          <span className="text-xl font-light text-gold">A</span>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="text-sm font-light tracking-wide" style={{ color: 'var(--accent-gold)' }}>AIOS</span>
-            <span className="text-sm font-light" style={{ color: 'var(--text-tertiary)' }}>Dashboard</span>
+            <span className="text-sm font-light tracking-wide text-gold">AIOS</span>
+            <span className="text-sm font-light text-text-tertiary">Dashboard</span>
           </div>
         )}
       </div>

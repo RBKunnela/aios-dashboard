@@ -98,8 +98,8 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-  sm: 'text-[9px] px-1.5 py-0.5',
-  md: 'text-[10px] px-2 py-0.5',
+  sm: 'text-caption px-1.5 py-0.5',
+  md: 'text-detail px-2 py-0.5',
 };
 
 export function Tag({ label, variant = 'default', size = 'md', className }: TagProps) {

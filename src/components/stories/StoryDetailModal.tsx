@@ -61,9 +61,9 @@ export function StoryDetailModal({
       <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
         <DialogHeader>
           <div className="mb-1">
-            <span className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>{story.id}</span>
+            <span className="text-detail uppercase tracking-[0.2em]" style={{ color: 'var(--accent-gold)' }}>{story.id}</span>
           </div>
-          <DialogTitle className="text-base font-light pr-8" style={{ color: 'var(--text-primary)' }}>
+          <DialogTitle className="text-base font-light pr-8 text-text-primary">
             {story.title}
           </DialogTitle>
         </DialogHeader>
@@ -72,7 +72,7 @@ export function StoryDetailModal({
         <div className="flex flex-wrap items-center gap-2 mt-3">
           {/* Status Badge */}
           <span
-            className="inline-flex items-center gap-1.5 px-2 py-1 text-[10px] font-medium uppercase tracking-wider border"
+            className="inline-flex items-center gap-1.5 px-2 py-1 text-detail font-medium uppercase tracking-wider border"
             style={{
               backgroundColor: (STATUS_STYLES[story.status] || STATUS_STYLES.backlog).bg,
               color: (STATUS_STYLES[story.status] || STATUS_STYLES.backlog).text,
@@ -89,10 +89,10 @@ export function StoryDetailModal({
           {/* Agent Badge */}
           {agentConfig && (
             <span
-              className="inline-flex items-center gap-1.5 px-2 py-1 text-[10px] font-medium border"
+              className="inline-flex items-center gap-1.5 px-2 py-1 text-detail font-medium border"
               style={{
-                backgroundColor: `${agentConfig.color}15`,
-                borderColor: `${agentConfig.color}30`,
+                backgroundColor: agentConfig.bg,
+                borderColor: agentConfig.border,
                 color: agentConfig.color,
               }}
             >
@@ -107,7 +107,7 @@ export function StoryDetailModal({
           {/* Complexity Badge */}
           {story.complexity && (
             <span
-              className="inline-flex items-center px-2 py-1 text-[10px] font-medium uppercase tracking-wider border"
+              className="inline-flex items-center px-2 py-1 text-detail font-medium uppercase tracking-wider border"
               style={{
                 backgroundColor: COMPLEXITY_STYLES[story.complexity]?.bg,
                 color: COMPLEXITY_STYLES[story.complexity]?.text,
@@ -121,8 +121,8 @@ export function StoryDetailModal({
           {/* Priority Badge */}
           {story.priority && (
             <span
-              className="inline-flex items-center px-2 py-1 text-[10px] font-medium uppercase tracking-wider border"
-              style={{ borderColor: 'var(--border)', color: 'var(--text-muted)' }}
+              className="inline-flex items-center px-2 py-1 text-detail font-medium uppercase tracking-wider border text-text-muted"
+              style={{ borderColor: 'var(--border)' }}
             >
               P{story.priority}
             </span>
@@ -133,10 +133,10 @@ export function StoryDetailModal({
 
         {/* Description */}
         <section>
-          <h3 className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+          <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
             Description
           </h3>
-          <p className="text-[13px] whitespace-pre-wrap leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-reading whitespace-pre-wrap leading-relaxed text-text-secondary">
             {story.description || 'No description provided.'}
           </p>
         </section>
@@ -144,15 +144,14 @@ export function StoryDetailModal({
         {/* Acceptance Criteria */}
         {story.acceptanceCriteria && story.acceptanceCriteria.length > 0 && (
           <section className="mt-5">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+            <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
               Acceptance Criteria
             </h3>
             <ul className="space-y-2">
               {story.acceptanceCriteria.map((criterion, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-[13px]"
-                  style={{ color: 'var(--text-secondary)' }}
+                  className="flex items-start gap-2 text-reading text-text-secondary"
                 >
                   <span className="mt-0.5" style={{ color: 'var(--border)' }}>•</span>
                   <span className="leading-relaxed">{criterion}</span>
@@ -165,11 +164,11 @@ export function StoryDetailModal({
         {/* Technical Notes */}
         {story.technicalNotes && (
           <section className="mt-5">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
+            <h3 className="text-detail uppercase tracking-[0.2em] mb-2" style={{ color: 'var(--accent-gold)' }}>
               Technical Notes
             </h3>
             <div
-              className="border p-3 text-[11px] font-mono whitespace-pre-wrap"
+              className="border p-3 text-label font-mono whitespace-pre-wrap"
               style={{
                 backgroundColor: 'var(--bg-hover)',
                 borderColor: 'var(--border-subtle)',
@@ -184,10 +183,10 @@ export function StoryDetailModal({
         <div className="border-t my-4" style={{ borderColor: 'var(--border-subtle)' }} />
 
         {/* Timestamps */}
-        <div className="flex items-center justify-between text-[10px]">
-          <div className="flex items-center gap-4" style={{ color: 'var(--text-muted)' }}>
-            <span>Created: <span style={{ color: 'var(--text-tertiary)' }}>{formatDate(story.createdAt)}</span></span>
-            <span>Updated: <span style={{ color: 'var(--text-tertiary)' }}>{formatDate(story.updatedAt)}</span></span>
+        <div className="flex items-center justify-between text-detail">
+          <div className="flex items-center gap-4 text-text-muted">
+            <span>Created: <span className="text-text-tertiary">{formatDate(story.createdAt)}</span></span>
+            <span>Updated: <span className="text-text-tertiary">{formatDate(story.updatedAt)}</span></span>
           </div>
 
           {/* Open File Link */}
@@ -196,8 +195,7 @@ export function StoryDetailModal({
               onClick={() => {
                 console.log('Open file:', story.filePath);
               }}
-              className="flex items-center gap-1.5 px-2 py-1 transition-luxury hover:opacity-80"
-              style={{ color: 'var(--text-muted)' }}
+              className="flex items-center gap-1.5 px-2 py-1 transition-luxury hover:opacity-80 text-text-muted"
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'var(--accent-gold)';
                 e.currentTarget.style.backgroundColor = 'var(--accent-gold-bg)';

@@ -51,7 +51,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Bot className="h-4 w-4" style={{ color: 'var(--agent-pm)' }} />
-          <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+          <span className="text-sm font-medium text-text-primary">
             Bob Orchestration
           </span>
         </div>
@@ -64,7 +64,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
               Story {pipeline.story_progress}
             </span>
           )}
-          <div className="flex items-center gap-1 text-xs" style={{ color: 'var(--text-tertiary)' }}>
+          <div className="flex items-center gap-1 text-xs text-text-tertiary">
             <Clock className="h-3 w-3" />
             {formatElapsed(elapsed.session_seconds)}
           </div>
@@ -107,7 +107,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
                   borderColor: isActive ? 'var(--agent-pm)' : 'transparent',
                 }}
               >
-                <span className="text-[10px]">
+                <span className="text-detail">
                   {isCompleted ? '\u2713' : isActive ? '\u25CF' : '\u25CB'}
                 </span>
                 {getStageLabel(stage)}
@@ -116,7 +116,7 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
               {/* Connector */}
               {idx < pipeline.stages.length - 1 && (
                 <span
-                  className="text-[10px] max-md:hidden"
+                  className="text-detail max-md:hidden"
                   style={{ color: isPending ? 'var(--text-muted)' : 'var(--text-tertiary)' }}
                 >
                   →
@@ -140,18 +140,18 @@ export const BobPipelinePanel = memo(function BobPipelinePanel() {
               <IconComponent className="h-3.5 w-3.5" style={{ color: agentConfig?.color }} />
             ) : null;
           })()}
-          <span style={{ color: 'var(--text-secondary)' }}>
+          <span className="text-text-secondary">
             @{currentAgent.id} ({currentAgent.name})
           </span>
-          <span style={{ color: 'var(--text-muted)' }}>—</span>
-          <span style={{ color: 'var(--text-primary)' }} className="truncate flex-1">
+          <span className="text-text-muted">—</span>
+          <span className="truncate flex-1 text-text-primary">
             {currentAgent.task}
           </span>
         </div>
       )}
 
       {/* Terminal count + timers */}
-      <div className="flex items-center justify-between mt-2 text-[11px]" style={{ color: 'var(--text-tertiary)' }}>
+      <div className="flex items-center justify-between mt-2 text-label text-text-tertiary">
         <span>
           Terminals: {terminals.length} active
           {terminals.length > 0 && (

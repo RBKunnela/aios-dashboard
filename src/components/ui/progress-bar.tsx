@@ -40,12 +40,12 @@ export const ProgressBar = memo(function ProgressBar({
           style={{
             width: `${clampedProgress}%`,
             backgroundColor: color,
-            boxShadow: glow ? `0 0 8px ${color}40` : undefined,
+            boxShadow: glow ? `0 0 8px color-mix(in srgb, ${color} 25%, transparent)` : undefined,
           }}
         />
       </div>
       {showLabel && (
-        <span className="text-[10px] text-[var(--text-muted)] tabular-nums font-light min-w-[2.5rem] text-right">
+        <span className="text-detail text-[var(--text-muted)] tabular-nums font-light min-w-[2.5rem] text-right">
           {clampedProgress}%
         </span>
       )}

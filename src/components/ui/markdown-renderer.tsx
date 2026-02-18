@@ -12,27 +12,27 @@ interface MarkdownRendererProps {
 
 const components: Components = {
   h1: ({ children }) => (
-    <h1 className="text-[15px] font-semibold text-[var(--accent-gold)] mb-3 mt-5 first:mt-0 leading-tight">
+    <h1 className="text-sm font-semibold text-[var(--accent-gold)] mb-3 mt-5 first:mt-0 leading-tight">
       {children}
     </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-2 mt-4 leading-snug">
+    <h2 className="text-reading font-semibold text-[var(--text-primary)] mb-2 mt-4 leading-snug">
       {children}
     </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="text-[12px] font-semibold text-[var(--text-primary)] mb-2 mt-3 leading-snug">
+    <h3 className="text-xs font-semibold text-[var(--text-primary)] mb-2 mt-3 leading-snug">
       {children}
     </h3>
   ),
   h4: ({ children }) => (
-    <h4 className="text-[11px] font-semibold text-[var(--text-secondary)] mb-1.5 mt-2.5">
+    <h4 className="text-label font-semibold text-[var(--text-secondary)] mb-1.5 mt-2.5">
       {children}
     </h4>
   ),
   p: ({ children }) => (
-    <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed mb-3">
+    <p className="text-label text-[var(--text-secondary)] leading-relaxed mb-3">
       {children}
     </p>
   ),
@@ -53,7 +53,7 @@ const components: Components = {
     </ol>
   ),
   li: ({ children }) => (
-    <li className="text-[11px] leading-relaxed">{children}</li>
+    <li className="text-label leading-relaxed">{children}</li>
   ),
   blockquote: ({ children }) => (
     <blockquote className="border-l-2 border-[var(--accent-gold)] pl-3 my-3 text-[var(--text-muted)] italic">
@@ -70,19 +70,19 @@ const components: Components = {
       );
     }
     return (
-      <code className="font-mono bg-[var(--bg-tertiary)] text-[var(--accent-gold)] px-1 py-0.5 text-[10px]">
+      <code className="font-mono bg-[var(--bg-tertiary)] text-[var(--accent-gold)] px-1 py-0.5 text-detail">
         {children}
       </code>
     );
   },
   pre: ({ children }) => (
-    <pre className="bg-[var(--bg-tertiary)] border border-[var(--border)] p-3 mb-3 overflow-x-auto font-mono text-[10px] leading-relaxed">
+    <pre className="bg-[var(--bg-tertiary)] border border-[var(--border)] p-3 mb-3 overflow-x-auto font-mono text-detail leading-relaxed">
       {children}
     </pre>
   ),
   table: ({ children }) => (
     <div className="overflow-x-auto mb-3">
-      <table className="border-collapse w-full text-[10px]">
+      <table className="border-collapse w-full text-detail">
         {children}
       </table>
     </div>
@@ -91,12 +91,12 @@ const components: Components = {
     <thead className="border-b border-[var(--border)]">{children}</thead>
   ),
   th: ({ children }) => (
-    <th className="text-left px-2 py-1.5 font-semibold text-[var(--accent-gold)] text-[10px] uppercase tracking-wider">
+    <th className="text-left px-2 py-1.5 font-semibold text-[var(--accent-gold)] text-detail uppercase tracking-wider">
       {children}
     </th>
   ),
   td: ({ children }) => (
-    <td className="px-2 py-1.5 border-b border-[var(--border)] text-[var(--text-secondary)] text-[10px]">
+    <td className="px-2 py-1.5 border-b border-[var(--border)] text-[var(--text-secondary)] text-detail">
       {children}
     </td>
   ),

@@ -107,8 +107,7 @@ export const CommandPanel = memo(function CommandPanel({ className }: CommandPan
             </span>
             {activeAgent.name && (
               <span
-                className="text-detail ml-1.5"
-                style={{ color: 'var(--text-muted)' }}
+                className="text-detail ml-1.5 text-text-muted"
               >
                 {activeAgent.name}
               </span>
@@ -121,10 +120,9 @@ export const CommandPanel = memo(function CommandPanel({ className }: CommandPan
       {currentCommand && (
         <div className="flex items-center gap-3 flex-1 justify-end">
           <div className="flex items-center gap-2">
-            <TerminalIcon className="h-3.5 w-3.5" style={{ color: 'var(--text-muted)' }} />
+            <TerminalIcon className="h-3.5 w-3.5 text-text-muted" />
             <span
-              className="text-label font-mono"
-              style={{ color: 'var(--text-secondary)' }}
+              className="text-label font-mono text-text-secondary"
             >
               {currentCommand.name}
             </span>

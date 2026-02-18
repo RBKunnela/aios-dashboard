@@ -127,8 +127,8 @@ const statusLabels: Record<string, string> = {
 };
 
 const sizeStyles = {
-  sm: 'text-[9px] px-1.5 py-0.5',
-  md: 'text-[10px] px-2 py-1',
+  sm: 'text-caption px-1.5 py-0.5',
+  md: 'text-detail px-2 py-1',
 };
 
 // Map StatusType to StatusDotType

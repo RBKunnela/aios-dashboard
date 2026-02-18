@@ -27,15 +27,14 @@ export const RoadmapCard = memo(function RoadmapCard({
     >
       {/* Title */}
       <h4
-        className="text-[13px] font-normal mb-2 leading-snug transition-colors"
-        style={{ color: 'var(--text-primary)' }}
+        className="text-reading font-normal mb-2 leading-snug transition-colors text-text-primary"
       >
         {item.title}
       </h4>
 
       {/* Description */}
       {item.description && (
-        <p className="text-[11px] mb-3 line-clamp-2 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+        <p className="text-label mb-3 line-clamp-2 leading-relaxed text-text-muted">
           {item.description}
         </p>
       )}
@@ -59,8 +58,8 @@ export const RoadmapCard = memo(function RoadmapCard({
       {/* Linked Story */}
       {item.linkedStoryId && (
         <div className="mt-2.5 pt-2.5 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-          <span className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-            Linked: <span className="normal-case" style={{ color: 'var(--text-tertiary)' }}>{item.linkedStoryId}</span>
+          <span className="text-detail uppercase tracking-wider text-text-muted">
+            Linked: <span className="normal-case text-text-tertiary">{item.linkedStoryId}</span>
           </span>
         </div>
       )}

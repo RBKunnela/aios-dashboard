@@ -157,7 +157,7 @@ function BobStatusIndicator() {
   return (
     <div className="flex items-center gap-1.5 text-label">
       <Bot className="h-3 w-3" style={{ color }} />
-      <span style={{ color: 'var(--text-muted)' }}>
+      <span className="text-text-muted">
         Bob: <span style={{ color }}>{label}</span>
       </span>
     </div>

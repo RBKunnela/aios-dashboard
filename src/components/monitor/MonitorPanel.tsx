@@ -38,10 +38,10 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
         <div className="flex items-center gap-3">
           <ActivityIcon className="h-4 w-4" style={{ color: 'var(--accent-gold)' }} />
           <div>
-            <h2 className="text-sm font-light" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="text-sm font-light text-text-primary">
               Live Monitor
             </h2>
-            <span className="text-detail" style={{ color: 'var(--text-muted)' }}>
+            <span className="text-detail text-text-muted">
               Real-time Claude Code activity
             </span>
           </div>
@@ -53,8 +53,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
           {connected && (
             <button
               onClick={clearEvents}
-              className="p-1.5 transition-colors hover:opacity-80"
-              style={{ color: 'var(--text-muted)' }}
+              className="p-1.5 transition-colors hover:opacity-80 text-text-muted"
               title="Clear events"
             >
               <TrashIcon className="h-3.5 w-3.5" />
@@ -84,9 +83,9 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
             borderColor: 'var(--border-subtle)',
           }}
         >
-          <div className="flex items-center gap-4 text-detail" style={{ color: 'var(--text-muted)' }}>
+          <div className="flex items-center gap-4 text-detail text-text-muted">
             <span>
-              <strong style={{ color: 'var(--text-secondary)' }}>{stats.total}</strong> total
+              <strong className="text-text-secondary">{stats.total}</strong> total
             </span>
             <span>
               <strong style={{ color: 'var(--status-success)' }}>{stats.success_rate}%</strong> success
@@ -95,7 +94,7 @@ export const MonitorPanel = memo(function MonitorPanel({ className }: MonitorPan
               <strong style={{ color: 'var(--status-error)' }}>{stats.errors}</strong> errors
             </span>
           </div>
-          <span className="text-caption" style={{ color: 'var(--text-muted)' }}>
+          <span className="text-caption text-text-muted">
             {stats.sessions_active} active sessions
           </span>
         </div>

@@ -156,7 +156,7 @@ export function InsightsPanel() {
                 >
                   <div
                     className="p-2 rounded-lg"
-                    style={{ backgroundColor: `${config.color}20` }}
+                    style={{ backgroundColor: config.bg }}
                   >
                     {IconComponent && <IconComponent className="h-5 w-5" style={{ color: config.color }} />}
                   </div>
