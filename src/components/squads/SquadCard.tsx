@@ -2,7 +2,8 @@
 
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
-import { getDomainColor, getDomainBg, getDomainBorder } from '@/lib/domain-taxonomy';
+import { Users, FileText, GitBranch, CheckCircle2 } from 'lucide-react';
+import { getDomainColor, getDomainLabel } from '@/lib/domain-taxonomy';
 import { formatSquadScore, formatSquadVersion, getScoreColor } from '@/lib/squad-metadata';
 import type { Squad } from '@/types';
 
@@ -11,10 +12,44 @@ interface SquadCardProps {
   onClick?: () => void;
 }
 
+function ScoreRing({ score }: { score: number }) {
+  const color = getScoreColor(score);
+  const pct = (score / 10) * 100;
+  // SVG circle: r=14, circumference ≈ 87.96
+  const circ = 2 * Math.PI * 14;
+  const offset = circ - (pct / 100) * circ;
+
+  return (
+    <div
+      className="relative flex items-center justify-center shrink-0"
+      title={`Score: ${formatSquadScore(score)}/10`}
+    >
+      <svg width="38" height="38" viewBox="0 0 32 32" className="-rotate-90">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="var(--border-subtle)" strokeWidth="2.5" />
+        <circle
+          cx="16" cy="16" r="14"
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          className="transition-all duration-500"
+        />
+      </svg>
+      <span
+        className="absolute text-detail font-mono font-medium"
+        style={{ color }}
+      >
+        {formatSquadScore(score)}
+      </span>
+    </div>
+  );
+}
+
 export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardProps) {
   const domainColor = getDomainColor(squad.domain);
-  const domainBg = getDomainBg(squad.domain);
-  const domainBorder = getDomainBorder(squad.domain);
+  const showBadge = squad.status !== 'active';
 
   return (
     <div
@@ -30,64 +65,70 @@ export const SquadCard = memo(function SquadCard({ squad, onClick }: SquadCardPr
       style={{ borderLeftColor: domainColor }}
     >
       <div className="p-4">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-light text-text-primary truncate">
-            {squad.displayName}
-          </span>
-          <span
-            className="text-caption uppercase tracking-wider font-medium px-2 py-0.5 border shrink-0 ml-2"
-            style={{
-              backgroundColor: domainBg,
-              borderColor: domainBorder,
-              color: domainColor,
-            }}
-          >
-            {squad.status}
-          </span>
+        {/* Header: Domain tag + Name + Score ring */}
+        <div className="flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            {/* Domain label */}
+            <span
+              className="text-caption uppercase tracking-wider font-medium"
+              style={{ color: domainColor }}
+            >
+              {getDomainLabel(squad.domain)}
+            </span>
+
+            {/* Name + optional non-active badge */}
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-sm font-light text-text-primary truncate">
+                {squad.displayName}
+              </span>
+              {showBadge && (
+                <span className="text-caption uppercase tracking-wider font-medium px-1.5 py-px border border-status-warning text-status-warning shrink-0">
+                  {squad.status}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Score ring - dominant element */}
+          <ScoreRing score={squad.score} />
         </div>
 
         {/* Description */}
         {squad.description && (
-          <p className="text-label text-text-secondary line-clamp-3 leading-relaxed mb-3">
+          <p className="text-label text-text-secondary line-clamp-2 leading-relaxed mt-2 mb-3">
             {squad.description}
           </p>
         )}
 
-        {/* Footer: counts + score + version */}
+        {/* Stats: icon + number, no text labels */}
         <div className="flex items-center gap-3 text-detail text-text-muted">
-          <span><span className="font-mono text-text-tertiary">{squad.agentCount}</span> agentes</span>
-          <span><span className="font-mono text-text-tertiary">{squad.taskCount}</span> tarefas</span>
-          {squad.checklistCount > 0 && (
-            <span><span className="font-mono text-text-tertiary">{squad.checklistCount}</span> checklists</span>
-          )}
+          <span className="flex items-center gap-1" title="Agents">
+            <Users className="h-3 w-3" />
+            <span className="font-mono text-text-tertiary">{squad.agentCount}</span>
+          </span>
+          <span className="flex items-center gap-1" title="Tasks">
+            <FileText className="h-3 w-3" />
+            <span className="font-mono text-text-tertiary">{squad.taskCount}</span>
+          </span>
           {squad.workflowCount > 0 && (
-            <span><span className="font-mono text-text-tertiary">{squad.workflowCount}</span> workflows</span>
+            <span className="flex items-center gap-1" title="Workflows">
+              <GitBranch className="h-3 w-3" />
+              <span className="font-mono text-text-tertiary">{squad.workflowCount}</span>
+            </span>
           )}
-          <span className="ml-auto flex items-center gap-2 font-mono">
-            <span
-              className="flex items-center gap-1.5"
-              title={`Score: ${formatSquadScore(squad.score)}/10`}
-            >
-              <span style={{ color: getScoreColor(squad.score) }}>
-                {formatSquadScore(squad.score)}
-              </span>
-              <span
-                className="inline-block w-[40px] h-[3px] rounded-full bg-border-subtle overflow-hidden"
-                aria-hidden="true"
-              >
-                <span
-                  className="block h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${(squad.score / 10) * 100}%`,
-                    backgroundColor: getScoreColor(squad.score),
-                  }}
-                />
-              </span>
+          {squad.checklistCount > 0 && (
+            <span className="flex items-center gap-1" title="Checklists">
+              <CheckCircle2 className="h-3 w-3" />
+              <span className="font-mono text-text-tertiary">{squad.checklistCount}</span>
             </span>
-            <span className="text-text-disabled">
-              {formatSquadVersion(squad.version)}
-            </span>
+          )}
+
+          {/* Version - right-aligned, subdued */}
+          <span
+            className="ml-auto text-text-disabled font-mono opacity-0 group-hover:opacity-100 transition-opacity"
+            title={`Version ${formatSquadVersion(squad.version)}`}
+          >
+            {formatSquadVersion(squad.version)}
           </span>
         </div>
       </div>

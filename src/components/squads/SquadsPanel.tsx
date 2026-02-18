@@ -172,19 +172,15 @@ export function SquadsPanel() {
               <span className="font-mono text-text-secondary">{squads.length}</span> squads
             </span>
 
-            {/* Secondary counts - compact */}
+            {/* Secondary counts - readable */}
             <span className="text-caption text-text-disabled ml-3 hidden sm:inline" aria-label="Asset totals">
               <span className="font-mono text-text-muted">{summary.total_agents}</span> agents
               <span className="mx-1 opacity-40">/</span>
               <span className="font-mono text-text-muted">{summary.total_tasks}</span> tasks
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-text-muted">{summary.total_workflows}</span> wf
+              <span className="font-mono text-text-muted">{summary.total_workflows}</span> workflows
               <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-text-muted">{summary.total_templates}</span> tpl
-              <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-text-muted">{summary.total_checklists}</span> ck
-              <span className="mx-1 opacity-40">/</span>
-              <span className="font-mono text-text-muted">{summary.total_data_files}</span> data
+              <span className="font-mono text-text-muted">{summary.total_checklists}</span> checklists
             </span>
           </div>
 

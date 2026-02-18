@@ -3,8 +3,9 @@
 import { useCallback, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { SectionLabel } from '@/components/ui/section-label';
+import { Users, FileText, GitBranch, CheckCircle2 } from 'lucide-react';
 import { formatSquadScore, formatSquadVersion, getScoreColor } from '@/lib/squad-metadata';
-import { getDomainColor, getDomainBg, getDomainBorder, getDomainLabel } from '@/lib/domain-taxonomy';
+import { getDomainColor, getDomainLabel } from '@/lib/domain-taxonomy';
 import { SquadTierTree } from './SquadTierTree';
 import { SquadSectionGrid } from './SquadSectionGrid';
 import { SquadItemViewer } from './SquadItemViewer';
