@@ -12,43 +12,43 @@ interface MarkdownRendererProps {
 
 const components: Components = {
   h1: ({ children }) => (
-    <h1 className="text-sm font-semibold text-[var(--accent-gold)] mb-3 mt-5 first:mt-0 leading-tight">
+    <h1 className="text-sm font-semibold text-gold mb-3 mt-5 first:mt-0 leading-tight">
       {children}
     </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="text-reading font-semibold text-[var(--text-primary)] mb-2 mt-4 leading-snug">
+    <h2 className="text-reading font-semibold text-text-primary mb-2 mt-4 leading-snug">
       {children}
     </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="text-xs font-semibold text-[var(--text-primary)] mb-2 mt-3 leading-snug">
+    <h3 className="text-xs font-semibold text-text-primary mb-2 mt-3 leading-snug">
       {children}
     </h3>
   ),
   h4: ({ children }) => (
-    <h4 className="text-label font-semibold text-[var(--text-secondary)] mb-1.5 mt-2.5">
+    <h4 className="text-label font-semibold text-text-secondary mb-1.5 mt-2.5">
       {children}
     </h4>
   ),
   p: ({ children }) => (
-    <p className="text-label text-[var(--text-secondary)] leading-relaxed mb-3">
+    <p className="text-label text-text-secondary leading-relaxed mb-3">
       {children}
     </p>
   ),
   strong: ({ children }) => (
-    <strong className="font-semibold text-[var(--text-primary)]">{children}</strong>
+    <strong className="font-semibold text-text-primary">{children}</strong>
   ),
   em: ({ children }) => (
-    <em className="italic text-[var(--text-muted)]">{children}</em>
+    <em className="italic text-text-muted">{children}</em>
   ),
   ul: ({ children }) => (
-    <ul className="list-disc list-inside mb-3 space-y-1 text-[var(--text-secondary)]">
+    <ul className="list-disc list-inside mb-3 space-y-1 text-text-secondary">
       {children}
     </ul>
   ),
   ol: ({ children }) => (
-    <ol className="list-decimal list-inside mb-3 space-y-1 text-[var(--text-secondary)]">
+    <ol className="list-decimal list-inside mb-3 space-y-1 text-text-secondary">
       {children}
     </ol>
   ),
@@ -56,7 +56,7 @@ const components: Components = {
     <li className="text-label leading-relaxed">{children}</li>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="border-l-2 border-[var(--accent-gold)] pl-3 my-3 text-[var(--text-muted)] italic">
+    <blockquote className="border-l-2 border-gold pl-3 my-3 text-text-muted italic">
       {children}
     </blockquote>
   ),
@@ -70,13 +70,13 @@ const components: Components = {
       );
     }
     return (
-      <code className="font-mono bg-[var(--bg-tertiary)] text-[var(--accent-gold)] px-1 py-0.5 text-detail">
+      <code className="font-mono bg-bg-tertiary text-gold px-1 py-0.5 text-detail">
         {children}
       </code>
     );
   },
   pre: ({ children }) => (
-    <pre className="bg-[var(--bg-tertiary)] border border-[var(--border)] p-3 mb-3 overflow-x-auto font-mono text-detail leading-relaxed">
+    <pre className="bg-bg-tertiary border border-border p-3 mb-3 overflow-x-auto font-mono text-detail leading-relaxed">
       {children}
     </pre>
   ),
@@ -88,25 +88,25 @@ const components: Components = {
     </div>
   ),
   thead: ({ children }) => (
-    <thead className="border-b border-[var(--border)]">{children}</thead>
+    <thead className="border-b border-border">{children}</thead>
   ),
   th: ({ children }) => (
-    <th className="text-left px-2 py-1.5 font-semibold text-[var(--accent-gold)] text-detail uppercase tracking-wider">
+    <th className="text-left px-2 py-1.5 font-semibold text-gold text-detail uppercase tracking-wider">
       {children}
     </th>
   ),
   td: ({ children }) => (
-    <td className="px-2 py-1.5 border-b border-[var(--border)] text-[var(--text-secondary)] text-detail">
+    <td className="px-2 py-1.5 border-b border-border text-text-secondary text-detail">
       {children}
     </td>
   ),
   hr: () => (
-    <hr className="border-[var(--border)] my-4" />
+    <hr className="border-border my-4" />
   ),
   a: ({ href, children }) => (
     <a
       href={href}
-      className="text-[var(--accent-gold)] underline underline-offset-2 hover:brightness-110"
+      className="text-gold underline underline-offset-2 hover:brightness-110"
       target="_blank"
       rel="noopener noreferrer"
     >

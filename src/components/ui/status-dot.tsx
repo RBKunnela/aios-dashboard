@@ -13,12 +13,12 @@ interface StatusDotProps {
 }
 
 const STATUS_COLORS: Record<StatusType, string> = {
-  idle: 'bg-[var(--status-idle)]',
-  working: 'bg-[var(--status-success)]',
-  waiting: 'bg-[var(--status-warning)]',
-  error: 'bg-[var(--status-error)]',
-  success: 'bg-[var(--status-success)]',
-  info: 'bg-[var(--status-info)]',
+  idle: 'bg-status-idle',
+  working: 'bg-status-success',
+  waiting: 'bg-status-warning',
+  error: 'bg-status-error',
+  success: 'bg-status-success',
+  info: 'bg-status-info',
 };
 
 const STATUS_GLOW: Record<StatusType, string> = {

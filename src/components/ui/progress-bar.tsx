@@ -31,7 +31,7 @@ export const ProgressBar = memo(function ProgressBar({
     <div className={cn('flex items-center gap-2', className)}>
       <div
         className={cn(
-          'flex-1 bg-[var(--border)] overflow-hidden',
+          'flex-1 bg-border overflow-hidden',
           SIZE_CLASSES[size]
         )}
       >
@@ -45,7 +45,7 @@ export const ProgressBar = memo(function ProgressBar({
         />
       </div>
       {showLabel && (
-        <span className="text-detail text-[var(--text-muted)] tabular-nums font-light min-w-[2.5rem] text-right">
+        <span className="text-detail text-text-muted tabular-nums font-light min-w-[2.5rem] text-right">
           {clampedProgress}%
         </span>
       )}

@@ -11,9 +11,9 @@ interface SectionLabelProps {
 }
 
 const VARIANT_CLASSES = {
-  default: 'text-[var(--text-tertiary)]',
-  gold: 'text-[var(--accent-gold)]',
-  muted: 'text-[var(--text-muted)]',
+  default: 'text-text-tertiary',
+  gold: 'text-gold',
+  muted: 'text-text-muted',
 };
 
 export function SectionLabel({
@@ -39,7 +39,7 @@ export function SectionLabel({
 
   const lineClass = variant === 'gold'
     ? 'bg-gradient-to-r from-[var(--border-gold)] to-transparent'
-    : 'bg-[var(--border)]';
+    : 'bg-border';
 
   if (lineDirection === 'both') {
     return (

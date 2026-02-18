@@ -34,7 +34,7 @@ function Skeleton({
 // Pre-built skeleton variants for common use cases
 function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className={cn('p-4 space-y-3 bg-[var(--card)] border border-[var(--border)]', className)}>
+    <div className={cn('p-4 space-y-3 bg-card border border-border', className)}>
       <Skeleton height={12} width="60%" variant="text" />
       <Skeleton height={10} width="100%" variant="text" />
       <Skeleton height={10} width="80%" variant="text" />
