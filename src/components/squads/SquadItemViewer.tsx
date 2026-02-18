@@ -1,9 +1,16 @@
 'use client';
 
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
+import dynamic from 'next/dynamic';
+import { cn } from '@/lib/utils';
 import { Loader2 } from '@/lib/icons';
 import { MarkdownRenderer } from '@/components/ui/markdown-renderer';
 import { useSquadItemContent } from '@/hooks/use-squads';
+
+const WorkflowDiagram = dynamic(
+  () => import('./WorkflowDiagram').then((m) => m.WorkflowDiagram),
+  { ssr: false }
+);
 
 interface SquadItemViewerProps {
   squadName: string;
@@ -19,6 +26,7 @@ export function SquadItemViewer({
   breadcrumb,
 }: SquadItemViewerProps) {
   const { item, isLoading, isError } = useSquadItemContent(squadName, section, slug);
+  const [activeTab, setActiveTab] = useState<'diagram' | 'code'>('diagram');
 
   if (isLoading) {
     return (
@@ -39,6 +47,8 @@ export function SquadItemViewer({
     );
   }
 
+  const isWorkflowYaml = section === 'workflows' && item.isYaml;
+
   return (
     <div className="h-full overflow-y-auto">
       <div className="p-6 max-w-4xl">
@@ -50,8 +60,48 @@ export function SquadItemViewer({
           {item.title}
         </h2>
 
+        {/* Workflow tabs */}
+        {isWorkflowYaml && (
+          <div className="flex items-center gap-1 mb-4 border-b border-border">
+            <button
+              type="button"
+              onClick={() => setActiveTab('diagram')}
+              className={cn(
+                'px-3 py-2 text-detail uppercase tracking-wider font-medium',
+                'border-b-2 -mb-px transition-colors',
+                activeTab === 'diagram'
+                  ? 'border-gold text-gold'
+                  : 'border-transparent text-text-muted hover:text-text-secondary'
+              )}
+            >
+              Diagram
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('code')}
+              className={cn(
+                'px-3 py-2 text-detail uppercase tracking-wider font-medium',
+                'border-b-2 -mb-px transition-colors',
+                activeTab === 'code'
+                  ? 'border-gold text-gold'
+                  : 'border-transparent text-text-muted hover:text-text-secondary'
+              )}
+            >
+              Code
+            </button>
+          </div>
+        )}
+
         {/* Content */}
-        {item.isYaml ? (
+        {isWorkflowYaml ? (
+          activeTab === 'diagram' ? (
+            <WorkflowDiagram yamlContent={item.content} />
+          ) : (
+            <MarkdownRenderer
+              content={`\`\`\`yaml\n${item.content}\n\`\`\``}
+            />
+          )
+        ) : item.isYaml ? (
           <MarkdownRenderer
             content={`\`\`\`${item.filePath.endsWith('.json') ? 'json' : 'yaml'}\n${item.content}\n\`\`\``}
           />
