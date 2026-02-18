@@ -379,6 +379,15 @@
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-surface: var(--bg-surface);
   --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-hover: var(--bg-hover);
+
+  /* Status bg/border */
+  --color-status-success-bg: var(--status-success-bg);
+  --color-status-success-border: var(--status-success-border);
+  --color-status-warning-bg: var(--status-warning-bg);
+  --color-status-warning-border: var(--status-warning-border);
 
   /* Charts */
   --color-chart-1: var(--chart-1);
