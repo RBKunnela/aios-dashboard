@@ -12,21 +12,21 @@
 O Dashboard **precisa estar dentro de um projeto com AIOS instalado** porque ele lê e visualiza os documentos do framework (stories, epics, squads, workflows, etc).
 
 ```
-meu-projeto/                      # Seu projeto com AIOS
-├── .aios-core/                   # ← Core do framework (obrigatório)
+meu-projeto/                      # ← Você está aqui
+├── .aios-core/                   # Core do framework (obrigatório)
 │   ├── development/
 │   │   ├── agents/               # Definições de agentes
 │   │   ├── tasks/                # Workflows de tasks
 │   │   └── templates/            # Templates de documentos
 │   └── core/
 ├── docs/
-│   ├── stories/                  # ← Stories que o dashboard visualiza
+│   ├── stories/                  # Stories que o dashboard visualiza
 │   │   ├── active/
 │   │   └── completed/
 │   └── architecture/
-├── squads/                       # ← Squads que o dashboard visualiza
+├── squads/                       # Squads que o dashboard visualiza
 ├── apps/
-│   └── dashboard/                # ← INSTALE O DASHBOARD AQUI
+│   └── dashboard/                # ← Dashboard instalado aqui
 │       ├── src/
 │       ├── server/
 │       └── README.md
@@ -93,6 +93,8 @@ O Dashboard lê documentos do projeto AIOS e exibe:
 
 ## Instalação
 
+> **Todos os comandos são executados a partir da raiz do seu projeto (`meu-projeto/`).**
+
 ### Pré-requisitos
 
 - Projeto com [Synkra AIOS](https://github.com/SynkraAI/aios-core) instalado
@@ -102,45 +104,48 @@ O Dashboard lê documentos do projeto AIOS e exibe:
 ### 1. Instale o AIOS no seu projeto (se ainda não tiver)
 
 ```bash
+# Criar novo projeto com AIOS
 npx aios-core init meu-projeto
-# ou em projeto existente:
-cd meu-projeto && npx aios-core install
+cd meu-projeto
+
+# Ou instalar em projeto existente
+npx aios-core install
 ```
 
-### 2. Clone o Dashboard dentro do projeto
+### 2. Clone o Dashboard
 
 ```bash
-cd meu-projeto
+# A partir da raiz do projeto (meu-projeto/)
 mkdir -p apps
-cd apps
-git clone https://github.com/SynkraAI/aios-dashboard.git dashboard
+git clone https://github.com/SynkraAI/aios-dashboard.git apps/dashboard
 ```
 
 ### 3. Instale as dependências
 
 ```bash
-cd dashboard
-
 # Dashboard (Next.js)
-npm install
+npm install --prefix apps/dashboard
 
 # Server (Bun)
-cd server && bun install && cd ..
+cd apps/dashboard/server && bun install && cd ../../..
 ```
 
 ### 4. Inicie o Server
 
 ```bash
-cd server
-bun run dev
+# A partir da raiz do projeto
+cd apps/dashboard/server && bun run dev
 ```
 
 Server rodando em `http://localhost:4001`.
 
+> **Dica:** Abra um novo terminal para o próximo passo.
+
 ### 5. Inicie o Dashboard
 
 ```bash
-npm run dev
+# A partir da raiz do projeto (novo terminal)
+npm run dev --prefix apps/dashboard
 ```
 
 Dashboard rodando em `http://localhost:3000`.
@@ -148,7 +153,8 @@ Dashboard rodando em `http://localhost:3000`.
 ### 6. Instale os Hooks (Opcional - para eventos em tempo real)
 
 ```bash
-./scripts/install-hooks.sh
+# A partir da raiz do projeto
+apps/dashboard/scripts/install-hooks.sh
 ```
 
 Isso instala hooks Python em `~/.claude/hooks/` que capturam:
@@ -158,6 +164,28 @@ Isso instala hooks Python em `~/.claude/hooks/` que capturam:
 - `UserPromptSubmit` — Quando usuário envia prompt
 - `Stop` — Quando Claude para
 - `SubagentStop` — Quando um subagent (Task) para
+
+## Comandos Rápidos
+
+Execute todos a partir da raiz do projeto (`meu-projeto/`):
+
+```bash
+# Instalar dependências
+npm install --prefix apps/dashboard
+cd apps/dashboard/server && bun install && cd ../../..
+
+# Iniciar server (terminal 1)
+cd apps/dashboard/server && bun run dev
+
+# Iniciar dashboard (terminal 2)
+npm run dev --prefix apps/dashboard
+
+# Instalar hooks
+apps/dashboard/scripts/install-hooks.sh
+
+# Verificar health do server
+curl http://localhost:4001/health
+```
 
 ## Estrutura do Dashboard
 
@@ -189,17 +217,19 @@ apps/dashboard/
 | `GET /sessions/:id/events` | GET       | Eventos de uma sessão     |
 | `GET /stats`               | GET       | Estatísticas agregadas    |
 | `WS /stream`               | WebSocket | Stream de eventos em tempo real |
-| `GET /health`              | GET       | Health check              |
+| `GET /health`              | Health check              |
 
 ## Configuração
 
 ### Variáveis de Ambiente
 
-| Variável                     | Default                       | Descrição            |
-| ---------------------------- | ----------------------------- | -------------------- |
-| `MONITOR_PORT`               | `4001`                        | Porta do server      |
-| `MONITOR_DB`                 | `~/.aios/monitor/events.db`   | Path do SQLite       |
-| `NEXT_PUBLIC_MONITOR_WS_URL` | `ws://localhost:4001/stream`  | URL do WebSocket     |
+Crie `apps/dashboard/.env.local`:
+
+```bash
+MONITOR_PORT=4001
+MONITOR_DB=~/.aios/monitor/events.db
+NEXT_PUBLIC_MONITOR_WS_URL=ws://localhost:4001/stream
+```
 
 ### Variáveis dos Hooks
 
@@ -210,44 +240,45 @@ apps/dashboard/
 
 ## Desenvolvimento
 
+Execute a partir da raiz do projeto:
+
 ```bash
 # Dashboard com hot reload
-npm run dev
+npm run dev --prefix apps/dashboard
 
 # Server com watch mode
-cd server && bun --watch run server.ts
+cd apps/dashboard/server && bun --watch run server.ts
 
 # Testes
-npm test
+npm test --prefix apps/dashboard
 ```
 
 ## Troubleshooting
 
 ### Dashboard não mostra stories/squads
 
-Verifique se o AIOS está instalado no projeto pai:
+Verifique se o AIOS está instalado:
 
 ```bash
-cd ../..  # voltar para raiz do projeto
-ls -la .aios-core/  # deve existir
-ls -la docs/stories/  # deve ter stories
+# A partir da raiz do projeto
+ls -la .aios-core/     # deve existir
+ls -la docs/stories/   # deve ter stories
 ```
 
 ### Eventos em tempo real não aparecem
 
-1. Verifique se hooks estão instalados:
-   ```bash
-   ls ~/.claude/hooks/
-   ```
+```bash
+# Hooks instalados?
+ls ~/.claude/hooks/
 
-2. Verifique se server está rodando:
-   ```bash
-   curl http://localhost:4001/health
-   ```
+# Server rodando?
+curl http://localhost:4001/health
+```
 
 ### WebSocket não conecta
 
-Configure `NEXT_PUBLIC_MONITOR_WS_URL` no `.env`:
+Verifique se `apps/dashboard/.env.local` existe com:
+
 ```
 NEXT_PUBLIC_MONITOR_WS_URL=ws://localhost:4001/stream
 ```
