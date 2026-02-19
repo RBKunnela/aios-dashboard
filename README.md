@@ -2,8 +2,15 @@
 
 [![Synkra AIOS](https://img.shields.io/badge/Synkra-AIOS-blue.svg)](https://github.com/SynkraAI/aios-core)
 [![Licença: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/status-early%20development-orange.svg)]()
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/SynkraAI/aios-dashboard/issues)
 
 **Extensão de observabilidade em tempo real para o Synkra AIOS.**
+
+> 🚧 **FASE INICIAL DE DESENVOLVIMENTO**
+>
+> Este projeto está em construção ativa. Funcionalidades podem mudar, quebrar ou estar incompletas.
+> **Colaborações são muito bem-vindas!** Veja as [issues abertas](https://github.com/SynkraAI/aios-dashboard/issues) ou abra uma nova para sugerir melhorias.
 
 > ⚠️ **Este projeto é uma extensão OPCIONAL.** O [Synkra AIOS](https://github.com/SynkraAI/aios-core) funciona 100% sem ele. O Dashboard existe apenas para **observar** o que acontece na CLI — ele nunca controla.
 
