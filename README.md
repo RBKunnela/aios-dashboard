@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AIOS Dashboard
 
-## Getting Started
+Real-time monitoring dashboard for Claude Code activity.
 
-First, run the development server:
+## Architecture
+
+```
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Claude Code   │────▶│  Monitor Server │────▶│     Dashboard   │
+│   (CLI + Hooks) │     │  (Bun + SQLite) │     │  (Next.js + WS) │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+       stdin              HTTP POST              WebSocket
+```
+
+## Quick Start
+
+### 1. Install Dependencies
+
+```bash
+# Dashboard (Next.js)
+npm install
+
+# Server (Bun)
+cd server && bun install
+```
+
+### 2. Start the Server
+
+```bash
+cd server
+bun run dev
+```
+
+Server runs on `http://localhost:4001`.
+
+### 3. Start the Dashboard
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Dashboard runs on `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Install Claude Code Hooks (Optional)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To capture real-time events from Claude Code:
 
-## Learn More
+```bash
+./scripts/install-hooks.sh
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+dashboard/
+├── src/                 # Next.js app
+├── server/              # Bun WebSocket server
+│   ├── server.ts        # Main server
+│   ├── db.ts            # SQLite database layer
+│   └── types.ts         # TypeScript types
+├── scripts/
+│   └── install-hooks.sh # Hook installer
+└── public/
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Endpoints (Server)
 
-## Deploy on Vercel
+| Endpoint                   | Method    | Description               |
+| -------------------------- | --------- | ------------------------- |
+| `POST /events`             | POST      | Receive events from hooks |
+| `GET /events`              | GET       | Query events              |
+| `GET /events/recent`       | GET       | Get recent events         |
+| `GET /sessions`            | GET       | List all sessions         |
+| `GET /sessions/:id`        | GET       | Get session details       |
+| `GET /sessions/:id/events` | GET       | Get events for a session  |
+| `GET /stats`               | GET       | Aggregated statistics     |
+| `WS /stream`               | WebSocket | Real-time event stream    |
+| `GET /health`              | GET       | Health check              |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Environment Variables
+
+| Variable                    | Default                     | Description          |
+| --------------------------- | --------------------------- | -------------------- |
+| `MONITOR_PORT`              | `4001`                      | Server port          |
+| `MONITOR_DB`                | `~/.aios/monitor/events.db` | SQLite database path |
+| `NEXT_PUBLIC_MONITOR_WS_URL`| `ws://localhost:4001/stream`| WebSocket URL        |
+
+## Development
+
+```bash
+# Dashboard with hot reload
+npm run dev
+
+# Server with watch mode
+cd server && bun --watch run server.ts
+
+# Run tests
+npm test
+```
+
+## License
+
+MIT
