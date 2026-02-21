@@ -68,13 +68,13 @@ function SurfaceDecisionBanner({ decision }: SurfaceDecisionBannerProps) {
 
       <div className="flex-1 min-w-0">
         <p className="text-xs font-medium mb-1 text-status-warning">
-          Bob precisa da sua atenção no CLI
+          Bob needs your attention in the CLI
         </p>
         <p className="text-xs mb-1 text-text-secondary">
-          <span className="font-medium">Critério:</span> {decision.criteria}
+          <span className="font-medium">Criteria:</span> {decision.criteria}
         </p>
         <p className="text-xs text-text-secondary">
-          <span className="font-medium">Ação:</span> {decision.action}
+          <span className="font-medium">Action:</span> {decision.action}
         </p>
       </div>
 

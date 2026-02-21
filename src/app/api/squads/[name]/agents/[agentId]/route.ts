@@ -130,7 +130,7 @@ function parseTaskFile(content: string, taskId: string): ParsedTask {
   }
 
   // Extract responsibilities from workflow/steps section
-  const workflowMatch = content.match(/##\s*(?:Workflow|Steps|Phases?|Processo)\s*\n([\s\S]*?)(?=\n##\s+[A-Z]|$)/i);
+  const workflowMatch = content.match(/##\s*(?:Workflow|Steps|Phases?|Process)\s*\n([\s\S]*?)(?=\n##\s+[A-Z]|$)/i);
   if (workflowMatch) {
     const respLines = workflowMatch[1]
       .split('\n')
@@ -141,7 +141,7 @@ function parseTaskFile(content: string, taskId: string): ParsedTask {
   }
 
   // Extract anti-patterns
-  const antiMatch = content.match(/##\s*(?:Anti[- ]?Patterns?|Não\s+faz|Never)\s*\n([\s\S]*?)(?=\n##|$)/i);
+  const antiMatch = content.match(/##\s*(?:Anti[- ]?Patterns?|Never)\s*\n([\s\S]*?)(?=\n##|$)/i);
   if (antiMatch) {
     const antiLines = antiMatch[1]
       .split('\n')

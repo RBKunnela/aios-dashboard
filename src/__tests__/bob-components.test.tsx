@@ -80,7 +80,7 @@ describe('BobAgentActivity', () => {
     });
     render(<BobAgentActivity />);
 
-    expect(screen.getByText('Nenhum agente ativo no momento')).toBeInTheDocument();
+    expect(screen.getByText('No active agents at the moment')).toBeInTheDocument();
   });
 
   it('should show agent cards when agents active', () => {
@@ -108,7 +108,7 @@ describe('BobSurfaceAlert', () => {
     });
     render(<BobSurfaceAlert />);
 
-    expect(screen.getByText('Bob precisa da sua atenção no CLI')).toBeInTheDocument();
+    expect(screen.getByText('Bob needs your attention in the CLI')).toBeInTheDocument();
     expect(screen.getByText(/C003/)).toBeInTheDocument();
   });
 
@@ -128,8 +128,8 @@ describe('BobOrchestrationView', () => {
   it('should show placeholder when Bob is not active', () => {
     render(<BobOrchestrationView />);
 
-    expect(screen.getByText('Bob não está ativo')).toBeInTheDocument();
-    expect(screen.getByText(/Inicie Bob no CLI/)).toBeInTheDocument();
+    expect(screen.getByText('Bob is not active')).toBeInTheDocument();
+    expect(screen.getByText(/Start Bob in the CLI/)).toBeInTheDocument();
   });
 
   it('should render orchestration view when Bob is active', () => {

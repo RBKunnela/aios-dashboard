@@ -91,7 +91,7 @@ export const BobOrchestrationView = memo(function BobOrchestrationView() {
             inactive
           </span>
           <span className="text-xs text-text-muted">
-            Ultimo update há mais de 5 minutos
+            Last update over 5 minutes ago
           </span>
         </div>
         <BobPipelinePanel />
@@ -123,10 +123,10 @@ function BobInactivePlaceholder() {
       <div className="text-center max-w-sm">
         <Bot className="h-12 w-12 mx-auto mb-4 text-text-muted" style={{ opacity: 0.4 }} />
         <p className="text-sm font-medium mb-1 text-text-secondary">
-          Bob não está ativo
+          Bob is not active
         </p>
         <p className="text-xs text-text-muted">
-          Inicie Bob no CLI para ver o progresso aqui.
+          Start Bob in the CLI to see progress here.
         </p>
       </div>
     </div>

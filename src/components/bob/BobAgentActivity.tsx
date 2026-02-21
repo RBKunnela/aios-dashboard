@@ -104,7 +104,7 @@ export const BobAgentActivity = memo(function BobAgentActivity() {
           </span>
         </div>
         <p className="text-xs text-center py-4 text-text-muted">
-          Nenhum agente ativo no momento
+          No active agents at the moment
         </p>
       </div>
     );

@@ -1,39 +1,39 @@
 # AIOS Dashboard: Observability Extension
 
 [![Synkra AIOS](https://img.shields.io/badge/Synkra-AIOS-blue.svg)](https://github.com/SynkraAI/aios-core)
-[![Licença: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-early%20development-orange.svg)]()
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/SynkraAI/aios-dashboard/issues)
 
-**Extensão de observabilidade em tempo real para o Synkra AIOS.**
+**Real-time observability extension for Synkra AIOS.**
 
-> 🚧 **FASE INICIAL DE DESENVOLVIMENTO**
+> 🚧 **EARLY DEVELOPMENT PHASE**
 >
-> Este projeto está em construção ativa. Funcionalidades podem mudar, quebrar ou estar incompletas.
-> **Colaborações são muito bem-vindas!** Veja as [issues abertas](https://github.com/SynkraAI/aios-dashboard/issues) ou abra uma nova para sugerir melhorias.
+> This project is under active construction. Features may change, break, or be incomplete.
+> **Contributions are very welcome!** Check the [open issues](https://github.com/SynkraAI/aios-dashboard/issues) or open a new one to suggest improvements.
 
-> ⚠️ **Este projeto é uma extensão OPCIONAL.** O [Synkra AIOS](https://github.com/SynkraAI/aios-core) funciona 100% sem ele. O Dashboard existe apenas para **observar** o que acontece na CLI — ele nunca controla.
+> ⚠️ **This project is an OPTIONAL extension.** [Synkra AIOS](https://github.com/SynkraAI/aios-core) works 100% without it. The Dashboard exists only to **observe** what happens in the CLI — it never controls it.
 
-## Requisito: Projeto com AIOS Instalado
+## Requirement: Project with AIOS Installed
 
-O Dashboard **precisa estar dentro de um projeto com AIOS instalado** porque ele lê e visualiza os documentos do framework (stories, epics, squads, workflows, etc).
+The Dashboard **must be inside a project with AIOS installed** because it reads and visualizes the framework's documents (stories, epics, squads, workflows, etc).
 
 ```
-meu-projeto/                      # ← Você está aqui
-├── .aios-core/                   # Core do framework (obrigatório)
+my-project/                       # ← You are here
+├── .aios-core/                   # Framework core (required)
 │   ├── development/
-│   │   ├── agents/               # Definições de agentes
-│   │   ├── tasks/                # Workflows de tasks
-│   │   └── templates/            # Templates de documentos
+│   │   ├── agents/               # Agent definitions
+│   │   ├── tasks/                # Task workflows
+│   │   └── templates/            # Document templates
 │   └── core/
 ├── docs/
-│   ├── stories/                  # Stories que o dashboard visualiza
+│   ├── stories/                  # Stories visualized by the dashboard
 │   │   ├── active/
 │   │   └── completed/
 │   └── architecture/
-├── squads/                       # Squads que o dashboard visualiza
+├── squads/                       # Squads visualized by the dashboard
 ├── apps/
-│   └── dashboard/                # ← Dashboard instalado aqui
+│   └── dashboard/                # ← Dashboard installed here
 │       ├── src/
 │       ├── server/
 │       └── README.md
@@ -42,42 +42,42 @@ meu-projeto/                      # ← Você está aqui
 └── package.json
 ```
 
-**Sem o AIOS instalado, o dashboard não terá documentos para exibir.**
+**Without AIOS installed, the dashboard will have no documents to display.**
 
-## Posição na Arquitetura AIOS
+## Position in the AIOS Architecture
 
-O Synkra AIOS segue uma hierarquia arquitetural rígida:
+Synkra AIOS follows a strict architectural hierarchy:
 
 ```
 CLI First → Observability Second → UI Third
 ```
 
-| Camada            | Prioridade | O que faz                                                    |
-| ----------------- | ---------- | ------------------------------------------------------------ |
-| **CLI**           | Máxima     | Onde a inteligência vive. Toda execução e decisões.          |
-| **Observability** | Secundária | Observar e monitorar o que acontece no CLI em tempo real.    |
-| **UI**            | Terciária  | Gestão pontual e visualizações quando necessário.            |
+| Layer               | Priority  | What it does                                                  |
+| ------------------- | --------- | ------------------------------------------------------------- |
+| **CLI**             | Highest   | Where the intelligence lives. All execution and decisions.    |
+| **Observability**   | Secondary | Observe and monitor what happens in the CLI in real time.     |
+| **UI**              | Tertiary  | Occasional management and visualizations when needed.         |
 
-**Este Dashboard opera na camada de Observability.** Ele captura eventos da CLI via hooks e os exibe em tempo real — mas a CLI continua sendo a fonte da verdade.
+**This Dashboard operates in the Observability layer.** It captures CLI events via hooks and displays them in real time — but the CLI remains the source of truth.
 
-### Princípios que este Dashboard respeita
+### Principles this Dashboard respects
 
-- ✅ **A CLI é a fonte da verdade** — O Dashboard apenas observa, nunca controla
-- ✅ **O AIOS funciona 100% sem Dashboard** — Nenhuma funcionalidade depende dele
-- ✅ **Observabilidade serve para entender** — Não para modificar comportamento
+- ✅ **The CLI is the source of truth** — The Dashboard only observes, never controls
+- ✅ **AIOS works 100% without the Dashboard** — No functionality depends on it
+- ✅ **Observability is for understanding** — Not for modifying behavior
 
-## O que o Dashboard Visualiza
+## What the Dashboard Visualizes
 
-O Dashboard lê documentos do projeto AIOS e exibe:
+The Dashboard reads AIOS project documents and displays:
 
-| Fonte | O que exibe |
-|-------|-------------|
-| `docs/stories/` | Stories ativas, progresso, checkboxes |
-| `squads/` | Squads instalados, agentes, workflows |
-| `.aios-core/development/agents/` | Agentes disponíveis e suas capacidades |
-| `hooks` (tempo real) | Eventos do Claude Code (tool use, prompts, etc) |
+| Source | What it displays |
+|--------|------------------|
+| `docs/stories/` | Active stories, progress, checkboxes |
+| `squads/` | Installed squads, agents, workflows |
+| `.aios-core/development/agents/` | Available agents and their capabilities |
+| `hooks` (real-time) | Claude Code events (tool use, prompts, etc) |
 
-## Arquitetura
+## Architecture
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -87,47 +87,47 @@ O Dashboard lê documentos do projeto AIOS e exibe:
        stdin              HTTP POST              WebSocket
          │                                            │
          └────────────────────────────────────────────┘
-                    Lê docs/, squads/, .aios-core/
+                    Reads docs/, squads/, .aios-core/
 ```
 
-**Componentes:**
+**Components:**
 
-| Componente | Tecnologia | Função |
-|------------|------------|--------|
-| **Hooks** | Python | Capturam eventos do Claude Code (PreToolUse, PostToolUse, etc.) |
-| **Monitor Server** | Bun + SQLite | Recebe eventos via HTTP, armazena e transmite via WebSocket |
-| **Dashboard** | Next.js | Visualiza eventos em tempo real + documentos AIOS |
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Hooks** | Python | Capture Claude Code events (PreToolUse, PostToolUse, etc.) |
+| **Monitor Server** | Bun + SQLite | Receives events via HTTP, stores and broadcasts via WebSocket |
+| **Dashboard** | Next.js | Visualizes events in real time + AIOS documents |
 
-## Instalação
+## Installation
 
-> **Todos os comandos são executados a partir da raiz do seu projeto (`meu-projeto/`).**
+> **All commands are executed from the root of your project (`my-project/`).**
 
-### Pré-requisitos
+### Prerequisites
 
-- Projeto com [Synkra AIOS](https://github.com/SynkraAI/aios-core) instalado
+- Project with [Synkra AIOS](https://github.com/SynkraAI/aios-core) installed
 - Node.js >=18.0.0
-- Bun (para o server)
+- Bun (for the server)
 
-### 1. Instale o AIOS no seu projeto (se ainda não tiver)
+### 1. Install AIOS in your project (if you haven't already)
 
 ```bash
-# Criar novo projeto com AIOS
-npx aios-core init meu-projeto
-cd meu-projeto
+# Create new project with AIOS
+npx aios-core init my-project
+cd my-project
 
-# Ou instalar em projeto existente
+# Or install in an existing project
 npx aios-core install
 ```
 
-### 2. Clone o Dashboard
+### 2. Clone the Dashboard
 
 ```bash
-# A partir da raiz do projeto (meu-projeto/)
+# From the project root (my-project/)
 mkdir -p apps
 git clone https://github.com/SynkraAI/aios-dashboard.git apps/dashboard
 ```
 
-### 3. Instale as dependências
+### 3. Install dependencies
 
 ```bash
 # Dashboard (Next.js)
@@ -137,64 +137,64 @@ npm install --prefix apps/dashboard
 cd apps/dashboard/server && bun install && cd ../../..
 ```
 
-### 4. Inicie o Server
+### 4. Start the Server
 
 ```bash
-# A partir da raiz do projeto
+# From the project root
 cd apps/dashboard/server && bun run dev
 ```
 
-Server rodando em `http://localhost:4001`.
+Server running at `http://localhost:4001`.
 
-> **Dica:** Abra um novo terminal para o próximo passo.
+> **Tip:** Open a new terminal for the next step.
 
-### 5. Inicie o Dashboard
+### 5. Start the Dashboard
 
 ```bash
-# A partir da raiz do projeto (novo terminal)
+# From the project root (new terminal)
 npm run dev --prefix apps/dashboard
 ```
 
-Dashboard rodando em `http://localhost:3000`.
+Dashboard running at `http://localhost:3000`.
 
-### 6. Instale os Hooks (Opcional - para eventos em tempo real)
+### 6. Install Hooks (Optional — for real-time events)
 
 ```bash
-# A partir da raiz do projeto
+# From the project root
 apps/dashboard/scripts/install-hooks.sh
 ```
 
-Isso instala hooks Python em `~/.claude/hooks/` que capturam:
+This installs Python hooks in `~/.claude/hooks/` that capture:
 
-- `PreToolUse` — Antes da execução de ferramentas
-- `PostToolUse` — Após execução (com resultados)
-- `UserPromptSubmit` — Quando usuário envia prompt
-- `Stop` — Quando Claude para
-- `SubagentStop` — Quando um subagent (Task) para
+- `PreToolUse` — Before tool execution
+- `PostToolUse` — After execution (with results)
+- `UserPromptSubmit` — When user sends a prompt
+- `Stop` — When Claude stops
+- `SubagentStop` — When a subagent (Task) stops
 
-## Comandos Rápidos
+## Quick Commands
 
-Execute todos a partir da raiz do projeto (`meu-projeto/`):
+Run all from the project root (`my-project/`):
 
 ```bash
-# Instalar dependências
+# Install dependencies
 npm install --prefix apps/dashboard
 cd apps/dashboard/server && bun install && cd ../../..
 
-# Iniciar server (terminal 1)
+# Start server (terminal 1)
 cd apps/dashboard/server && bun run dev
 
-# Iniciar dashboard (terminal 2)
+# Start dashboard (terminal 2)
 npm run dev --prefix apps/dashboard
 
-# Instalar hooks
+# Install hooks
 apps/dashboard/scripts/install-hooks.sh
 
-# Verificar health do server
+# Check server health
 curl http://localhost:4001/health
 ```
 
-## Estrutura do Dashboard
+## Dashboard Structure
 
 ```
 apps/dashboard/
@@ -212,25 +212,25 @@ apps/dashboard/
 └── public/
 ```
 
-## API do Server
+## Server API
 
-| Endpoint                   | Método    | Descrição                 |
-| -------------------------- | --------- | ------------------------- |
-| `POST /events`             | POST      | Recebe eventos dos hooks  |
-| `GET /events`              | GET       | Query eventos             |
-| `GET /events/recent`       | GET       | Eventos recentes          |
-| `GET /sessions`            | GET       | Lista sessões             |
-| `GET /sessions/:id`        | GET       | Detalhes da sessão        |
-| `GET /sessions/:id/events` | GET       | Eventos de uma sessão     |
-| `GET /stats`               | GET       | Estatísticas agregadas    |
-| `WS /stream`               | WebSocket | Stream de eventos em tempo real |
-| `GET /health`              | Health check              |
+| Endpoint                   | Method    | Description                |
+| -------------------------- | --------- | -------------------------- |
+| `POST /events`             | POST      | Receive events from hooks  |
+| `GET /events`              | GET       | Query events               |
+| `GET /events/recent`       | GET       | Recent events              |
+| `GET /sessions`            | GET       | List sessions              |
+| `GET /sessions/:id`        | GET       | Session details            |
+| `GET /sessions/:id/events` | GET       | Events for a session       |
+| `GET /stats`               | GET       | Aggregated statistics      |
+| `WS /stream`               | WebSocket | Real-time event stream     |
+| `GET /health`              | Health check               |
 
-## Configuração
+## Configuration
 
-### Variáveis de Ambiente
+### Environment Variables
 
-Crie `apps/dashboard/.env.local`:
+Create `apps/dashboard/.env.local`:
 
 ```bash
 MONITOR_PORT=4001
@@ -238,62 +238,62 @@ MONITOR_DB=~/.aios/monitor/events.db
 NEXT_PUBLIC_MONITOR_WS_URL=ws://localhost:4001/stream
 ```
 
-### Variáveis dos Hooks
+### Hook Variables
 
-| Variável                   | Default                  | Descrição                        |
-| -------------------------- | ------------------------ | -------------------------------- |
-| `AIOS_MONITOR_URL`         | `http://localhost:4001`  | URL do Monitor Server            |
-| `AIOS_MONITOR_TIMEOUT_MS`  | `500`                    | Timeout HTTP para enviar eventos |
+| Variable                   | Default                  | Description                         |
+| -------------------------- | ------------------------ | ----------------------------------- |
+| `AIOS_MONITOR_URL`         | `http://localhost:4001`  | Monitor Server URL                  |
+| `AIOS_MONITOR_TIMEOUT_MS`  | `500`                    | HTTP timeout for sending events     |
 
-## Desenvolvimento
+## Development
 
-Execute a partir da raiz do projeto:
+Run from the project root:
 
 ```bash
-# Dashboard com hot reload
+# Dashboard with hot reload
 npm run dev --prefix apps/dashboard
 
-# Server com watch mode
+# Server with watch mode
 cd apps/dashboard/server && bun --watch run server.ts
 
-# Testes
+# Tests
 npm test --prefix apps/dashboard
 ```
 
 ## Troubleshooting
 
-### Dashboard não mostra stories/squads
+### Dashboard doesn't show stories/squads
 
-Verifique se o AIOS está instalado:
+Check that AIOS is installed:
 
 ```bash
-# A partir da raiz do projeto
-ls -la .aios-core/     # deve existir
-ls -la docs/stories/   # deve ter stories
+# From the project root
+ls -la .aios-core/     # should exist
+ls -la docs/stories/   # should have stories
 ```
 
-### Eventos em tempo real não aparecem
+### Real-time events not appearing
 
 ```bash
-# Hooks instalados?
+# Hooks installed?
 ls ~/.claude/hooks/
 
-# Server rodando?
+# Server running?
 curl http://localhost:4001/health
 ```
 
-### WebSocket não conecta
+### WebSocket not connecting
 
-Verifique se `apps/dashboard/.env.local` existe com:
+Check that `apps/dashboard/.env.local` exists with:
 
 ```
 NEXT_PUBLIC_MONITOR_WS_URL=ws://localhost:4001/stream
 ```
 
-## Licença
+## License
 
 MIT
 
 ---
 
-<sub>Parte do ecossistema [Synkra AIOS](https://github.com/SynkraAI/aios-core) — CLI First, Observability Second, UI Third</sub>
+<sub>Part of the [Synkra AIOS](https://github.com/SynkraAI/aios-core) ecosystem — CLI First, Observability Second, UI Third</sub>
